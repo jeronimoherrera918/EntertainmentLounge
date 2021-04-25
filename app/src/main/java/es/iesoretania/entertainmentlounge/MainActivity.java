@@ -59,12 +59,4 @@ public class MainActivity extends AppCompatActivity implements DrawerController 
         drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
     }
 
-    @SuppressLint("ResourceType")
-    @Override
-    public void onBackPressed() {
-        // En principio, ese es el ID de mi perfil, que locura no puedo más
-        if (UserData.USER_EMAIL == null && getSupportFragmentManager().findFragmentById(2131231010).isVisible()) {
-            super.onBackPressed();
-        }
-    }
 }

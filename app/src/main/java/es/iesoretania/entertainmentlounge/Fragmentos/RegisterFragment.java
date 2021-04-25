@@ -1,5 +1,7 @@
 package es.iesoretania.entertainmentlounge.Fragmentos;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -20,6 +22,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+import es.iesoretania.entertainmentlounge.MainActivity;
 import es.iesoretania.entertainmentlounge.R;
 
 public class RegisterFragment extends Fragment {
@@ -76,7 +79,22 @@ public class RegisterFragment extends Fragment {
     }
 
     private void showAlert() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setMessage("Se ha producido un error, comprueba los datos e inténtalo de nuevo");
+        builder.setTitle("Error");
+
+        builder.setCancelable(false);
+
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+
         loadingRegister.setVisibility(View.INVISIBLE);
-        Toast.makeText(getContext(), "Se ha producido un error. Comprueba los datos e inténtalo de nuevo", Toast.LENGTH_SHORT).show();
     }
 }

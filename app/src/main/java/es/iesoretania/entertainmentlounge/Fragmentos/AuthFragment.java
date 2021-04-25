@@ -1,5 +1,7 @@
 package es.iesoretania.entertainmentlounge.Fragmentos;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -44,6 +46,10 @@ public class AuthFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        if (UserData.USER_EMAIL != null) {
+            Navigation.findNavController(view).navigate(R.id.action_nav_login_to_profileFragment);
+        }
 
         btnEntrar = view.findViewById(R.id.btnEntrar);
 
@@ -103,7 +109,22 @@ public class AuthFragment extends Fragment {
     }
 
     private void showAlert() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setMessage("Se ha producido un error, comprueba los datos e inténtalo de nuevo");
+        builder.setTitle("Error");
+
+        builder.setCancelable(false);
+
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+
         loadingLogin.setVisibility(View.INVISIBLE);
-        Toast.makeText(getContext(), "Se ha producido un error. Comprueba los datos e inténtalo de nuevo", Toast.LENGTH_SHORT).show();
     }
 }
