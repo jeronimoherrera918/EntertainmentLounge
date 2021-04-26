@@ -5,14 +5,12 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -20,7 +18,7 @@ import es.iesoretania.entertainmentlounge.Clases.UserData;
 import es.iesoretania.entertainmentlounge.R;
 
 public class ProfileFragment extends Fragment {
-    Button btnLogOut;
+    Button btnLogOut, btnVerSeries;
 
     FirebaseAuth fAuth;
 
@@ -39,19 +37,26 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        Toast.makeText(getContext(), "EMAIL LOGUEADO: " + UserData.USER_EMAIL, Toast.LENGTH_SHORT).show();
+        // Toast.makeText(getContext(), "EMAIL LOGUEADO: " + UserData.USER_EMAIL, Toast.LENGTH_SHORT).show();
 
         btnLogOut = view.findViewById(R.id.btnLogOut);
+        btnVerSeries = view.findViewById(R.id.btnVerSeries);
 
         fAuth = FirebaseAuth.getInstance();
 
         btnLogOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Toast.makeText(v.getContext(), fAuth.getCurrentUser().getUid(), Toast.LENGTH_SHORT).show();
                 fAuth.signOut();
                 UserData.USER_EMAIL = null;
                 getActivity().onBackPressed();
+            }
+        });
+
+        btnVerSeries.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(v).navigate(R.id.action_nav_profile_to_verSeriesFragment);
             }
         });
     }

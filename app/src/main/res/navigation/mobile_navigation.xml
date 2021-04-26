@@ -9,8 +9,8 @@
     <fragment
         android:id="@+id/nav_login"
         android:name="es.iesoretania.entertainmentlounge.Fragmentos.AuthFragment"
-        android:label="ACCESO"
-        tools:layout="@layout/fragment_auth" >
+        android:label="Autenticación"
+        tools:layout="@layout/fragment_auth">
         <action
             android:id="@+id/action_nav_login_to_nav_register"
             app:destination="@id/nav_register"
@@ -30,11 +30,24 @@
     <fragment
         android:id="@+id/nav_register"
         android:name="es.iesoretania.entertainmentlounge.Fragmentos.RegisterFragment"
-        android:label="REGISTRO"
+        android:label="Registro"
         tools:layout="@layout/fragment_register" />
     <fragment
         android:id="@+id/nav_profile"
         android:name="es.iesoretania.entertainmentlounge.Fragmentos.ProfileFragment"
-        android:label="MI PERFIL"
-        tools:layout="@layout/fragment_profile" />
+        android:label="Mi perfil"
+        tools:layout="@layout/fragment_profile">
+        <action
+            android:id="@+id/action_nav_profile_to_verSeriesFragment"
+            app:destination="@id/nav_verSeries"
+            app:enterAnim="@anim/enter_right_to_left"
+            app:exitAnim="@anim/exit_right_to_left"
+            app:popEnterAnim="@anim/enter_left_to_right"
+            app:popExitAnim="@anim/exit_left_to_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_verSeries"
+        android:name="es.iesoretania.entertainmentlounge.Fragmentos.Pruebas.VerSeriesFragment"
+        android:label="Lista de series"
+        tools:layout="@layout/fragment_ver_series" />
 </navigation>

@@ -1,6 +1,5 @@
 package es.iesoretania.entertainmentlounge;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import com.google.android.material.navigation.NavigationView;
