@@ -49,5 +49,14 @@
         android:id="@+id/nav_verSeries"
         android:name="es.iesoretania.entertainmentlounge.Fragmentos.Pruebas.VerSeriesFragment"
         android:label="Lista de series"
-        tools:layout="@layout/fragment_ver_series" />
+        tools:layout="@layout/fragment_ver_series" >
+        <action
+            android:id="@+id/action_nav_verSeries_to_serieFragment"
+            app:destination="@id/nav_serie" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_serie"
+        android:name="es.iesoretania.entertainmentlounge.Fragmentos.Pruebas.SerieFragment"
+        android:label="fragment_serie"
+        tools:layout="@layout/fragment_serie" />
 </navigation>

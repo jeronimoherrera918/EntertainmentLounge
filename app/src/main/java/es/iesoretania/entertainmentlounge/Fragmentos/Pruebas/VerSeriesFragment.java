@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
@@ -71,6 +72,7 @@ public class VerSeriesFragment extends Fragment {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         Toast.makeText(view.getContext(), listaSeriesKeys.get(position), Toast.LENGTH_SHORT).show();
+                        Navigation.findNavController(view).navigate(R.id.action_nav_verSeries_to_serieFragment);
                     }
                 });
             }
