@@ -62,5 +62,9 @@
         android:id="@+id/nav_serie"
         android:name="es.iesoretania.entertainmentlounge.Fragmentos.Pruebas.SerieFragment"
         android:label="fragment_serie"
-        tools:layout="@layout/fragment_serie" />
+        tools:layout="@layout/fragment_serie" >
+        <argument
+            android:name="key"
+            app:argType="string" />
+    </fragment>
 </navigation>

@@ -6,14 +6,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -71,8 +69,8 @@ public class VerSeriesFragment extends Fragment {
                 lvListaSeries.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        Toast.makeText(view.getContext(), listaSeriesKeys.get(position), Toast.LENGTH_SHORT).show();
-                        Navigation.findNavController(view).navigate(R.id.action_nav_verSeries_to_serieFragment);
+                        // Toast.makeText(view.getContext(), listaSeriesKeys.get(position), Toast.LENGTH_SHORT).show();
+                        Navigation.findNavController(view).navigate(VerSeriesFragmentDirections.actionNavVerSeriesToSerieFragment(listaSeriesKeys.get(0)));
                     }
                 });
             }
