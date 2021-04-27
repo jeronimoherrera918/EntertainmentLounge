@@ -27,6 +27,8 @@ public class SerieFragment extends Fragment {
     FirebaseDatabase database;
     DatabaseReference myRef;
 
+    ValueEventListener leerSerie;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -36,6 +38,7 @@ public class SerieFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        myRef.child(key).removeEventListener(leerSerie);
     }
 
     @Override
@@ -43,18 +46,28 @@ public class SerieFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         database = FirebaseDatabase.getInstance();
-        myRef = database.getReference("series").child(key);
+        myRef = database.getReference("series");
 
         tvSerieNombre = view.findViewById(R.id.tvSerieNombre);
         tvSerieGenero = view.findViewById(R.id.tvSerieGenero);
         tvSerieDescripcion = view.findViewById(R.id.tvSerieDescripcion);
 
+        if (getArguments() != null) {
+            SerieFragmentArgs args = SerieFragmentArgs.fromBundle(getArguments());
+            key = args.getKey();
+            leerSerie = leerSerie(key);
+            myRef.child(key).addValueEventListener(leerSerie);
+        }
+
+        /*
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Serie serie = snapshot.getValue(Serie.class);
                 if (serie != null) {
-                    // PONER AQUI LOS TEXTVIEW
+                    tvSerieNombre.setText(serie.getNombre());
+                    tvSerieGenero.setText(serie.getGenero());
+                    tvSerieDescripcion.setText(serie.getDescripcion());
                 }
             }
 
@@ -63,5 +76,25 @@ public class SerieFragment extends Fragment {
 
             }
         });
+         */
+    }
+
+    public ValueEventListener leerSerie(String key) {
+        return new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Serie serie = snapshot.getValue(Serie.class);
+                if (serie != null) {
+                    tvSerieNombre.setText(serie.getNombre());
+                    tvSerieGenero.setText(serie.getGenero());
+                    tvSerieDescripcion.setText(serie.getDescripcion());
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        };
     }
 }
