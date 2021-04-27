@@ -19,6 +19,10 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="SplashScreenWindows" parent="Theme.EntertainmentLounge">
+        <item name="android:windowBackground">@drawable/splash_screen_background</item>
+    </style>
+
     <style name="Theme.EntertainmentLounge.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.EntertainmentLounge.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
