@@ -6,10 +6,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -21,7 +23,7 @@ import es.iesoretania.entertainmentlounge.Clases.SerieData.Serie;
 import es.iesoretania.entertainmentlounge.R;
 
 public class SerieFragment extends Fragment {
-    TextView tvSerieNombre, tvSerieGenero, tvSerieDescripcion;
+    TextView tvSerieNombre, tvSerieGenero, tvSerieDescripcion, tvSerieNumTemporadas;
 
     String key;
     FirebaseDatabase database;
@@ -45,12 +47,15 @@ public class SerieFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        // Log.d("DATA", getActivity().getTitle().toString()); <-- Título de la actividad principal (D/DATA: EntertainmentLounge)
+
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference("series");
 
         tvSerieNombre = view.findViewById(R.id.tvSerieNombre);
         tvSerieGenero = view.findViewById(R.id.tvSerieGenero);
         tvSerieDescripcion = view.findViewById(R.id.tvSerieDescripcion);
+        tvSerieNumTemporadas = view.findViewById(R.id.tvSerieNumTemporadas);
 
         if (getArguments() != null) {
             SerieFragmentArgs args = SerieFragmentArgs.fromBundle(getArguments());
@@ -58,25 +63,6 @@ public class SerieFragment extends Fragment {
             leerSerie = leerSerie(key);
             myRef.child(key).addValueEventListener(leerSerie);
         }
-
-        /*
-        myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Serie serie = snapshot.getValue(Serie.class);
-                if (serie != null) {
-                    tvSerieNombre.setText(serie.getNombre());
-                    tvSerieGenero.setText(serie.getGenero());
-                    tvSerieDescripcion.setText(serie.getDescripcion());
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-         */
     }
 
     public ValueEventListener leerSerie(String key) {
@@ -88,6 +74,8 @@ public class SerieFragment extends Fragment {
                     tvSerieNombre.setText(serie.getNombre());
                     tvSerieGenero.setText(serie.getGenero());
                     tvSerieDescripcion.setText(serie.getDescripcion());
+                    tvSerieNumTemporadas.setText("Número de temporadas: " + String.valueOf(serie.getTemporadas().size()));
+                    Toast.makeText(getContext(), "Nº Caps. Temp. 1: [" + serie.getTemporadas().get(0).getCapitulos().size() + "]", Toast.LENGTH_SHORT).show();
                 }
             }
 
