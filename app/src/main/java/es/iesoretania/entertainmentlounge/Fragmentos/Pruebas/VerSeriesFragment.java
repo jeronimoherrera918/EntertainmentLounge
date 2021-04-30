@@ -7,7 +7,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,8 +18,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +35,8 @@ public class VerSeriesFragment extends Fragment {
 
     FirebaseDatabase database;
     DatabaseReference myRef;
+
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -55,28 +56,11 @@ public class VerSeriesFragment extends Fragment {
         lvListaSeries = view.findViewById(R.id.lvListaSeries);
         gvListaSeries = view.findViewById(R.id.gvListaSeries);
 
+        // Obtenemos instancia de Realtime DB
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference("series");
 
-        // SELECT * FROM series WHERE genero = "Comedia"
-        /*
-        Query query = (Query) myRef.orderByChild("genero").equalTo("Comedia");
-        query.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot dn : snapshot.getChildren()) {
-                    Serie serie = dn.getValue(Serie.class);
-                    Log.d("TESTING", serie.getNombre());
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-        */
-
+        // Leemos todos los datos que haya en "series"
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

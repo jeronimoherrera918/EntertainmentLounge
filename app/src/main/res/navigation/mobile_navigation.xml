@@ -44,6 +44,13 @@
             app:exitAnim="@anim/exit_right_to_left"
             app:popEnterAnim="@anim/enter_left_to_right"
             app:popExitAnim="@anim/exit_left_to_right" />
+        <action
+            android:id="@+id/action_nav_profile_to_addSerieFragment"
+            app:destination="@id/addSerieFragment"
+            app:enterAnim="@anim/enter_right_to_left"
+            app:exitAnim="@anim/exit_right_to_left"
+            app:popEnterAnim="@anim/enter_left_to_right"
+            app:popExitAnim="@anim/exit_left_to_right" />
     </fragment>
     <fragment
         android:id="@+id/nav_verSeries"
@@ -67,4 +74,9 @@
             android:name="key"
             app:argType="string" />
     </fragment>
+    <fragment
+        android:id="@+id/addSerieFragment"
+        android:name="es.iesoretania.entertainmentlounge.Fragmentos.Pruebas.AddSerieFragment"
+        android:label="fragment_add_serie"
+        tools:layout="@layout/fragment_add_serie" />
 </navigation>

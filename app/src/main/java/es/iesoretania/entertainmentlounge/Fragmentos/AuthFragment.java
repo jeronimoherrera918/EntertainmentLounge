@@ -23,8 +23,14 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import es.iesoretania.entertainmentlounge.Clases.UserData;
+import es.iesoretania.entertainmentlounge.Clases.Usuario;
 import es.iesoretania.entertainmentlounge.MainActivity;
 import es.iesoretania.entertainmentlounge.R;
 
@@ -33,8 +39,8 @@ public class AuthFragment extends Fragment {
     EditText etEmail, etPassword;
     TextView tvRegister;
     ProgressBar loadingLogin;
-
     FirebaseAuth fAuth;
+    FirebaseFirestore firestoredb;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -44,34 +50,27 @@ public class AuthFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        if (UserData.USER_EMAIL != null) {
-            Navigation.findNavController(view).navigate(R.id.action_nav_login_to_profileFragment);
-        }
-
-        btnEntrar = view.findViewById(R.id.btnEntrar);
-
-        etEmail = view.findViewById(R.id.etEmail);
-        etPassword = view.findViewById(R.id.etPassword);
-
-        etEmail.setText("correo@correo.com");
-        etPassword.setText("12345678");
-
-        tvRegister = view.findViewById(R.id.tvRegister);
-
-        loadingLogin = view.findViewById(R.id.loadingLogin);
-
-        fAuth = FirebaseAuth.getInstance();
-
-        setup();
-    }
-
-    @Override
     public void onDestroyView() {
         super.onDestroyView();
         ((MainActivity) getActivity()).setDrawer_Unlocked();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        if (UserData.USER_EMAIL != null) { // Si ya hay un usuario logueado, no podrá llegar a este fragmento nunca
+            Navigation.findNavController(view).navigate(R.id.action_nav_login_to_profileFragment);
+        }
+        btnEntrar = view.findViewById(R.id.btnEntrar);
+        etEmail = view.findViewById(R.id.etEmail);
+        etPassword = view.findViewById(R.id.etPassword);
+        etEmail.setText("jerohg98@gmail.com");
+        etPassword.setText("jero1234");
+        tvRegister = view.findViewById(R.id.tvRegister);
+        loadingLogin = view.findViewById(R.id.loadingLogin);
+        fAuth = FirebaseAuth.getInstance();
+        firestoredb = FirebaseFirestore.getInstance();
+        setup();
     }
 
     private void setup() {
@@ -91,17 +90,34 @@ public class AuthFragment extends Fragment {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
-                                Log.d("REGISTER_USER", task.getResult().getUser().getEmail());
-                                UserData.USER_EMAIL = task.getResult().getUser().getEmail();
-                                Navigation.findNavController(v).navigate(R.id.action_nav_login_to_profileFragment);
-                                loadingLogin.setVisibility(View.INVISIBLE);
+                                CollectionReference usuariosRef = firestoredb.collection("usuarios");
+                                Query query = usuariosRef.whereEqualTo("email", task.getResult().getUser().getEmail());
+                                query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+                                            for (QueryDocumentSnapshot dn : task.getResult()) {
+                                                Usuario usuario = dn.toObject(Usuario.class);
+                                                UserData.USER_EMAIL = usuario.getEmail();
+                                                UserData.NICKNAME = usuario.getNickname();
+                                                UserData.FULL_NAME = usuario.getNombre_completo();
+                                                UserData.DATE = usuario.getFechaNacimiento();
+                                                UserData.PROFILE_PIC = usuario.getFotoPerfil();
+                                                UserData.ID_USER_DB = dn.getId();
+                                                Navigation.findNavController(v).navigate(R.id.action_nav_login_to_profileFragment);
+                                                loadingLogin.setVisibility(View.INVISIBLE);
+                                            }
+                                        }
+                                    }
+                                });
+
                             } else {
                                 showAlert();
                             }
                         }
                     });
                 } else {
-                    Toast.makeText(v.getContext(), "Introduce los datos antes de intentar entrar", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(v.getContext(), "Debes introducir todos los datos antes de intentar entrar", Toast.LENGTH_SHORT).show();
                     loadingLogin.setVisibility(View.INVISIBLE);
                 }
             }
@@ -112,19 +128,15 @@ public class AuthFragment extends Fragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setMessage("Se ha producido un error, comprueba los datos e inténtalo de nuevo");
         builder.setTitle("Error");
-
         builder.setCancelable(false);
-
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
             }
         });
-
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
-
         loadingLogin.setVisibility(View.INVISIBLE);
     }
 }
