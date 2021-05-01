@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -31,6 +32,8 @@ public class AddSerieFragment extends Fragment {
     Button btnAddSerieAgregar, btnAddSerieAgregarTemporada, btnAddSerieAgregarCapitulo;
     EditText etAddSerieNombre, etAddSerieGenero, etAddSerieDescripcion, etAddSerieNombreCapitulo;
     Serie serie;
+    DocumentReference newRef;
+    String newKey;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -47,6 +50,8 @@ public class AddSerieFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         db = FirebaseFirestore.getInstance();
+        newRef = db.collection("series").document();
+        newKey = newRef.getId();
         btnAddSerieAgregar = view.findViewById(R.id.btnAddSerieAgregar);
         btnAddSerieAgregarTemporada = view.findViewById(R.id.btnAddSerieAgregarTemporada);
         btnAddSerieAgregarCapitulo = view.findViewById(R.id.btnAddSerieAgregarCapitulo);
@@ -77,13 +82,14 @@ public class AddSerieFragment extends Fragment {
         btnAddSerieAgregar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                serie.setId_serie(newKey);
                 serie.setNombre(etAddSerieNombre.getText().toString());
                 serie.setGenero(etAddSerieGenero.getText().toString());
                 serie.setDescripcion(etAddSerieDescripcion.getText().toString());
                 serie.setPuntuacion(0.0);
                 plataformas.add("Netflix");
                 serie.setPlataformas(plataformas);
-                db.collection("series").add(serie);
+                newRef.set(serie);
                 temporadas.clear();
                 getActivity().onBackPressed();
             }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Serie {
+    private String id_serie;
     private String nombre;
     private String descripcion;
     private String genero;
@@ -14,13 +15,22 @@ public class Serie {
     public Serie() {
     }
 
-    public Serie(String nombre, String descripcion, String genero, Double puntuacion, List<String> plataformas, List<Temporada> temporadas) {
+    public Serie(String id_serie, String nombre, String descripcion, String genero, Double puntuacion, List<String> plataformas, List<Temporada> temporadas) {
+        this.id_serie = id_serie;
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.genero = genero;
         this.puntuacion = puntuacion;
         this.plataformas = plataformas;
         this.temporadas = temporadas;
+    }
+
+    public String getId_serie() {
+        return id_serie;
+    }
+
+    public void setId_serie(String id_serie) {
+        this.id_serie = id_serie;
     }
 
     public String getNombre() {

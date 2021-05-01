@@ -15,7 +15,7 @@ public class SplashScreen extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        long time = 100;
+        long time = 1000;
 
         new Handler().postDelayed(new Runnable() {
             @Override
