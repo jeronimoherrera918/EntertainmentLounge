@@ -42,6 +42,7 @@
             android:backgroundTint="#16618D"
             android:textColor="@color/white"
             android:text="Añadir serie" />
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
