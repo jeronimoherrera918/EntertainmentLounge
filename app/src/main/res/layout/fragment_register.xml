@@ -33,9 +33,14 @@
         <EditText
             android:id="@+id/etNicknameRegistro"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
             android:ems="10"
+            android:drawableStart="@drawable/custom_user_icon"
+            android:drawablePadding="12dp"
             android:hint="Nombre de usuario..."
+            android:background="@drawable/custom_input"
             android:inputType="textPersonName" />
 
         <Space
@@ -45,9 +50,14 @@
         <EditText
             android:id="@+id/etEmailRegistro"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
             android:ems="10"
+            android:drawableStart="@drawable/custom_email_icon"
+            android:drawablePadding="12dp"
             android:hint="Email..."
+            android:background="@drawable/custom_input"
             android:inputType="textEmailAddress" />
 
         <Space
@@ -57,9 +67,14 @@
         <EditText
             android:id="@+id/etPasswordRegistro"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
             android:ems="10"
+            android:drawableStart="@drawable/custom_lock_icon"
+            android:drawablePadding="12dp"
             android:hint="Contraseña..."
+            android:background="@drawable/custom_input"
             android:inputType="textPassword" />
 
         <Space
@@ -69,9 +84,14 @@
         <EditText
             android:id="@+id/etNombreCompletoRegistro"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
             android:ems="10"
+            android:drawableStart="@drawable/custom_user_icon"
+            android:drawablePadding="12dp"
             android:hint="Nombre completo..."
+            android:background="@drawable/custom_input"
             android:inputType="textPersonName" />
 
         <Space
@@ -81,15 +101,23 @@
         <EditText
             android:id="@+id/etFechaRegistro"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
             android:ems="10"
+            android:drawableStart="@drawable/custom_user_icon"
+            android:drawablePadding="12dp"
             android:hint="DD/MM/YYYY"
+            android:background="@drawable/custom_input"
             android:inputType="date" />
 
         <Button
             android:id="@+id/btnRegistrarse"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="#16618D"
+            android:textColor="@color/white"
             android:text="Registrarse" />
 
         <ProgressBar

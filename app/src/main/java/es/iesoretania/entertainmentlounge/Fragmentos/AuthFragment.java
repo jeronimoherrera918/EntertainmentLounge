@@ -9,7 +9,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,7 +39,7 @@ public class AuthFragment extends Fragment {
     TextView tvRegister;
     ProgressBar loadingLogin;
     FirebaseAuth fAuth;
-    FirebaseFirestore firestoredb;
+    FirebaseFirestore db;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -69,7 +68,10 @@ public class AuthFragment extends Fragment {
         tvRegister = view.findViewById(R.id.tvRegister);
         loadingLogin = view.findViewById(R.id.loadingLogin);
         fAuth = FirebaseAuth.getInstance();
-        firestoredb = FirebaseFirestore.getInstance();
+        db = FirebaseFirestore.getInstance();
+
+        // db.collection("usuarios").whereEqualTo("email", UserData.USER_EMAIL).get();
+
         setup();
     }
 
@@ -90,7 +92,7 @@ public class AuthFragment extends Fragment {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
-                                CollectionReference usuariosRef = firestoredb.collection("usuarios");
+                                CollectionReference usuariosRef = db.collection("usuarios");
                                 Query query = usuariosRef.whereEqualTo("email", task.getResult().getUser().getEmail());
                                 query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                     @Override
@@ -110,7 +112,6 @@ public class AuthFragment extends Fragment {
                                         }
                                     }
                                 });
-
                             } else {
                                 showAlert();
                             }
