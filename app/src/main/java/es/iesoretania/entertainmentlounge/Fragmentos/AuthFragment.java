@@ -2,6 +2,7 @@ package es.iesoretania.entertainmentlounge.Fragmentos;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -69,9 +70,6 @@ public class AuthFragment extends Fragment {
         loadingLogin = view.findViewById(R.id.loadingLogin);
         fAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
-
-        // db.collection("usuarios").whereEqualTo("email", UserData.USER_EMAIL).get();
-
         setup();
     }
 
