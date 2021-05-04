@@ -77,30 +77,31 @@ public class SerieFragment extends Fragment {
                                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                     if (task.isSuccessful()) {
                                         if (task.getResult().size() > 0) {
+                                            // Si el usuario tiene la serie guardada, inhabilitamos el botón para que no pueda volver a guardarla
                                             btnSerieSave.setEnabled(false);
                                             for (QueryDocumentSnapshot dn : task.getResult()) {
                                                 Toast.makeText(getContext(), "Tienes la serie guardada", Toast.LENGTH_SHORT).show();
+                                                break;
                                             }
                                         } else {
-                                            btnSerieSave.setEnabled(true);
+                                            // Activamos el botón y permitimos al usuario guardar la serie //
+                                            btnSave();
                                             Toast.makeText(getContext(), "No tienes la serie guardada", Toast.LENGTH_SHORT).show();
                                         }
                                     }
                                 }
                             });
-                            TemporadasSerieAdapter tempAdapter = new TemporadasSerieAdapter(listaTemporadas.getContext(), R.layout.adapter_temporada, serie.getTemporadas());
-                            listaTemporadas.setAdapter(tempAdapter);
-                            listaTemporadas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                @Override
-                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                    Toast.makeText(view.getContext(), "Posición: " + position, Toast.LENGTH_SHORT).show();
-                                }
-                            });
+                            // Mostrar lista de temporadas
+                            adapterListaTemporadas();
                         }
                     }
                 }
             });
         }
+    }
+
+    private void btnSave() {
+        btnSerieSave.setEnabled(true);
         btnSerieSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -122,6 +123,17 @@ public class SerieFragment extends Fragment {
                         db.collection("usuarios").document(UserData.ID_USER_DB).collection("series_guardadas").add(saveSerie);
                     }
                 });
+            }
+        });
+    }
+
+    private void adapterListaTemporadas() {
+        TemporadasSerieAdapter tempAdapter = new TemporadasSerieAdapter(listaTemporadas.getContext(), R.layout.adapter_temporada, serie.getTemporadas());
+        listaTemporadas.setAdapter(tempAdapter);
+        listaTemporadas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(view.getContext(), "Posición: " + position, Toast.LENGTH_SHORT).show();
             }
         });
     }
