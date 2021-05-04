@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -58,8 +60,12 @@ public class AuthFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if (UserData.USER_EMAIL != null) { // Si ya hay un usuario logueado, no podrá llegar a este fragmento nunca
+        if (FirebaseAuth.getInstance().getCurrentUser() != null && UserData.ID_USER_DB != null) { // Si ya hay un usuario logueado, no podrá llegar a este fragmento nunca
+            Log.d("USER:LOGGED", FirebaseAuth.getInstance().getCurrentUser().getEmail());
+            Log.d("USER:LOGGED", FirebaseAuth.getInstance().getCurrentUser().getUid());
             Navigation.findNavController(view).navigate(R.id.action_nav_login_to_profileFragment);
+        } else if (FirebaseAuth.getInstance().getCurrentUser() != null && UserData.ID_USER_DB == null) {
+            FirebaseAuth.getInstance().signOut();
         }
         btnEntrar = view.findViewById(R.id.btnEntrar);
         etEmail = view.findViewById(R.id.etEmail);

@@ -6,49 +6,62 @@
     android:layout_height="match_parent"
     tools:context=".Fragmentos.Pruebas.SerieFragment">
 
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="33dp"
-        android:layout_marginEnd="15dp"
-        android:layout_marginBottom="330dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/tvSerieNombre"
+        <LinearLayout
+            android:id="@+id/linearLayout2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="33dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="330dp"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tvSerieGenero"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="TextView" />
+            <TextView
+                android:id="@+id/tvSerieNombre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TextView" />
 
-        <TextView
-            android:id="@+id/tvSerieDescripcion"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="TextView" />
+            <TextView
+                android:id="@+id/tvSerieGenero"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TextView" />
 
-        <TextView
-            android:id="@+id/tvSerieNumTemporadas"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="TextView" />
+            <TextView
+                android:id="@+id/tvSerieDescripcion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TextView" />
 
-        <Button
-            android:id="@+id/btnSerieSave"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="#16618D"
-            android:textColor="@color/white"
-            android:text="Guardar serie" />
-    </LinearLayout>
+            <TextView
+                android:id="@+id/tvSerieNumTemporadas"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TextView" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="8dp" />
+
+            <Button
+                android:id="@+id/btnSerieSave"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#16618D"
+                android:text="Guardar serie"
+                android:textColor="@color/white" />
+
+            <ListView
+                android:id="@+id/listaTemporadas"
+                android:layout_width="match_parent"
+                android:layout_height="162dp" />
+
+        </LinearLayout>
+    </ScrollView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
