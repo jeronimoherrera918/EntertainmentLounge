@@ -66,33 +66,6 @@ public class SerieFragment extends Fragment {
         }
     }
 
-    private void btnSave_noGuardada() {
-        btnSerieSave.setEnabled(true);
-        btnSerieSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                db.collection("series").document(key).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        DocumentSnapshot dn = task.getResult();
-                        serie = dn.toObject(Serie.class);
-                        SaveSerie saveSerie = new SaveSerie();
-                        saveSerie.setId_serie(key);
-                        for (Temporada temp : serie.getTemporadas()) {
-                            SaveTemporadaSerie saveTemporadaSerie = new SaveTemporadaSerie();
-                            for (int i = 0; i < temp.getCapitulos().size(); i++) {
-                                saveTemporadaSerie.getCapitulos_vistos().add(0);
-                                saveTemporadaSerie.getCapitulos_puntuacion().add(0.0);
-                            }
-                            saveSerie.getTemporadas().add(saveTemporadaSerie);
-                        }
-                        db.collection("usuarios").document(UserData.ID_USER_DB).collection("series_guardadas").add(saveSerie);
-                    }
-                });
-            }
-        });
-    }
-
     private void adapterListaTemporadas() {
         TemporadasSerieAdapter tempAdapter = new TemporadasSerieAdapter(listaTemporadas.getContext(), R.layout.adapter_temporada, serie.getTemporadas());
         listaTemporadas.setAdapter(tempAdapter);
@@ -139,6 +112,33 @@ public class SerieFragment extends Fragment {
                         Toast.makeText(getContext(), "No tienes la serie guardada", Toast.LENGTH_SHORT).show();
                     }
                 }
+            }
+        });
+    }
+    
+    private void btnSave_noGuardada() {
+        btnSerieSave.setEnabled(true);
+        btnSerieSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                db.collection("series").document(key).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        DocumentSnapshot dn = task.getResult();
+                        serie = dn.toObject(Serie.class);
+                        SaveSerie saveSerie = new SaveSerie();
+                        saveSerie.setId_serie(key);
+                        for (Temporada temp : serie.getTemporadas()) {
+                            SaveTemporadaSerie saveTemporadaSerie = new SaveTemporadaSerie();
+                            for (int i = 0; i < temp.getCapitulos().size(); i++) {
+                                saveTemporadaSerie.getCapitulos_vistos().add(0);
+                                saveTemporadaSerie.getCapitulos_puntuacion().add(0.0);
+                            }
+                            saveSerie.getTemporadas().add(saveTemporadaSerie);
+                        }
+                        db.collection("usuarios").document(UserData.ID_USER_DB).collection("series_guardadas").add(saveSerie);
+                    }
+                });
             }
         });
     }
