@@ -8,6 +8,9 @@
     <string name="action_settings">Settings</string>
 
     <string name="menu_profile">Mi perfil</string>
+    <string name="menu_verSeries">Explorar</string>
+    <string name="menu_recomendaciones">Descubrir</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 

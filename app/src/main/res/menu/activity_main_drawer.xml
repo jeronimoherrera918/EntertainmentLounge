@@ -8,5 +8,13 @@
             android:id="@+id/nav_profile"
             android:icon="@drawable/ic_user"
             android:title="@string/menu_profile" />
+        <item
+            android:id="@+id/nav_verSeries"
+            android:icon="@drawable/ic_date"
+            android:title="@string/menu_verSeries" />
+        <item
+            android:id="@+id/nav_recomendaciones"
+            android:icon="@drawable/ic_lock"
+            android:title="@string/menu_recomendaciones" />
     </group>
 </menu>

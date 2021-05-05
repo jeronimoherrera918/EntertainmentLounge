@@ -1,5 +1,6 @@
 package es.iesoretania.entertainmentlounge;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import com.google.android.material.navigation.NavigationView;
@@ -32,7 +33,7 @@ public class MainActivity extends AppCompatActivity implements DrawerController 
         NavigationView navigationView = findViewById(R.id.nav_view);
 
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_profile)
+                R.id.nav_profile, R.id.nav_verSeries, R.id.nav_recomendaciones)
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
