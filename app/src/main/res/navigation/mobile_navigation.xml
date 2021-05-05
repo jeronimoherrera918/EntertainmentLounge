@@ -3,12 +3,80 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_first">
+    app:startDestination="@+id/nav_login">
 
 
     <fragment
-        android:id="@+id/nav_first"
-        android:name="es.iesoretania.entertainmentlounge.Fragmentos.FirstFragment"
-        android:label="Primer fragmento"
-        tools:layout="@layout/fragment_first" />
+        android:id="@+id/nav_login"
+        android:name="es.iesoretania.entertainmentlounge.Fragmentos.AuthFragment"
+        android:label="Autenticación"
+        tools:layout="@layout/fragment_auth">
+        <action
+            android:id="@+id/action_nav_login_to_nav_register"
+            app:destination="@id/nav_register"
+            app:enterAnim="@anim/enter_right_to_left"
+            app:exitAnim="@anim/exit_right_to_left"
+            app:popEnterAnim="@anim/enter_left_to_right"
+            app:popExitAnim="@anim/exit_left_to_right" />
+        <action
+            android:id="@+id/action_nav_login_to_profileFragment"
+            app:destination="@id/nav_profile"
+            app:enterAnim="@anim/enter_right_to_left"
+            app:exitAnim="@anim/exit_right_to_left"
+            app:popEnterAnim="@anim/enter_left_to_right"
+            app:popExitAnim="@anim/exit_left_to_right" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_register"
+        android:name="es.iesoretania.entertainmentlounge.Fragmentos.RegisterFragment"
+        android:label="Registro"
+        tools:layout="@layout/fragment_register" />
+    <fragment
+        android:id="@+id/nav_profile"
+        android:name="es.iesoretania.entertainmentlounge.Fragmentos.ProfileFragment"
+        android:label="Mi perfil"
+        tools:layout="@layout/fragment_profile">
+        <action
+            android:id="@+id/action_nav_profile_to_verSeriesFragment"
+            app:destination="@id/nav_verSeries"
+            app:enterAnim="@anim/enter_right_to_left"
+            app:exitAnim="@anim/exit_right_to_left"
+            app:popEnterAnim="@anim/enter_left_to_right"
+            app:popExitAnim="@anim/exit_left_to_right" />
+        <action
+            android:id="@+id/action_nav_profile_to_addSerieFragment"
+            app:destination="@id/addSerieFragment"
+            app:enterAnim="@anim/enter_right_to_left"
+            app:exitAnim="@anim/exit_right_to_left"
+            app:popEnterAnim="@anim/enter_left_to_right"
+            app:popExitAnim="@anim/exit_left_to_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_verSeries"
+        android:name="es.iesoretania.entertainmentlounge.Fragmentos.Pruebas.VerSeriesFragment"
+        android:label="Lista de series"
+        tools:layout="@layout/fragment_ver_series">
+        <action
+            android:id="@+id/action_nav_verSeries_to_serieFragment"
+            app:destination="@id/nav_serie"
+            app:enterAnim="@anim/enter_right_to_left"
+            app:exitAnim="@anim/exit_right_to_left"
+            app:popEnterAnim="@anim/enter_left_to_right"
+            app:popExitAnim="@anim/exit_left_to_right" />/>
+    </fragment>
+    <fragment
+        android:id="@+id/nav_serie"
+        android:name="es.iesoretania.entertainmentlounge.Fragmentos.Pruebas.SerieFragment"
+        android:label="Serie"
+        tools:layout="@layout/fragment_serie">
+        <argument
+            android:name="key"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/addSerieFragment"
+        android:name="es.iesoretania.entertainmentlounge.Fragmentos.Pruebas.AddSerieFragment"
+        android:label="fragment_add_serie"
+        tools:layout="@layout/fragment_add_serie" />
 </navigation>

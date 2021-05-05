@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Fragmentos.Pruebas.AddSerieFragment" >
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="AÑADIR SERIES"
+        android:textAlignment="center"
+        android:textStyle="bold" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="5dp" />
+
+    <EditText
+        android:id="@+id/etAddSerieNombre"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Nombre..."
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/etAddSerieGenero"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Género..."
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/etAddSerieDescripcion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Descripción..."
+        android:inputType="textPersonName" />
+
+    <View
+        android:id="@+id/divider2"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:background="?android:attr/listDivider" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="AÑADIR TEMPORADA"
+        android:textAlignment="center" />
+
+    <EditText
+        android:id="@+id/etAddSerieNombreCapitulo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Nombre capítulo"
+        android:inputType="textPersonName" />
+
+    <Button
+        android:id="@+id/btnAddSerieAgregarCapitulo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Añadir capítulo" />
+
+    <View
+        android:id="@+id/divider3"
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:background="?android:attr/listDivider" />
+
+    <Button
+        android:id="@+id/btnAddSerieAgregarTemporada"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Añadir temporada" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:background="?android:attr/listDivider" />
+
+    <Button
+        android:id="@+id/btnAddSerieAgregar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Añadir serie" />
+</LinearLayout>
