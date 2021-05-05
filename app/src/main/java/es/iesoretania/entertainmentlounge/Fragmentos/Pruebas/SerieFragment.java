@@ -62,45 +62,11 @@ public class SerieFragment extends Fragment {
         if (getArguments() != null) {
             SerieFragmentArgs args = SerieFragmentArgs.fromBundle(getArguments());
             key = args.getKey();
-            db.collection("series").whereEqualTo("id_serie", key).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot dn : task.getResult()) {
-                            serie = dn.toObject(Serie.class);
-                            tvSerieNombre.setText(serie.getNombre());
-                            tvSerieGenero.setText(serie.getGenero());
-                            tvSerieDescripcion.setText(serie.getDescripcion());
-                            tvSerieNumTemporadas.setText("Número de temporadas: " + serie.getTemporadas().size() + "\nNúmero de capítulos temporada 1: " + serie.getTemporadas().get(0).getCapitulos().size());
-                            db.collection("usuarios").document(UserData.ID_USER_DB).collection("series_guardadas").whereEqualTo("id_serie", key).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                @Override
-                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                    if (task.isSuccessful()) {
-                                        if (task.getResult().size() > 0) {
-                                            // Si el usuario tiene la serie guardada, inhabilitamos el botón para que no pueda volver a guardarla
-                                            btnSerieSave.setEnabled(false);
-                                            for (QueryDocumentSnapshot dn : task.getResult()) {
-                                                Toast.makeText(getContext(), "Tienes la serie guardada", Toast.LENGTH_SHORT).show();
-                                                break;
-                                            }
-                                        } else {
-                                            // Activamos el botón y permitimos al usuario guardar la serie //
-                                            btnSave();
-                                            Toast.makeText(getContext(), "No tienes la serie guardada", Toast.LENGTH_SHORT).show();
-                                        }
-                                    }
-                                }
-                            });
-                            // Mostrar lista de temporadas
-                            adapterListaTemporadas();
-                        }
-                    }
-                }
-            });
+            mostrarSerie();
         }
     }
 
-    private void btnSave() {
+    private void btnSave_noGuardada() {
         btnSerieSave.setEnabled(true);
         btnSerieSave.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -134,6 +100,45 @@ public class SerieFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(view.getContext(), "Posición: " + position, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void mostrarSerie() {
+        db.collection("series").whereEqualTo("id_serie", key).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot dn : task.getResult()) {
+                        serie = dn.toObject(Serie.class);
+                        tvSerieNombre.setText(serie.getNombre());
+                        tvSerieGenero.setText(serie.getGenero());
+                        tvSerieDescripcion.setText(serie.getDescripcion());
+                        tvSerieNumTemporadas.setText("Número de temporadas: " + serie.getTemporadas().size() + "\nNúmero de capítulos temporada 1: " + serie.getTemporadas().get(0).getCapitulos().size());
+                        comprobacionSerie();
+                        adapterListaTemporadas();
+                    }
+                }
+            }
+        });
+    }
+
+    private void comprobacionSerie() {
+        db.collection("usuarios").document(UserData.ID_USER_DB).collection("series_guardadas").whereEqualTo("id_serie", key).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    if (task.getResult().size() > 0) {
+                        btnSerieSave.setEnabled(false);
+                        for (QueryDocumentSnapshot dn : task.getResult()) {
+                            Toast.makeText(getContext(), "Tienes la serie guardada", Toast.LENGTH_SHORT).show();
+                            break;
+                        }
+                    } else {
+                        btnSave_noGuardada();
+                        Toast.makeText(getContext(), "No tienes la serie guardada", Toast.LENGTH_SHORT).show();
+                    }
+                }
             }
         });
     }

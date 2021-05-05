@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -41,6 +42,7 @@ public class AuthFragment extends Fragment {
     EditText etEmail, etPassword;
     TextView tvRegister;
     ProgressBar loadingLogin;
+    CheckBox chkbxMantenerSesion;
     FirebaseAuth fAuth;
     FirebaseFirestore db;
 
@@ -60,19 +62,22 @@ public class AuthFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        // TODO: Nota interesante: Cuando se inicia sesion en Firebase, si yo cierro la aplicación, la sesión se mantiene abierta
+        // TODO: Gracias a esto, puedo poner un CheckBox que le permita al usuario mantener la sesión abierta
         if (FirebaseAuth.getInstance().getCurrentUser() != null && UserData.ID_USER_DB != null) { // Si ya hay un usuario logueado, no podrá llegar a este fragmento nunca
             Log.d("USER:LOGGED", FirebaseAuth.getInstance().getCurrentUser().getEmail());
             Log.d("USER:LOGGED", FirebaseAuth.getInstance().getCurrentUser().getUid());
             Navigation.findNavController(view).navigate(R.id.action_nav_login_to_profileFragment);
         } else if (FirebaseAuth.getInstance().getCurrentUser() != null && UserData.ID_USER_DB == null) {
             FirebaseAuth.getInstance().signOut();
-        }
+        } // else if (CHECKBOX MARCADO) {}
         btnEntrar = view.findViewById(R.id.btnEntrar);
         etEmail = view.findViewById(R.id.etEmail);
         etPassword = view.findViewById(R.id.etPassword);
         etEmail.setText("jerohg98@gmail.com");
         etPassword.setText("jero1234");
         tvRegister = view.findViewById(R.id.tvRegister);
+        chkbxMantenerSesion = view.findViewById(R.id.chkbxMantenerSesion);
         loadingLogin = view.findViewById(R.id.loadingLogin);
         fAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();

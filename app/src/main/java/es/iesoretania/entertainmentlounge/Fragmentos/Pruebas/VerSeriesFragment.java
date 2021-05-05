@@ -88,7 +88,7 @@ public class VerSeriesFragment extends Fragment {
                         }
                     });
                 } else {
-                    // ERROR HERE
+                    //-- ERROR HERE --//
                 }
             }
         });
