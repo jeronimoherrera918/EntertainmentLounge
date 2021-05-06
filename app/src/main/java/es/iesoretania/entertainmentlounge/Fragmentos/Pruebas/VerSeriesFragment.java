@@ -55,6 +55,7 @@ public class VerSeriesFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         lvListaSeries = view.findViewById(R.id.lvListaSeries);
         gvListaSeries = view.findViewById(R.id.gvListaSeries);
+
         db = FirebaseFirestore.getInstance();
         db.collection("series").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override

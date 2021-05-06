@@ -1,6 +1,7 @@
 package es.iesoretania.entertainmentlounge.Fragmentos.Pruebas;
 
 import android.graphics.Color;
+
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,7 +13,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+
 import android.widget.EditText;
+
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,12 +27,11 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.util.Map;
-
 import es.iesoretania.entertainmentlounge.Adapters.TemporadasSerieAdapter;
 import es.iesoretania.entertainmentlounge.Clases.SaveSerieData.SaveSerie;
 import es.iesoretania.entertainmentlounge.Clases.SaveSerieData.SaveTemporadaSerie;
 import es.iesoretania.entertainmentlounge.Clases.SerieData.Comentario;
+
 import es.iesoretania.entertainmentlounge.Clases.SerieData.Serie;
 import es.iesoretania.entertainmentlounge.Clases.SerieData.Temporada;
 import es.iesoretania.entertainmentlounge.Clases.UserData;
@@ -64,9 +66,11 @@ public class SerieFragment extends Fragment {
         tvSerieDescripcion = view.findViewById(R.id.tvSerieDescripcion);
         tvSerieNumTemporadas = view.findViewById(R.id.tvSerieNumTemporadas);
         btnSerieSave = view.findViewById(R.id.btnSerieSave);
+
         btnComentar = view.findViewById(R.id.btnComentar);
         listaTemporadas = view.findViewById(R.id.listaTemporadas);
         etComentario = view.findViewById(R.id.etComentario);
+
         if (getArguments() != null) {
             SerieFragmentArgs args = SerieFragmentArgs.fromBundle(getArguments());
             key = args.getKey();
@@ -87,6 +91,7 @@ public class SerieFragment extends Fragment {
                         tvSerieNumTemporadas.setText("Número de temporadas: " + serie.getTemporadas().size() + "\nNúmero de capítulos temporada 1: " + serie.getTemporadas().get(0).getCapitulos().size());
                         adapterListaTemporadas();
                         comprobacionSerie();
+
                     }
                 }
             }

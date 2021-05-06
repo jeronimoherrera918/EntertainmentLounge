@@ -43,6 +43,7 @@ public class RegisterFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         ((MainActivity) getActivity()).setDrawer_Locked();
+
         return inflater.inflate(R.layout.fragment_register, container, false);
     }
 
