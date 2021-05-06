@@ -2,8 +2,8 @@
     <string name="app_name">Entertainment Lounge</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_title">Entertainment Lounge</string>
+    <string name="nav_header_subtitle">Proyecto 2º DAM</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
@@ -12,6 +12,6 @@
     <string name="menu_recomendaciones">Descubrir</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hello_blank_fragment">Fragmento vacío temporalmente. Funcionalidad pensada, falta implementarlo</string>
 
 </resources>

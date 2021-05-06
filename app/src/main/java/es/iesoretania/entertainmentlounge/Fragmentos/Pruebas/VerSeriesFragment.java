@@ -37,8 +37,6 @@ import es.iesoretania.entertainmentlounge.R;
 public class VerSeriesFragment extends Fragment {
     ListView lvListaSeries;
     GridView gvListaSeries;
-    FirebaseDatabase database;
-    DatabaseReference myRef;
     FirebaseFirestore db;
 
     @Override
@@ -57,8 +55,6 @@ public class VerSeriesFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         lvListaSeries = view.findViewById(R.id.lvListaSeries);
         gvListaSeries = view.findViewById(R.id.gvListaSeries);
-        database = FirebaseDatabase.getInstance();
-        myRef = database.getReference("series");
         db = FirebaseFirestore.getInstance();
         db.collection("series").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
