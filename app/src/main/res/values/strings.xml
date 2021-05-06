@@ -10,6 +10,7 @@
     <string name="menu_profile">Mi perfil</string>
     <string name="menu_verSeries">Explorar</string>
     <string name="menu_recomendaciones">Descubrir</string>
+    <string name="menu_cerrarsesion">Cerrar sesión</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Fragmento vacío temporalmente. Funcionalidad pensada, falta implementarlo</string>

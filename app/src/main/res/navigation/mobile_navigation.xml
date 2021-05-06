@@ -14,17 +14,17 @@
         <action
             android:id="@+id/action_nav_login_to_nav_register"
             app:destination="@id/nav_register"
-            app:enterAnim="@anim/enter_right_to_left"
-            app:exitAnim="@anim/exit_right_to_left"
-            app:popEnterAnim="@anim/enter_left_to_right"
-            app:popExitAnim="@anim/exit_left_to_right" />
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out" />
         <action
             android:id="@+id/action_nav_login_to_profileFragment"
             app:destination="@id/nav_profile"
-            app:enterAnim="@anim/enter_right_to_left"
-            app:exitAnim="@anim/exit_right_to_left"
-            app:popEnterAnim="@anim/enter_left_to_right"
-            app:popExitAnim="@anim/exit_left_to_right" />
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out" />
     </fragment>
 
     <fragment
@@ -40,10 +40,10 @@
         <action
             android:id="@+id/action_nav_profile_to_addSerieFragment"
             app:destination="@id/addSerieFragment"
-            app:enterAnim="@anim/enter_right_to_left"
-            app:exitAnim="@anim/exit_right_to_left"
-            app:popEnterAnim="@anim/enter_left_to_right"
-            app:popExitAnim="@anim/exit_left_to_right" />
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out" />
     </fragment>
     <fragment
         android:id="@+id/nav_verSeries"
@@ -53,10 +53,10 @@
         <action
             android:id="@+id/action_nav_verSeries_to_serieFragment"
             app:destination="@id/nav_serie"
-            app:enterAnim="@anim/enter_right_to_left"
-            app:exitAnim="@anim/exit_right_to_left"
-            app:popEnterAnim="@anim/enter_left_to_right"
-            app:popExitAnim="@anim/exit_left_to_right" />/>
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out" />/>
     </fragment>
     <fragment
         android:id="@+id/nav_serie"
@@ -82,4 +82,17 @@
         android:name="es.iesoretania.entertainmentlounge.Fragmentos.Pruebas.RecomendacionesFragment"
         android:label="fragment_recomendaciones"
         tools:layout="@layout/fragment_recomendaciones" />
+    <fragment
+        android:id="@+id/nav_cerrarSesion"
+        android:name="es.iesoretania.entertainmentlounge.Fragmentos.CerrarSesionFragment"
+        android:label="fragment_cerrar_sesion"
+        tools:layout="@layout/fragment_cerrar_sesion" >
+        <action
+            android:id="@+id/action_nav_cerrarSesion_to_nav_login"
+            app:destination="@id/nav_login"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out" />
+    </fragment>
 </navigation>

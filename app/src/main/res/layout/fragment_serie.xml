@@ -38,12 +38,6 @@
                 android:layout_height="wrap_content"
                 android:text="TextView" />
 
-            <TextView
-                android:id="@+id/tvSerieNumTemporadas"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="TextView" />
-
             <Space
                 android:layout_width="match_parent"
                 android:layout_height="8dp" />
@@ -59,7 +53,18 @@
             <ListView
                 android:id="@+id/listaTemporadas"
                 android:layout_width="match_parent"
-                android:layout_height="162dp"/>
+                android:layout_height="162dp" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="15dp" />
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Pon un comentario en la serie"
+                android:textStyle="bold" />
 
             <Space
                 android:layout_width="match_parent"
@@ -78,7 +83,8 @@
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:backgroundTint="#16618D"
-                android:text="Comentar" />
+                android:text="Comentar"
+                android:textColor="@color/white" />
         </LinearLayout>
     </ScrollView>
 

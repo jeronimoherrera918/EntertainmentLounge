@@ -111,6 +111,10 @@
             android:background="@drawable/custom_input"
             android:inputType="date" />
 
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="12dp" />
+
         <Button
             android:id="@+id/btnRegistrarse"
             android:layout_width="match_parent"
