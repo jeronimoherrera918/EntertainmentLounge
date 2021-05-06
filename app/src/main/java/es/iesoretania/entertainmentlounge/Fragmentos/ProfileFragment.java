@@ -20,7 +20,7 @@ import es.iesoretania.entertainmentlounge.Clases.UserData;
 import es.iesoretania.entertainmentlounge.R;
 
 public class ProfileFragment extends Fragment {
-    Button btnLogOut, btnVerSeries, btnAddSerie;
+    Button btnLogOut, btnAddSerie;
     FirebaseAuth fAuth;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -39,7 +39,6 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         btnLogOut = view.findViewById(R.id.btnLogOut);
-        btnVerSeries = view.findViewById(R.id.btnVerSeries);
         btnAddSerie = view.findViewById(R.id.btnAddSerie);
         fAuth = FirebaseAuth.getInstance();
         btnLogOut.setOnClickListener(new View.OnClickListener() {
@@ -50,12 +49,7 @@ public class ProfileFragment extends Fragment {
                 getActivity().onBackPressed();
             }
         });
-        btnVerSeries.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Navigation.findNavController(v).navigate(R.id.action_nav_profile_to_verSeriesFragment);
-            }
-        });
+      
         btnAddSerie.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

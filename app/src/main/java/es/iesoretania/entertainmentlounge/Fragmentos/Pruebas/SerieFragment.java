@@ -1,5 +1,7 @@
 package es.iesoretania.entertainmentlounge.Fragmentos.Pruebas;
 
+import android.graphics.Color;
+
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,6 +13,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+
+import android.widget.EditText;
+
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,6 +30,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 import es.iesoretania.entertainmentlounge.Adapters.TemporadasSerieAdapter;
 import es.iesoretania.entertainmentlounge.Clases.SaveSerieData.SaveSerie;
 import es.iesoretania.entertainmentlounge.Clases.SaveSerieData.SaveTemporadaSerie;
+import es.iesoretania.entertainmentlounge.Clases.SerieData.Comentario;
+
 import es.iesoretania.entertainmentlounge.Clases.SerieData.Serie;
 import es.iesoretania.entertainmentlounge.Clases.SerieData.Temporada;
 import es.iesoretania.entertainmentlounge.Clases.UserData;
@@ -32,7 +39,8 @@ import es.iesoretania.entertainmentlounge.R;
 
 public class SerieFragment extends Fragment {
     TextView tvSerieNombre, tvSerieGenero, tvSerieDescripcion, tvSerieNumTemporadas;
-    Button btnSerieSave;
+    Button btnSerieSave, btnComentar;
+    EditText etComentario;
     ListView listaTemporadas;
     String key;
     FirebaseFirestore db;
@@ -58,23 +66,16 @@ public class SerieFragment extends Fragment {
         tvSerieDescripcion = view.findViewById(R.id.tvSerieDescripcion);
         tvSerieNumTemporadas = view.findViewById(R.id.tvSerieNumTemporadas);
         btnSerieSave = view.findViewById(R.id.btnSerieSave);
+
+        btnComentar = view.findViewById(R.id.btnComentar);
         listaTemporadas = view.findViewById(R.id.listaTemporadas);
+        etComentario = view.findViewById(R.id.etComentario);
+
         if (getArguments() != null) {
             SerieFragmentArgs args = SerieFragmentArgs.fromBundle(getArguments());
             key = args.getKey();
             mostrarSerie();
         }
-    }
-
-    private void adapterListaTemporadas() {
-        TemporadasSerieAdapter tempAdapter = new TemporadasSerieAdapter(listaTemporadas.getContext(), R.layout.adapter_temporada, serie.getTemporadas());
-        listaTemporadas.setAdapter(tempAdapter);
-        listaTemporadas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(view.getContext(), "Posición: " + position, Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
     private void mostrarSerie() {
@@ -88,10 +89,22 @@ public class SerieFragment extends Fragment {
                         tvSerieGenero.setText(serie.getGenero());
                         tvSerieDescripcion.setText(serie.getDescripcion());
                         tvSerieNumTemporadas.setText("Número de temporadas: " + serie.getTemporadas().size() + "\nNúmero de capítulos temporada 1: " + serie.getTemporadas().get(0).getCapitulos().size());
-                        comprobacionSerie();
                         adapterListaTemporadas();
+                        comprobacionSerie();
+
                     }
                 }
+            }
+        });
+    }
+
+    private void adapterListaTemporadas() {
+        TemporadasSerieAdapter tempAdapter = new TemporadasSerieAdapter(listaTemporadas.getContext(), R.layout.adapter_temporada, serie.getTemporadas());
+        listaTemporadas.setAdapter(tempAdapter);
+        listaTemporadas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(view.getContext(), "Posición: " + position, Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -103,9 +116,20 @@ public class SerieFragment extends Fragment {
                 if (task.isSuccessful()) {
                     if (task.getResult().size() > 0) {
                         btnSerieSave.setEnabled(false);
-                        for (QueryDocumentSnapshot dn : task.getResult()) {
+                        btnSerieSave.setBackgroundColor(Color.RED);
+                        if (task.getResult().getDocuments().get(0) != null) {
                             Toast.makeText(getContext(), "Tienes la serie guardada", Toast.LENGTH_SHORT).show();
-                            break;
+                            btnComentar.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    // Entrar en profundidad con esto
+                                    Comentario comentario = new Comentario();
+                                    comentario.setComentario(etComentario.getText().toString());
+                                    comentario.setId_usuario(UserData.ID_USER_DB);
+                                    comentario.setNum_likes(0);
+                                    db.collection("series").document(key).collection("comentarios").add(comentario);
+                                }
+                            });
                         }
                     } else {
                         btnSave_noGuardada();
@@ -115,7 +139,7 @@ public class SerieFragment extends Fragment {
             }
         });
     }
-    
+
     private void btnSave_noGuardada() {
         btnSerieSave.setEnabled(true);
         btnSerieSave.setOnClickListener(new View.OnClickListener() {

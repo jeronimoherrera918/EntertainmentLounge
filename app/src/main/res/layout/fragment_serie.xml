@@ -59,8 +59,26 @@
             <ListView
                 android:id="@+id/listaTemporadas"
                 android:layout_width="match_parent"
-                android:layout_height="162dp" />
+                android:layout_height="162dp"/>
 
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="8dp" />
+
+            <EditText
+                android:id="@+id/etComentario"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:gravity="start|top"
+                android:inputType="textMultiLine" />
+
+            <Button
+                android:id="@+id/btnComentar"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#16618D"
+                android:text="Comentar" />
         </LinearLayout>
     </ScrollView>
 

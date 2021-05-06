@@ -28,14 +28,6 @@
             android:text="Cerrar sesión" />
 
         <Button
-            android:id="@+id/btnVerSeries"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:backgroundTint="#16618D"
-            android:textColor="@color/white"
-            android:text="Ver series" />
-
-        <Button
             android:id="@+id/btnAddSerie"
             android:layout_width="match_parent"
             android:layout_height="50dp"

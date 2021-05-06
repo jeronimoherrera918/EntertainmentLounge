@@ -38,13 +38,6 @@
         android:label="Mi perfil"
         tools:layout="@layout/fragment_profile">
         <action
-            android:id="@+id/action_nav_profile_to_verSeriesFragment"
-            app:destination="@id/nav_verSeries"
-            app:enterAnim="@anim/enter_right_to_left"
-            app:exitAnim="@anim/exit_right_to_left"
-            app:popEnterAnim="@anim/enter_left_to_right"
-            app:popExitAnim="@anim/exit_left_to_right" />
-        <action
             android:id="@+id/action_nav_profile_to_addSerieFragment"
             app:destination="@id/addSerieFragment"
             app:enterAnim="@anim/enter_right_to_left"
@@ -79,4 +72,14 @@
         android:name="es.iesoretania.entertainmentlounge.Fragmentos.Pruebas.AddSerieFragment"
         android:label="fragment_add_serie"
         tools:layout="@layout/fragment_add_serie" />
+    <fragment
+        android:id="@+id/nav_misSeries"
+        android:name="es.iesoretania.entertainmentlounge.Fragmentos.Pruebas.MisSeriesFragment"
+        android:label="fragment_mis_series"
+        tools:layout="@layout/fragment_mis_series" />
+    <fragment
+        android:id="@+id/nav_recomendaciones"
+        android:name="es.iesoretania.entertainmentlounge.Fragmentos.Pruebas.RecomendacionesFragment"
+        android:label="fragment_recomendaciones"
+        tools:layout="@layout/fragment_recomendaciones" />
 </navigation>
