@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -97,6 +98,18 @@ public class SerieFragment extends Fragment {
         });
     }
 
+    private void adapterListaTemporadas() {
+        TemporadasSerieAdapter tempAdapter = new TemporadasSerieAdapter(listaTemporadas.getContext(), R.layout.adapter_temporada, serie.getTemporadas());
+        listaTemporadas.setAdapter(tempAdapter);
+        listaTemporadas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(view.getContext(), "Posición: " + position, Toast.LENGTH_SHORT).show();
+                Navigation.findNavController(view).navigate(R.id.action_nav_serie_to_nav_temporada);
+            }
+        });
+    }
+
     private void setupSerie() {
         adapterListaTemporadas();
         db.collection("usuarios").document(UserData.ID_USER_DB).collection("series_guardadas").whereEqualTo("id_serie", key).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -111,17 +124,6 @@ public class SerieFragment extends Fragment {
                         Toast.makeText(getContext(), "No tienes la serie guardada", Toast.LENGTH_SHORT).show();
                     }
                 }
-            }
-        });
-    }
-
-    private void adapterListaTemporadas() {
-        TemporadasSerieAdapter tempAdapter = new TemporadasSerieAdapter(listaTemporadas.getContext(), R.layout.adapter_temporada, serie.getTemporadas());
-        listaTemporadas.setAdapter(tempAdapter);
-        listaTemporadas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(view.getContext(), "Posición: " + position, Toast.LENGTH_SHORT).show();
             }
         });
     }

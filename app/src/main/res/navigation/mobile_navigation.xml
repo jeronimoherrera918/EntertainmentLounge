@@ -66,6 +66,13 @@
         <argument
             android:name="key"
             app:argType="string" />
+        <action
+            android:id="@+id/action_nav_serie_to_nav_temporada"
+            app:destination="@id/nav_temporada"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out" />
     </fragment>
     <fragment
         android:id="@+id/addSerieFragment"
@@ -90,6 +97,24 @@
         <action
             android:id="@+id/action_nav_cerrarSesion_to_nav_login"
             app:destination="@id/nav_login"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_capitulo"
+        android:name="es.iesoretania.entertainmentlounge.Fragmentos.Pruebas.CapituloFragment"
+        android:label="fragment_capitulo"
+        tools:layout="@layout/fragment_capitulo" />
+    <fragment
+        android:id="@+id/nav_temporada"
+        android:name="es.iesoretania.entertainmentlounge.Fragmentos.Pruebas.TemporadaFragment"
+        android:label="fragment_temporada"
+        tools:layout="@layout/fragment_temporada" >
+        <action
+            android:id="@+id/action_nav_temporada_to_nav_capitulo"
+            app:destination="@id/nav_capitulo"
             app:enterAnim="@anim/fade_in"
             app:exitAnim="@anim/fade_out"
             app:popEnterAnim="@anim/fade_in"
