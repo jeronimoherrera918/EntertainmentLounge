@@ -5,12 +5,17 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -27,6 +32,7 @@ import es.iesoretania.entertainmentlounge.R;
 
 public class VerSeriesFragment extends Fragment {
     RecyclerView listRecyclerSeries;
+    Spinner spFiltros;
     FirebaseFirestore db;
 
     @Override
@@ -43,10 +49,30 @@ public class VerSeriesFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        listRecyclerSeries = view.findViewById(R.id.listRecyclerSeries);
-
         db = FirebaseFirestore.getInstance();
-        db.collection("series").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        listRecyclerSeries = view.findViewById(R.id.listRecyclerSeries);
+        spFiltros = view.findViewById(R.id.spFiltros);
+        List<String> elementosSpinner = new ArrayList<>();
+        elementosSpinner.add("Nombre");
+        elementosSpinner.add("Genero");
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, elementosSpinner);
+        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spFiltros.setAdapter(arrayAdapter);
+        spFiltros.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                mostrarSeriesFiltro(parent.getItemAtPosition(position).toString().toLowerCase());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
+    public void mostrarSeriesFiltro(String filtro) {
+        db.collection("series").orderBy(filtro).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
@@ -62,7 +88,7 @@ public class VerSeriesFragment extends Fragment {
                     listRecyclerSeries.setLayoutManager(new LinearLayoutManager(listRecyclerSeries.getContext()));
                     listRecyclerSeries.setAdapter(recyclerSeries);
                 } else {
-                    //-- ERROR HERE --//
+                    Log.d("ERROR", task.getException().toString());
                 }
             }
         });

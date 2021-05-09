@@ -7,8 +7,14 @@
     tools:context=".Fragmentos.Pruebas.SobreNosotrosFragment">
 
     <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -26,7 +32,7 @@
                 android:text="ENTERTAINMENT LOUNGE"
                 android:textAlignment="center"
                 android:textColor="@color/white"
-                android:textSize="30sp"
+                android:textSize="24sp"
                 android:textStyle="bold" />
 
             <ImageView
@@ -36,6 +42,10 @@
                 android:layout_gravity="center"
                 android:src="@drawable/ic_sobrenosotros_1" />
 
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="8dp" />
+
             <TextView
                 android:id="@+id/textView6"
                 android:layout_width="match_parent"
@@ -43,15 +53,21 @@
                 android:text="¿Quiénes somos?"
                 android:textAlignment="center"
                 android:textColor="@color/white"
+                android:textSize="16sp"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/textView7"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Aqui pues explicar un poquito sobre mí y tal"
-                android:textAlignment="center"
+                android:justificationMode="inter_word"
+                android:text="@string/sobrenosotros_presentacion"
+                android:textAlignment="viewStart"
                 android:textColor="@color/white" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="8dp" />
 
             <ImageView
                 android:id="@+id/imageView5"
@@ -59,6 +75,33 @@
                 android:layout_height="250dp"
                 android:layout_gravity="center"
                 android:src="@drawable/ic_sobrenosotros_2" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="8dp" />
+
+            <TextView
+                android:id="@+id/textView11"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="¿Cual es nuestro objetivo?"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textView12"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:justificationMode="inter_word"
+                android:text="@string/sobrenosotros_objetivo"
+                android:textAlignment="viewStart"
+                android:textColor="@color/white" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="22dp" />
         </LinearLayout>
     </ScrollView>
 

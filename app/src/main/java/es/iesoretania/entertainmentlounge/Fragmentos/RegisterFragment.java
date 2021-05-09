@@ -89,6 +89,7 @@ public class RegisterFragment extends Fragment {
                                             if (task.isSuccessful()) {
                                                 // Recuperamos el usuario que acabamos de registrar
                                                 FirebaseUser newUser = fAuth.getCurrentUser();
+                                                /*
                                                 // Le mandamos un correo de verificación
                                                 newUser.sendEmailVerification().addOnSuccessListener(new OnSuccessListener<Void>() {
                                                     @Override
@@ -101,6 +102,7 @@ public class RegisterFragment extends Fragment {
                                                         Log.d("ERROR", "Verification Email not sent" + e.getMessage());
                                                     }
                                                 });
+                                                */
                                                 // Registramos los datos del usuario aunque no haya confirmado aún el correo electrónico
                                                 Usuario usuario = new Usuario();
                                                 usuario.setEmail(etEmailRegistro.getText().toString());

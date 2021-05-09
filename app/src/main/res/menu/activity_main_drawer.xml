@@ -20,6 +20,10 @@
                     android:id="@+id/nav_recomendaciones"
                     android:icon="@drawable/ic_lock"
                     android:title="@string/menu_recomendaciones" />
+                <item
+                    android:id="@+id/nav_chats"
+                    android:icon="@drawable/ic_chats"
+                    android:title="@string/menu_chats" />
             </group>
         </menu>
     </item>
@@ -32,7 +36,7 @@
                 <item
                     android:id="@+id/nav_sobrenosotros"
                     android:icon="@drawable/ic_user"
-                    android:title="Sobre nosotros" />
+                    android:title="@string/menu_sobrenosotros" />
                 <item
                     android:id="@+id/nav_cerrarSesion"
                     android:icon="@drawable/ic_logout"
