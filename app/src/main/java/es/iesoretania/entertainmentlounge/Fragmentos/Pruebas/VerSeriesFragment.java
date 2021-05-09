@@ -5,14 +5,12 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.GridView;
-import android.widget.ListView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -23,14 +21,12 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
-import es.iesoretania.entertainmentlounge.Adapters.GridSerieAdapter;
-import es.iesoretania.entertainmentlounge.Adapters.SerieAdapter;
+import es.iesoretania.entertainmentlounge.Adapters.RecyclerSeries;
 import es.iesoretania.entertainmentlounge.Clases.SerieData.Serie;
 import es.iesoretania.entertainmentlounge.R;
 
 public class VerSeriesFragment extends Fragment {
-    ListView lvListaSeries;
-    GridView gvListaSeries;
+    RecyclerView listRecyclerSeries;
     FirebaseFirestore db;
 
     @Override
@@ -47,8 +43,7 @@ public class VerSeriesFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        lvListaSeries = view.findViewById(R.id.lvListaSeries);
-        gvListaSeries = view.findViewById(R.id.gvListaSeries);
+        listRecyclerSeries = view.findViewById(R.id.listRecyclerSeries);
 
         db = FirebaseFirestore.getInstance();
         db.collection("series").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -62,22 +57,10 @@ public class VerSeriesFragment extends Fragment {
                         listaSeries.add(serie);
                         listaSeriesKeys.add(dn.getId());
                     }
-                    SerieAdapter serieAdapter = new SerieAdapter(lvListaSeries.getContext(), R.layout.adapter_series, listaSeries);
-                    lvListaSeries.setAdapter(serieAdapter);
-                    lvListaSeries.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            Navigation.findNavController(view).navigate(VerSeriesFragmentDirections.actionNavVerSeriesToSerieFragment(listaSeriesKeys.get(position)));
-                        }
-                    });
-                    GridSerieAdapter gridSerieAdapter = new GridSerieAdapter(gvListaSeries.getContext(), R.layout.adapter_grid_series, listaSeries);
-                    gvListaSeries.setAdapter(gridSerieAdapter);
-                    gvListaSeries.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            Navigation.findNavController(view).navigate(VerSeriesFragmentDirections.actionNavVerSeriesToSerieFragment(listaSeriesKeys.get(position)));
-                        }
-                    });
+                    RecyclerSeries recyclerSeries = new RecyclerSeries(listaSeries, listRecyclerSeries.getContext());
+                    listRecyclerSeries.setHasFixedSize(true);
+                    listRecyclerSeries.setLayoutManager(new LinearLayoutManager(listRecyclerSeries.getContext()));
+                    listRecyclerSeries.setAdapter(recyclerSeries);
                 } else {
                     //-- ERROR HERE --//
                 }
