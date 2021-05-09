@@ -1,12 +1,15 @@
 package es.iesoretania.entertainmentlounge.Clases;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Usuario {
     private String email;
     private String nickname;
     private String nombre_completo;
     private String fechaNacimiento;
     private String fotoPerfil;
-    // private List<String> listaAmigos = new ArrayList<>();
+    private List<String> listaAmigos;
 
     public Usuario() {
 
@@ -18,6 +21,7 @@ public class Usuario {
         this.nombre_completo = nombre_completo;
         this.fechaNacimiento = fechaNacimiento;
         this.fotoPerfil = fotoPerfil;
+        this.listaAmigos = new ArrayList<>();
     }
 
     public String getEmail() {
@@ -58,5 +62,13 @@ public class Usuario {
 
     public void setFotoPerfil(String fotoPerfil) {
         this.fotoPerfil = fotoPerfil;
+    }
+
+    public List<String> getListaAmigos() {
+        return listaAmigos;
+    }
+
+    public void setListaAmigos(List<String> listaAmigos) {
+        this.listaAmigos = listaAmigos;
     }
 }

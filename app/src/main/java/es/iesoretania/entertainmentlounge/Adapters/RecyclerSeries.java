@@ -45,17 +45,17 @@ public class RecyclerSeries extends RecyclerView.Adapter<RecyclerSeries.ViewHold
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvAdapterSerieNombre, tvAdapterSerieGenero;
+        TextView recyclerNombreSerie, recyclerGeneroSerie;
 
         ViewHolder(View v) {
             super(v);
-            tvAdapterSerieNombre = v.findViewById(R.id.recyclerNombreSerie);
-            tvAdapterSerieGenero = v.findViewById(R.id.recyclerGeneroSerie);
+            recyclerNombreSerie = v.findViewById(R.id.recyclerNombreSerie);
+            recyclerGeneroSerie = v.findViewById(R.id.recyclerGeneroSerie);
         }
 
         void bindData(final Serie serie) {
-            tvAdapterSerieNombre.setText(serie.getNombre());
-            tvAdapterSerieGenero.setText(serie.getGenero());
+            recyclerNombreSerie.setText(serie.getNombre());
+            recyclerGeneroSerie.setText(serie.getGenero());
         }
     }
 }

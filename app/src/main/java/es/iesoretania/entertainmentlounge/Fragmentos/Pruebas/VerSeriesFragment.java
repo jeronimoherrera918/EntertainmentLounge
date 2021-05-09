@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -34,6 +35,8 @@ public class VerSeriesFragment extends Fragment {
     RecyclerView listRecyclerSeries;
     Spinner spFiltros;
     FirebaseFirestore db;
+    List<Serie> listaSeries;
+    List<String> listaSeriesKeys;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -76,8 +79,8 @@ public class VerSeriesFragment extends Fragment {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
-                    List<Serie> listaSeries = new ArrayList<>();
-                    List<String> listaSeriesKeys = new ArrayList<>();
+                    listaSeries = new ArrayList<>();
+                    listaSeriesKeys = new ArrayList<>();
                     for (QueryDocumentSnapshot dn : task.getResult()) {
                         Serie serie = dn.toObject(Serie.class);
                         listaSeries.add(serie);

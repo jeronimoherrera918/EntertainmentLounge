@@ -17,12 +17,12 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:background="#BAF17300"
+            android:orientation="horizontal"
             android:padding="6dp">
 
             <ImageView
-                android:id="@+id/imgSerie"
+                android:id="@+id/imgUsuario"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_alignParentStart="true"
@@ -31,7 +31,7 @@
                 android:layout_gravity="center"
                 android:paddingLeft="12dp"
                 android:paddingRight="12dp"
-                app:srcCompat="@drawable/ic_lock" />
+                app:srcCompat="@drawable/ic_user" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -40,12 +40,12 @@
                 android:layout_marginStart="4dp"
                 android:layout_marginLeft="4dp"
                 android:layout_marginTop="2dp"
-                android:layout_toEndOf="@id/imgSerie"
-                android:layout_toRightOf="@id/imgSerie"
+                android:layout_toEndOf="@id/imgUsuario"
+                android:layout_toRightOf="@id/imgUsuario"
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/recyclerNombreSerie"
+                    android:id="@+id/recyclerNombreUsuario"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="2dp"
@@ -55,25 +55,14 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/recyclerGeneroSerie"
+                    android:id="@+id/recyclerCorreoUsuario"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="GENERO"
+                    android:layout_marginBottom="2dp"
+                    android:text="CORREO"
                     android:textColor="@color/white"
-                    android:textSize="12dp" />
+                    android:textSize="14dp" />
             </LinearLayout>
-
-            <TextView
-                android:id="@+id/recyclerDescripcionSerie"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginEnd="6dp"
-                android:layout_marginRight="6dp"
-                android:text=""
-                android:textSize="12dp"/>
         </RelativeLayout>
     </LinearLayout>
 

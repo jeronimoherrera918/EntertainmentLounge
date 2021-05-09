@@ -1,5 +1,7 @@
 package es.iesoretania.entertainmentlounge.Fragmentos;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -33,9 +35,31 @@ public class CerrarSesionFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        fAuth = FirebaseAuth.getInstance();
-        fAuth.signOut();
-        UserData.USER_EMAIL = null;
-        Navigation.findNavController(view).navigate(R.id.action_nav_cerrarSesion_to_nav_login);
+        showAlert(view);
+
+    }
+
+    private void showAlert(View v) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setMessage("¿Seguro que quieres cerrar sesión?");
+        builder.setTitle("Cerrar sesión");
+        builder.setCancelable(false);
+        builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                fAuth = FirebaseAuth.getInstance();
+                fAuth.signOut();
+                UserData.USER_EMAIL = null;
+                Navigation.findNavController(v).navigate(R.id.action_nav_cerrarSesion_to_nav_login);
+            }
+        });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                getActivity().onBackPressed();
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 }
