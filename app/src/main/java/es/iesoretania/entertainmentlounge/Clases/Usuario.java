@@ -3,7 +3,7 @@ package es.iesoretania.entertainmentlounge.Clases;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Usuario {
+public class Usuario{
     private String email;
     private String nickname;
     private String nombre_completo;

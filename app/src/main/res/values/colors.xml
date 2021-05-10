@@ -8,6 +8,8 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
+    <!-- COLORES MÍOS -->
     <color name="azul_app">#16618D</color>
+    <color name="naranja_app">#F17300</color>
     <color name="grey">#C0C0C0</color>
 </resources>

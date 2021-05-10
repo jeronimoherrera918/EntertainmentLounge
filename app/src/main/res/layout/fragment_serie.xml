@@ -24,19 +24,22 @@
                 android:id="@+id/tvSerieNombre"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TextView" />
+                android:text=""
+                android:textColor="@color/black" />
 
             <TextView
                 android:id="@+id/tvSerieGenero"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TextView" />
+                android:text=""
+                android:textColor="@color/black" />
 
             <TextView
                 android:id="@+id/tvSerieDescripcion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TextView" />
+                android:text=""
+                android:textColor="@color/black" />
 
             <Space
                 android:layout_width="match_parent"
@@ -64,6 +67,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Pon un comentario en la serie"
+                android:textColor="@color/black"
                 android:textStyle="bold" />
 
             <Space
@@ -76,7 +80,9 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:gravity="start|top"
-                android:inputType="textMultiLine" />
+                android:hint="Escribe aquí el comentario..."
+                android:inputType="textMultiLine"
+                android:textColorHint="@color/grey" />
 
             <Button
                 android:id="@+id/btnComentar"
