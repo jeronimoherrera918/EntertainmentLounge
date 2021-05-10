@@ -24,6 +24,7 @@
             android:layout_height="wrap_content"
             android:text="Formulario de registro"
             android:textAlignment="center"
+            android:textColor="@color/black"
             android:textStyle="bold" />
 
         <Space
@@ -35,13 +36,16 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:background="@drawable/custom_input"
+            android:backgroundTint="@color/azul_app"
             android:drawableStart="@drawable/custom_user_icon"
             android:drawablePadding="12dp"
             android:ems="10"
             android:hint="Nombre de usuario..."
             android:inputType="textPersonName"
             android:paddingStart="12dp"
-            android:paddingEnd="12dp" />
+            android:paddingEnd="12dp"
+            android:textColor="@color/white"
+            android:textColorHint="@color/grey" />
 
         <Space
             android:layout_width="match_parent"
@@ -52,13 +56,16 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:background="@drawable/custom_input"
+            android:backgroundTint="@color/azul_app"
             android:drawableStart="@drawable/custom_email_icon"
             android:drawablePadding="12dp"
             android:ems="10"
             android:hint="Email..."
             android:inputType="textEmailAddress"
             android:paddingStart="12dp"
-            android:paddingEnd="12dp" />
+            android:paddingEnd="12dp"
+            android:textColor="@color/white"
+            android:textColorHint="@color/grey" />
 
         <Space
             android:layout_width="match_parent"
@@ -69,13 +76,16 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:background="@drawable/custom_input"
+            android:backgroundTint="@color/azul_app"
             android:drawableStart="@drawable/custom_lock_icon"
             android:drawablePadding="12dp"
             android:ems="10"
             android:hint="Contraseña..."
             android:inputType="textPassword"
             android:paddingStart="12dp"
-            android:paddingEnd="12dp" />
+            android:paddingEnd="12dp"
+            android:textColor="@color/white"
+            android:textColorHint="@color/grey" />
 
         <Space
             android:layout_width="match_parent"
@@ -86,13 +96,16 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:background="@drawable/custom_input"
+            android:backgroundTint="@color/azul_app"
             android:drawableStart="@drawable/custom_fullname_icon"
             android:drawablePadding="12dp"
             android:ems="10"
             android:hint="Nombre completo..."
             android:inputType="textPersonName"
             android:paddingStart="12dp"
-            android:paddingEnd="12dp" />
+            android:paddingEnd="12dp"
+            android:textColor="@color/white"
+            android:textColorHint="@color/grey" />
 
         <Space
             android:layout_width="match_parent"
@@ -103,13 +116,16 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:background="@drawable/custom_input"
+            android:backgroundTint="@color/azul_app"
             android:drawableStart="@drawable/custom_date_icon"
             android:drawablePadding="12dp"
             android:ems="10"
             android:hint="DD/MM/YYYY"
             android:inputType="date"
             android:paddingStart="12dp"
-            android:paddingEnd="12dp" />
+            android:paddingEnd="12dp"
+            android:textColor="@color/white"
+            android:textColorHint="@color/grey" />
 
         <Space
             android:layout_width="match_parent"

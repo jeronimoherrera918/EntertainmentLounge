@@ -44,6 +44,12 @@ public class CerrarSesionFragment extends Fragment {
         builder.setMessage("¿Seguro que quieres cerrar sesión?");
         builder.setTitle("Cerrar sesión");
         builder.setCancelable(false);
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                getActivity().onBackPressed();
+            }
+        });
         builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -51,12 +57,6 @@ public class CerrarSesionFragment extends Fragment {
                 fAuth.signOut();
                 UserData.USER_EMAIL = null;
                 Navigation.findNavController(v).navigate(R.id.action_nav_cerrarSesion_to_nav_login);
-            }
-        });
-        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                getActivity().onBackPressed();
             }
         });
         AlertDialog alertDialog = builder.create();

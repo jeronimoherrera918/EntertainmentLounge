@@ -58,7 +58,7 @@ public class VerSeriesFragment extends Fragment {
         List<String> elementosSpinner = new ArrayList<>();
         elementosSpinner.add("Nombre");
         elementosSpinner.add("Genero");
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, elementosSpinner);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getContext(), R.layout.spinner_item, elementosSpinner);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spFiltros.setAdapter(arrayAdapter);
         spFiltros.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -87,6 +87,13 @@ public class VerSeriesFragment extends Fragment {
                         listaSeriesKeys.add(dn.getId());
                     }
                     RecyclerSeries recyclerSeries = new RecyclerSeries(listaSeries, listRecyclerSeries.getContext());
+                    recyclerSeries.setOnItemClickListener(new RecyclerSeries.ClickListener() {
+                        @Override
+                        public void onItemClick(int position, View v) {
+                            Toast.makeText(getContext(), "Serie pulsada: " + listaSeries.get(position).getNombre(), Toast.LENGTH_SHORT).show();
+
+                        }
+                    });
                     listRecyclerSeries.setHasFixedSize(true);
                     listRecyclerSeries.setLayoutManager(new LinearLayoutManager(listRecyclerSeries.getContext()));
                     listRecyclerSeries.setAdapter(recyclerSeries);

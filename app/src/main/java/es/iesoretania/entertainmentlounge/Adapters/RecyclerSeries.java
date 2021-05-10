@@ -17,7 +17,7 @@ public class RecyclerSeries extends RecyclerView.Adapter<RecyclerSeries.ViewHold
     private List<Serie> listaSeries;
     private LayoutInflater layoutInflater;
     private Context context;
-
+    ClickListener clickListener;
 
     public RecyclerSeries(List<Serie> listaSeries, Context context) {
         this.layoutInflater = LayoutInflater.from(context);
@@ -33,7 +33,6 @@ public class RecyclerSeries extends RecyclerView.Adapter<RecyclerSeries.ViewHold
     @Override
     public RecyclerSeries.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = layoutInflater.inflate(R.layout.adapter_series, null);
-
         return new RecyclerSeries.ViewHolder(view);
     }
 
@@ -46,18 +45,36 @@ public class RecyclerSeries extends RecyclerView.Adapter<RecyclerSeries.ViewHold
         this.listaSeries = listaSeries;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView recyclerNombreSerie, recyclerGeneroSerie;
 
-        ViewHolder(View v) {
+        public ViewHolder(View v) {
             super(v);
             recyclerNombreSerie = v.findViewById(R.id.recyclerNombreSerie);
             recyclerGeneroSerie = v.findViewById(R.id.recyclerGeneroSerie);
+            if (clickListener != null) {
+                v.setOnClickListener(this);
+            }
         }
 
-        void bindData(final Serie serie) {
+        @Override
+        public void onClick(View v) {
+            if (clickListener != null) {
+                clickListener.onItemClick(getAdapterPosition(), v);
+            }
+        }
+
+        public void bindData(final Serie serie) {
             recyclerNombreSerie.setText(serie.getNombre());
             recyclerGeneroSerie.setText(serie.getGenero());
         }
+    }
+
+    public interface ClickListener {
+        void onItemClick(int position, View v);
+    }
+
+    public void setOnItemClickListener(ClickListener clickListener) {
+        this.clickListener = clickListener;
     }
 }

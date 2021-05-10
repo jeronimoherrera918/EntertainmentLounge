@@ -14,6 +14,7 @@
         android:layout_marginTop="16dp"
         android:text="Lista de series"
         android:textStyle="bold"
+        android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

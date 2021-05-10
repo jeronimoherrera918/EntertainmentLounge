@@ -35,7 +35,7 @@
     <fragment
         android:id="@+id/nav_profile"
         android:name="es.iesoretania.entertainmentlounge.Fragmentos.ProfileFragment"
-        android:label="Mi perfil"
+        android:label="@string/menu_profile"
         tools:layout="@layout/fragment_profile">
         <action
             android:id="@+id/action_nav_profile_to_addSerieFragment"
@@ -48,7 +48,7 @@
     <fragment
         android:id="@+id/nav_verSeries"
         android:name="es.iesoretania.entertainmentlounge.Fragmentos.Pruebas.VerSeriesFragment"
-        android:label="Lista de series"
+        android:label="@string/menu_verSeries"
         tools:layout="@layout/fragment_ver_series">
         <action
             android:id="@+id/action_nav_verSeries_to_serieFragment"
@@ -87,12 +87,12 @@
     <fragment
         android:id="@+id/nav_recomendaciones"
         android:name="es.iesoretania.entertainmentlounge.Fragmentos.Pruebas.RecomendacionesFragment"
-        android:label="fragment_recomendaciones"
+        android:label="@string/menu_recomendaciones"
         tools:layout="@layout/fragment_recomendaciones" />
     <fragment
         android:id="@+id/nav_cerrarSesion"
         android:name="es.iesoretania.entertainmentlounge.Fragmentos.CerrarSesionFragment"
-        android:label="fragment_cerrar_sesion"
+        android:label="Cerrar sesión"
         tools:layout="@layout/fragment_cerrar_sesion" >
         <action
             android:id="@+id/action_nav_cerrarSesion_to_nav_login"
@@ -123,11 +123,11 @@
     <fragment
         android:id="@+id/nav_sobrenosotros"
         android:name="es.iesoretania.entertainmentlounge.Fragmentos.Pruebas.SobreNosotrosFragment"
-        android:label="Sobre nosotros"
+        android:label="@string/menu_sobrenosotros"
         tools:layout="@layout/fragment_sobre_nosotros" />
     <fragment
         android:id="@+id/nav_chats"
         android:name="es.iesoretania.entertainmentlounge.Fragmentos.Pruebas.ChatsFragment"
-        android:label="fragment_chats"
+        android:label="@string/menu_chats"
         tools:layout="@layout/fragment_chats" />
 </navigation>

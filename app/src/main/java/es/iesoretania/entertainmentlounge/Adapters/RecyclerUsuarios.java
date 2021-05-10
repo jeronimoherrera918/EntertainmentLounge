@@ -17,6 +17,7 @@ public class RecyclerUsuarios extends RecyclerView.Adapter<RecyclerUsuarios.View
     private List<Usuario> listaUsuarios;
     private LayoutInflater layoutInflater;
     private Context context;
+    ClickListener clickListener;
 
     public RecyclerUsuarios(List<Usuario> listaUsuarios, Context context) {
         this.layoutInflater = LayoutInflater.from(context);
@@ -44,18 +45,36 @@ public class RecyclerUsuarios extends RecyclerView.Adapter<RecyclerUsuarios.View
         this.listaUsuarios = listaUsuarios;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView recyclerNombreUsuario, recyclerCorreoUsuario;
 
-        ViewHolder(View v) {
+        public ViewHolder(View v) {
             super(v);
             recyclerNombreUsuario = v.findViewById(R.id.recyclerNombreUsuario);
             recyclerCorreoUsuario = v.findViewById(R.id.recyclerCorreoUsuario);
+            if (clickListener != null) {
+                v.setOnClickListener(this);
+            }
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (clickListener != null) {
+                clickListener.onItemClick(getAdapterPosition(), v);
+            }
         }
 
         void bindData(final Usuario usuario) {
             recyclerNombreUsuario.setText(usuario.getNickname());
             recyclerCorreoUsuario.setText(usuario.getEmail());
         }
+    }
+
+    public interface ClickListener {
+        void onItemClick(int position, View v);
+    }
+
+    public void setOnItemClickListener(RecyclerUsuarios.ClickListener clickListener) {
+        this.clickListener = clickListener;
     }
 }

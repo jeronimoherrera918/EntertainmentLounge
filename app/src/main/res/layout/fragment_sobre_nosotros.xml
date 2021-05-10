@@ -31,7 +31,7 @@
                 android:layout_height="wrap_content"
                 android:text="ENTERTAINMENT LOUNGE"
                 android:textAlignment="center"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:textSize="24sp"
                 android:textStyle="bold" />
 
@@ -52,7 +52,7 @@
                 android:layout_height="wrap_content"
                 android:text="¿Quiénes somos?"
                 android:textAlignment="center"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
@@ -63,7 +63,7 @@
                 android:justificationMode="inter_word"
                 android:text="@string/sobrenosotros_presentacion"
                 android:textAlignment="viewStart"
-                android:textColor="@color/white" />
+                android:textColor="@color/black" />
 
             <Space
                 android:layout_width="match_parent"
@@ -86,7 +86,7 @@
                 android:layout_height="wrap_content"
                 android:text="¿Cual es nuestro objetivo?"
                 android:textAlignment="center"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
@@ -97,7 +97,7 @@
                 android:justificationMode="inter_word"
                 android:text="@string/sobrenosotros_objetivo"
                 android:textAlignment="viewStart"
-                android:textColor="@color/white" />
+                android:textColor="@color/black" />
 
             <Space
                 android:layout_width="match_parent"
