@@ -34,14 +34,14 @@
             android:id="@+id/etNicknameRegistro"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp"
-            android:ems="10"
+            android:background="@drawable/custom_input"
             android:drawableStart="@drawable/custom_user_icon"
             android:drawablePadding="12dp"
+            android:ems="10"
             android:hint="Nombre de usuario..."
-            android:background="@drawable/custom_input"
-            android:inputType="textPersonName" />
+            android:inputType="textPersonName"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp" />
 
         <Space
             android:layout_width="match_parent"
@@ -51,14 +51,14 @@
             android:id="@+id/etEmailRegistro"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp"
-            android:ems="10"
+            android:background="@drawable/custom_input"
             android:drawableStart="@drawable/custom_email_icon"
             android:drawablePadding="12dp"
+            android:ems="10"
             android:hint="Email..."
-            android:background="@drawable/custom_input"
-            android:inputType="textEmailAddress" />
+            android:inputType="textEmailAddress"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp" />
 
         <Space
             android:layout_width="match_parent"
@@ -68,14 +68,14 @@
             android:id="@+id/etPasswordRegistro"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp"
-            android:ems="10"
+            android:background="@drawable/custom_input"
             android:drawableStart="@drawable/custom_lock_icon"
             android:drawablePadding="12dp"
+            android:ems="10"
             android:hint="Contraseña..."
-            android:background="@drawable/custom_input"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp" />
 
         <Space
             android:layout_width="match_parent"
@@ -85,14 +85,14 @@
             android:id="@+id/etNombreCompletoRegistro"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp"
-            android:ems="10"
+            android:background="@drawable/custom_input"
             android:drawableStart="@drawable/custom_fullname_icon"
             android:drawablePadding="12dp"
+            android:ems="10"
             android:hint="Nombre completo..."
-            android:background="@drawable/custom_input"
-            android:inputType="textPersonName" />
+            android:inputType="textPersonName"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp" />
 
         <Space
             android:layout_width="match_parent"
@@ -102,14 +102,14 @@
             android:id="@+id/etFechaRegistro"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp"
-            android:ems="10"
+            android:background="@drawable/custom_input"
             android:drawableStart="@drawable/custom_date_icon"
             android:drawablePadding="12dp"
+            android:ems="10"
             android:hint="DD/MM/YYYY"
-            android:background="@drawable/custom_input"
-            android:inputType="date" />
+            android:inputType="date"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp" />
 
         <Space
             android:layout_width="match_parent"
@@ -121,14 +121,17 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:backgroundTint="#16618D"
-            android:textColor="@color/white"
-            android:text="Registrarse" />
+            android:text="Registrarse"
+            android:textColor="@color/white" />
 
         <ProgressBar
             android:id="@+id/loadingRegister"
             style="?android:attr/progressBarStyle"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminateTint="#16618D"
+            android:indeterminateTintMode="src_atop"
             android:visibility="invisible" />
     </LinearLayout>
 

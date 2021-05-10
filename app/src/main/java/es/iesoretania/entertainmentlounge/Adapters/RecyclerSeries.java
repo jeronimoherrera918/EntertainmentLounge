@@ -18,6 +18,7 @@ public class RecyclerSeries extends RecyclerView.Adapter<RecyclerSeries.ViewHold
     private LayoutInflater layoutInflater;
     private Context context;
 
+
     public RecyclerSeries(List<Serie> listaSeries, Context context) {
         this.layoutInflater = LayoutInflater.from(context);
         this.context = context;
@@ -32,6 +33,7 @@ public class RecyclerSeries extends RecyclerView.Adapter<RecyclerSeries.ViewHold
     @Override
     public RecyclerSeries.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = layoutInflater.inflate(R.layout.adapter_series, null);
+
         return new RecyclerSeries.ViewHolder(view);
     }
 
