@@ -1,9 +1,12 @@
 package es.iesoretania.entertainmentlounge.Clases.SerieData;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class Serie {
+public class Serie implements Parcelable {
     private String id_serie;
     private String nombre;
     private String descripcion;
@@ -24,6 +27,31 @@ public class Serie {
         this.plataformas = plataformas;
         this.temporadas = temporadas;
     }
+
+    protected Serie(Parcel in) {
+        id_serie = in.readString();
+        nombre = in.readString();
+        descripcion = in.readString();
+        genero = in.readString();
+        if (in.readByte() == 0) {
+            puntuacion = null;
+        } else {
+            puntuacion = in.readDouble();
+        }
+        plataformas = in.createStringArrayList();
+    }
+
+    public static final Creator<Serie> CREATOR = new Creator<Serie>() {
+        @Override
+        public Serie createFromParcel(Parcel in) {
+            return new Serie(in);
+        }
+
+        @Override
+        public Serie[] newArray(int size) {
+            return new Serie[size];
+        }
+    };
 
     public String getId_serie() {
         return id_serie;
@@ -79,5 +107,25 @@ public class Serie {
 
     public void setTemporadas(List<Temporada> temporadas) {
         this.temporadas = temporadas;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id_serie);
+        dest.writeString(nombre);
+        dest.writeString(descripcion);
+        dest.writeString(genero);
+        if (puntuacion == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeDouble(puntuacion);
+        }
+        dest.writeStringList(plataformas);
     }
 }

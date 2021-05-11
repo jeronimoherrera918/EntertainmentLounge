@@ -105,6 +105,7 @@ public class SerieFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(view.getContext(), "Posición: " + position, Toast.LENGTH_SHORT).show();
+                Toast.makeText(view.getContext(), "Posición: " + position, Toast.LENGTH_SHORT).show();
                 Navigation.findNavController(view).navigate(R.id.action_nav_serie_to_nav_temporada);
             }
         });
