@@ -31,8 +31,10 @@ public class AddSerieFragment extends Fragment {
     Button btnAddSerieAgregar, btnAddSerieAgregarTemporada, btnAddSerieAgregarCapitulo;
     EditText etAddSerieNombre, etAddSerieGenero, etAddSerieDescripcion, etAddSerieNombreCapitulo;
     Serie serie;
+    // ----- //
     DocumentReference newRef;
     String newKey;
+    // ----- //
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

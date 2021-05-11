@@ -3,7 +3,7 @@ package es.iesoretania.entertainmentlounge.Clases.SerieData;
 import com.google.firebase.Timestamp;
 
 public class Mensaje {
-    private int idMensaje;
+    private String idMensaje;
     private String idEmisor;
     private String idReceptor;
     private String mensaje;
@@ -12,7 +12,7 @@ public class Mensaje {
     public Mensaje() {
     }
 
-    public Mensaje(int idMensaje, String idEmisor, String idReceptor, String mensaje, Timestamp fecha) {
+    public Mensaje(String idMensaje, String idEmisor, String idReceptor, String mensaje, Timestamp fecha) {
         this.idMensaje = idMensaje;
         this.idEmisor = idEmisor;
         this.idReceptor = idReceptor;
@@ -20,11 +20,11 @@ public class Mensaje {
         this.fecha = fecha;
     }
 
-    public int getIdMensaje() {
+    public String getIdMensaje() {
         return idMensaje;
     }
 
-    public void setIdMensaje(int idMensaje) {
+    public void setIdMensaje(String idMensaje) {
         this.idMensaje = idMensaje;
     }
 

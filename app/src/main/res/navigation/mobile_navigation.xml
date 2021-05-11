@@ -77,12 +77,12 @@
     <fragment
         android:id="@+id/addSerieFragment"
         android:name="es.iesoretania.entertainmentlounge.Fragmentos.Pruebas.AddSerieFragment"
-        android:label="fragment_add_serie"
+        android:label="Añadir serie"
         tools:layout="@layout/fragment_add_serie" />
     <fragment
         android:id="@+id/nav_misSeries"
         android:name="es.iesoretania.entertainmentlounge.Fragmentos.Pruebas.MisSeriesFragment"
-        android:label="fragment_mis_series"
+        android:label="Mis series"
         tools:layout="@layout/fragment_mis_series" />
     <fragment
         android:id="@+id/nav_recomendaciones"
@@ -93,7 +93,7 @@
         android:id="@+id/nav_cerrarSesion"
         android:name="es.iesoretania.entertainmentlounge.Fragmentos.CerrarSesionFragment"
         android:label="Cerrar sesión"
-        tools:layout="@layout/fragment_cerrar_sesion" >
+        tools:layout="@layout/fragment_cerrar_sesion">
         <action
             android:id="@+id/action_nav_cerrarSesion_to_nav_login"
             app:destination="@id/nav_login"
@@ -105,13 +105,13 @@
     <fragment
         android:id="@+id/nav_capitulo"
         android:name="es.iesoretania.entertainmentlounge.Fragmentos.Pruebas.CapituloFragment"
-        android:label="fragment_capitulo"
+        android:label="Capitulo X de X"
         tools:layout="@layout/fragment_capitulo" />
     <fragment
         android:id="@+id/nav_temporada"
         android:name="es.iesoretania.entertainmentlounge.Fragmentos.Pruebas.TemporadaFragment"
-        android:label="fragment_temporada"
-        tools:layout="@layout/fragment_temporada" >
+        android:label="Temporada de {nombreSerie}"
+        tools:layout="@layout/fragment_temporada">
         <action
             android:id="@+id/action_nav_temporada_to_nav_capitulo"
             app:destination="@id/nav_capitulo"
@@ -122,6 +122,9 @@
         <argument
             android:name="serie"
             app:argType="es.iesoretania.entertainmentlounge.Clases.SerieData.Serie" />
+        <argument
+            android:name="nombreSerie"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/nav_sobrenosotros"
@@ -132,5 +135,18 @@
         android:id="@+id/nav_chats"
         android:name="es.iesoretania.entertainmentlounge.Fragmentos.Pruebas.ChatsFragment"
         android:label="@string/menu_chats"
-        tools:layout="@layout/fragment_chats" />
+        tools:layout="@layout/fragment_chats">
+        <action
+            android:id="@+id/action_nav_chats_to_nav_chat"
+            app:destination="@id/nav_chat" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_chat"
+        android:name="es.iesoretania.entertainmentlounge.Fragmentos.Pruebas.ChatFragment"
+        android:label="Chat con X"
+        tools:layout="@layout/fragment_chat">
+        <argument
+            android:name="keyUser"
+            app:argType="string" />
+    </fragment>
 </navigation>

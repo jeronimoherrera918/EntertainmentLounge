@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -14,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -37,6 +39,7 @@ public class ChatsFragment extends Fragment {
     Button btnEnviarMensaje, btnComprobarMensajes;
     RecyclerView listRecyclerUsuarios;
     List<Usuario> listaUsuarios;
+    List<String> listaUsuariosKeys;
     FirebaseFirestore db;
 
     @Override
@@ -64,12 +67,21 @@ public class ChatsFragment extends Fragment {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     listaUsuarios = new ArrayList<>();
+                    listaUsuariosKeys = new ArrayList<>();
                     for (QueryDocumentSnapshot dn : task.getResult()) {
                         Usuario usuario = dn.toObject(Usuario.class);
                         Log.d("USUARIO", usuario.getNickname());
                         listaUsuarios.add(usuario);
+                        listaUsuariosKeys.add(dn.getId());
                     }
                     RecyclerUsuarios recyclerUsuarios = new RecyclerUsuarios(listaUsuarios, listRecyclerUsuarios.getContext());
+                    recyclerUsuarios.setOnItemClickListener(new RecyclerUsuarios.ClickListener() {
+                        @Override
+                        public void onItemClick(int position, View v) {
+                            Toast.makeText(getContext(), listaUsuarios.get(position).getNickname(), Toast.LENGTH_SHORT).show();
+                            Navigation.findNavController(v).navigate(ChatsFragmentDirections.actionNavChatsToNavChat(listaUsuariosKeys.get(position)));
+                        }
+                    });
                     listRecyclerUsuarios.setHasFixedSize(true);
                     listRecyclerUsuarios.setLayoutManager(new LinearLayoutManager(listRecyclerUsuarios.getContext()));
                     listRecyclerUsuarios.setAdapter(recyclerUsuarios);
@@ -77,6 +89,7 @@ public class ChatsFragment extends Fragment {
             }
         });
 
+        /*
         btnEnviarMensaje.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -89,6 +102,7 @@ public class ChatsFragment extends Fragment {
                 db.collection("mensajes").add(mensaje);
             }
         });
+        */
 
         btnComprobarMensajes.setOnClickListener(new View.OnClickListener() {
             @Override
