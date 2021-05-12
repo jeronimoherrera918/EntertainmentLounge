@@ -110,7 +110,7 @@
     <fragment
         android:id="@+id/nav_temporada"
         android:name="es.iesoretania.entertainmentlounge.Fragmentos.Pruebas.TemporadaFragment"
-        android:label="Temporada de {nombreSerie}"
+        android:label="Temporada {nTemporada} de {nombreSerie}"
         tools:layout="@layout/fragment_temporada">
         <action
             android:id="@+id/action_nav_temporada_to_nav_capitulo"
@@ -125,6 +125,9 @@
         <argument
             android:name="nombreSerie"
             app:argType="string" />
+        <argument
+            android:name="nTemporada"
+            app:argType="integer" />
     </fragment>
     <fragment
         android:id="@+id/nav_sobrenosotros"

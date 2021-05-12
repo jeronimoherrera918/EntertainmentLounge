@@ -89,21 +89,6 @@ public class ChatsFragment extends Fragment {
             }
         });
 
-        /*
-        btnEnviarMensaje.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Mensaje mensaje = new Mensaje();
-                mensaje.setIdMensaje(1);
-                mensaje.setIdEmisor(UserData.ID_USER_DB);
-                mensaje.setIdReceptor("oeTOgHipVne4oR9Rmmum");
-                mensaje.setMensaje(etMensajesChat.getText().toString());
-                mensaje.setFecha(Timestamp.now());
-                db.collection("mensajes").add(mensaje);
-            }
-        });
-        */
-
         btnComprobarMensajes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -105,8 +105,7 @@ public class SerieFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // Toast.makeText(view.getContext(), "Posición: " + position, Toast.LENGTH_SHORT).show();
-                // TODO: Poner argumentos BIEN
-                Navigation.findNavController(view).navigate(SerieFragmentDirections.actionNavSerieToNavTemporada(serie, serie.getNombre().toString()));
+                Navigation.findNavController(view).navigate(SerieFragmentDirections.actionNavSerieToNavTemporada(serie, serie.getNombre(), (position + 1)));
             }
         });
     }
