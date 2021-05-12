@@ -40,11 +40,11 @@ public class TemporadaFragment extends Fragment {
         if (getArguments() != null) {
             TemporadaFragmentArgs temporadaFragmentArgs = TemporadaFragmentArgs.fromBundle(getArguments());
             serie = temporadaFragmentArgs.getSerie();
-            RecyclerCapitulos recyclerCapitulos = new RecyclerCapitulos(serie.getTemporadas().get(0).getCapitulos(), listRecyclerCapitulos.getContext());
+            RecyclerCapitulos recyclerCapitulos = new RecyclerCapitulos(serie.getTemporadas().get(temporadaFragmentArgs.getNTemporada()).getCapitulos(), listRecyclerCapitulos.getContext(), serie.getId_serie(), temporadaFragmentArgs.getNTemporada());
             recyclerCapitulos.setOnItemClickListener(new RecyclerCapitulos.ClickListener() {
                 @Override
                 public void onItemClick(int position, View v) {
-
+                    // MOSTRAR INFO ADICIONAL DEL CAPÍTULO
                 }
             });
             listRecyclerCapitulos.setHasFixedSize(true);

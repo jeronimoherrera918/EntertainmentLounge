@@ -91,7 +91,6 @@ public class VerSeriesFragment extends Fragment {
                     recyclerSeries.setOnItemClickListener(new RecyclerSeries.ClickListener() {
                         @Override
                         public void onItemClick(int position, View v) {
-                            Toast.makeText(getContext(), "Serie pulsada: " + listaSeries.get(position).getNombre(), Toast.LENGTH_SHORT).show();
                             Navigation.findNavController(v).navigate(VerSeriesFragmentDirections.actionNavVerSeriesToSerieFragment(listaSeriesKeys.get(position)));
                         }
                     });

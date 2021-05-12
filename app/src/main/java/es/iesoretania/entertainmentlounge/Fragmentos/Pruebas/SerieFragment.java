@@ -104,8 +104,7 @@ public class SerieFragment extends Fragment {
         listaTemporadas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // Toast.makeText(view.getContext(), "Posición: " + position, Toast.LENGTH_SHORT).show();
-                Navigation.findNavController(view).navigate(SerieFragmentDirections.actionNavSerieToNavTemporada(serie, serie.getNombre(), (position + 1)));
+                Navigation.findNavController(view).navigate(SerieFragmentDirections.actionNavSerieToNavTemporada(serie, serie.getNombre(), position));
             }
         });
     }
@@ -118,10 +117,8 @@ public class SerieFragment extends Fragment {
                 if (task.isSuccessful()) {
                     if (task.getResult().size() > 0) {
                         estadoBotonGuardar(false);
-                        // Toast.makeText(getContext(), "Tienes la serie guardada", Toast.LENGTH_SHORT).show();
                     } else {
                         estadoBotonGuardar(true);
-                        // Toast.makeText(getContext(), "No tienes la serie guardada", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
