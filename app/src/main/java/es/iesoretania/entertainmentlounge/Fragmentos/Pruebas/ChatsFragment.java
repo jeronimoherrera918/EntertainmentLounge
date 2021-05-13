@@ -70,7 +70,6 @@ public class ChatsFragment extends Fragment {
                     listaUsuariosKeys = new ArrayList<>();
                     for (QueryDocumentSnapshot dn : task.getResult()) {
                         Usuario usuario = dn.toObject(Usuario.class);
-                        Log.d("USUARIO", usuario.getNickname());
                         listaUsuarios.add(usuario);
                         listaUsuariosKeys.add(dn.getId());
                     }
@@ -78,7 +77,6 @@ public class ChatsFragment extends Fragment {
                     recyclerUsuarios.setOnItemClickListener(new RecyclerUsuarios.ClickListener() {
                         @Override
                         public void onItemClick(int position, View v) {
-                            Toast.makeText(getContext(), listaUsuarios.get(position).getNickname(), Toast.LENGTH_SHORT).show();
                             Navigation.findNavController(v).navigate(ChatsFragmentDirections.actionNavChatsToNavChat(listaUsuariosKeys.get(position)));
                         }
                     });
@@ -89,7 +87,7 @@ public class ChatsFragment extends Fragment {
             }
         });
 
-        btnComprobarMensajes.setOnClickListener(new View.OnClickListener() {
+        /* btnComprobarMensajes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 db.collection("mensajes").whereEqualTo("idMensaje", 1).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -108,6 +106,6 @@ public class ChatsFragment extends Fragment {
                     }
                 });
             }
-        });
+        }); */
     }
 }

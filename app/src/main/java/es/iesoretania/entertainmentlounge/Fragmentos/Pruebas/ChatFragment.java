@@ -5,6 +5,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,8 +25,11 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.auth.User;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
+import es.iesoretania.entertainmentlounge.Adapters.RecyclerChat;
 import es.iesoretania.entertainmentlounge.Clases.SerieData.Chat;
 import es.iesoretania.entertainmentlounge.Clases.SerieData.Mensaje;
 import es.iesoretania.entertainmentlounge.Clases.UserData;
@@ -36,6 +41,7 @@ public class ChatFragment extends Fragment {
     EditText etMensajeUsuario;
     TextView tvEnviarMensajeA;
     Button btnEnviarMensajeUsuario;
+    RecyclerView listRecyclerMensajes;
     FirebaseFirestore db;
 
     @Override
@@ -56,6 +62,7 @@ public class ChatFragment extends Fragment {
         etMensajeUsuario = view.findViewById(R.id.etMensajeUsuario);
         btnEnviarMensajeUsuario = view.findViewById(R.id.btnEnviarMensajeUsuario);
         tvEnviarMensajeA = view.findViewById(R.id.tvEnviarMensajeA);
+        listRecyclerMensajes = view.findViewById(R.id.listRecyclerMensajes);
         if (getArguments() != null) {
             ChatFragmentArgs chatFragmentArgs = ChatFragmentArgs.fromBundle(getArguments());
             keyUser = chatFragmentArgs.getKeyUser();
@@ -67,10 +74,6 @@ public class ChatFragment extends Fragment {
                 tvEnviarMensajeA.setText("Enviar mensaje a " + usuario.getNickname());
             }
         });
-
-        // Tenemos que añadir el chat y todos sus mensajes en ambos usuarios, para que cada uno tenga su copia
-        // ¿Por qué en ambos? Primero: Porque cada uno tiene su propio punto de vista, entonces serán dos layouts "diferentes" aunque sean el mismo realmente
-        // Lo segundo: Puede ser que un usuario quiera borrar algún mensaje de su chat, pero cuando lo borre, no se le borre al otro usuario
 
         db.collection("usuarios").document(UserData.ID_USER_DB).collection("chats").whereEqualTo("idReceptor", keyUser).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -98,8 +101,26 @@ public class ChatFragment extends Fragment {
             }
         });
 
+        // TODO: ORDENAR POR FECHA LOS MENSAJES
+        // TODO: PONER FECHA AL MOSTRAR EL MENSAJE
+
+        db.collection("usuarios").document(UserData.ID_USER_DB).collection("chats").whereEqualTo("idReceptor", keyUser).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot dn = task.getResult().getDocuments().get(0);
+                    Chat chat = dn.toObject(Chat.class);
+                    RecyclerChat recyclerChat = new RecyclerChat(chat.getListaMensajes(), listRecyclerMensajes.getContext());
+                    listRecyclerMensajes.setHasFixedSize(true);
+                    listRecyclerMensajes.setLayoutManager(new LinearLayoutManager(listRecyclerMensajes.getContext()));
+                    listRecyclerMensajes.setAdapter(recyclerChat);
+                }
+            }
+        });
+
         btnEnviarMensajeUsuario.setOnClickListener(new View.OnClickListener() {
             String keyMensaje = generarID(12);
+
             @Override
             public void onClick(View v) {
                 String mensaje = etMensajeUsuario.getText().toString();
@@ -122,7 +143,7 @@ public class ChatFragment extends Fragment {
                         if (task.isSuccessful()) {
                             DocumentSnapshot dn = task.getResult().getDocuments().get(0);
                             Chat chat = dn.toObject(Chat.class);
-                            chat.getListaMensajes().add(crearMensaje(keyMensaje, keyUser, UserData.ID_USER_DB, mensaje));
+                            chat.getListaMensajes().add(crearMensaje(keyMensaje, UserData.ID_USER_DB, keyUser, mensaje));
                             db.collection("usuarios").document(keyUser).collection("chats").document(dn.getId()).set(chat);
                         }
                     }
