@@ -86,22 +86,31 @@ public class RecyclerCapitulos extends RecyclerView.Adapter<RecyclerCapitulos.Vi
                         if (task.getResult().getDocuments().size() > 0) {
                             DocumentSnapshot dn = task.getResult().getDocuments().get(0);
                             SaveSerie saveSerie = dn.toObject(SaveSerie.class);
-                            Log.d("CAP_VISTO", saveSerie.getId_serie());
                             if (saveSerie.getTemporadas().get(nTemporada).getCapitulos_vistos().get(Integer.parseInt(recyclerbtnMarcarComoVisto.getTag().toString())) == 1) {
                                 recyclerbtnMarcarComoVisto.setImageResource(R.drawable.ic_visto_true);
                             }
                             recyclerbtnMarcarComoVisto.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    Log.d("TAG", recyclerbtnMarcarComoVisto.getTag().toString());
-                                    if (saveSerie.getTemporadas().get(nTemporada).getCapitulos_vistos().get(Integer.parseInt(recyclerbtnMarcarComoVisto.getTag().toString())) == 1) {
-                                        recyclerbtnMarcarComoVisto.setImageResource(R.drawable.ic_visto_false);
-                                        saveSerie.getTemporadas().get(nTemporada).getCapitulos_vistos().set(Integer.parseInt(recyclerbtnMarcarComoVisto.getTag().toString()), 0);
-                                    } else {
-                                        recyclerbtnMarcarComoVisto.setImageResource(R.drawable.ic_visto_true);
-                                        saveSerie.getTemporadas().get(nTemporada).getCapitulos_vistos().set(Integer.parseInt(recyclerbtnMarcarComoVisto.getTag().toString()), 1);
+                                    for (int i = 0; i < saveSerie.getTemporadas().get(nTemporada).getCapitulos_vistos().size(); i++) {
+                                        if (Integer.parseInt(recyclerbtnMarcarComoVisto.getTag().toString()) == i) {
+                                            System.out.println(recyclerbtnMarcarComoVisto.getTag().toString());
+                                            switch (saveSerie.getTemporadas().get(nTemporada).getCapitulos_vistos().get(Integer.parseInt(recyclerbtnMarcarComoVisto.getTag().toString()))) {
+                                                case 1: {
+                                                    recyclerbtnMarcarComoVisto.setImageResource(R.drawable.ic_visto_false);
+                                                    saveSerie.getTemporadas().get(nTemporada).getCapitulos_vistos().set(Integer.parseInt(recyclerbtnMarcarComoVisto.getTag().toString()), 0);
+                                                }
+                                                break;
+                                                case 0: {
+                                                    recyclerbtnMarcarComoVisto.setImageResource(R.drawable.ic_visto_true);
+                                                    saveSerie.getTemporadas().get(nTemporada).getCapitulos_vistos().set(Integer.parseInt(recyclerbtnMarcarComoVisto.getTag().toString()), 1);
+                                                }
+                                                break;
+                                            }
+                                            db.collection("usuarios").document(UserData.ID_USER_DB).collection("series_guardadas").document(dn.getId()).set(saveSerie);
+                                            break;
+                                        }
                                     }
-                                    db.collection("usuarios").document(UserData.ID_USER_DB).collection("series_guardadas").document(dn.getId()).set(saveSerie);
                                 }
                             });
                         }

@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.auth.User;
+
+import java.util.Random;
 
 import es.iesoretania.entertainmentlounge.Clases.SerieData.Chat;
 import es.iesoretania.entertainmentlounge.Clases.SerieData.Mensaje;
@@ -65,6 +68,10 @@ public class ChatFragment extends Fragment {
             }
         });
 
+        // Tenemos que añadir el chat y todos sus mensajes en ambos usuarios, para que cada uno tenga su copia
+        // ¿Por qué en ambos? Primero: Porque cada uno tiene su propio punto de vista, entonces serán dos layouts "diferentes" aunque sean el mismo realmente
+        // Lo segundo: Puede ser que un usuario quiera borrar algún mensaje de su chat, pero cuando lo borre, no se le borre al otro usuario
+
         db.collection("usuarios").document(UserData.ID_USER_DB).collection("chats").whereEqualTo("idReceptor", keyUser).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -78,23 +85,45 @@ public class ChatFragment extends Fragment {
             }
         });
 
+        db.collection("usuarios").document(keyUser).collection("chats").whereEqualTo("idReceptor", UserData.ID_USER_DB).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    if (task.getResult().size() == 0) {
+                        Chat chat = new Chat();
+                        chat.setIdReceptor(UserData.ID_USER_DB);
+                        db.collection("usuarios").document(keyUser).collection("chats").document().set(chat);
+                    }
+                }
+            }
+        });
+
         btnEnviarMensajeUsuario.setOnClickListener(new View.OnClickListener() {
+            String keyMensaje = generarID(12);
             @Override
             public void onClick(View v) {
+                String mensaje = etMensajeUsuario.getText().toString();
+                etMensajeUsuario.setText("");
                 db.collection("usuarios").document(UserData.ID_USER_DB).collection("chats").whereEqualTo("idReceptor", keyUser).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             DocumentSnapshot dn = task.getResult().getDocuments().get(0);
                             Chat chat = dn.toObject(Chat.class);
-                            Mensaje mensaje = new Mensaje();
-                            mensaje.setIdReceptor(keyUser);
-                            mensaje.setIdEmisor(UserData.ID_USER_DB);
-                            mensaje.setMensaje(etMensajeUsuario.getText().toString());
-                            mensaje.setIdMensaje("s"); // TODO: MODIFICAR ESTO PARA QUE COJA LA ID PARA UN DOCUMENTO
-                            mensaje.setFecha(Timestamp.now());
-                            chat.getListaMensajes().add(mensaje);
+                            chat.getListaMensajes().add(crearMensaje(keyMensaje, UserData.ID_USER_DB, keyUser, mensaje));
                             db.collection("usuarios").document(UserData.ID_USER_DB).collection("chats").document(dn.getId()).set(chat);
+                        }
+                    }
+                });
+
+                db.collection("usuarios").document(keyUser).collection("chats").whereEqualTo("idReceptor", UserData.ID_USER_DB).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot dn = task.getResult().getDocuments().get(0);
+                            Chat chat = dn.toObject(Chat.class);
+                            chat.getListaMensajes().add(crearMensaje(keyMensaje, keyUser, UserData.ID_USER_DB, mensaje));
+                            db.collection("usuarios").document(keyUser).collection("chats").document(dn.getId()).set(chat);
                         }
                     }
                 });
@@ -102,5 +131,23 @@ public class ChatFragment extends Fragment {
         });
     }
 
+    private Mensaje crearMensaje(String keyMensaje, String idEmisor, String idReceptor, String tMensaje) {
+        Mensaje mensaje = new Mensaje();
+        mensaje.setIdMensaje(keyMensaje);
+        mensaje.setIdEmisor(idEmisor);
+        mensaje.setIdReceptor(idReceptor);
+        mensaje.setMensaje(tMensaje);
+        mensaje.setFecha(Timestamp.now());
+        return mensaje;
+    }
 
+    private String generarID(int tam) {
+        String key = "";
+        Random random = new Random();
+        for (int i = 0; i < tam; i++) {
+            char randomizedCharacter = (char) (random.nextInt(26) + 'A');
+            key += randomizedCharacter;
+        }
+        return key;
+    }
 }
