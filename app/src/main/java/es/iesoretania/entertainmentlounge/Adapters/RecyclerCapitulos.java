@@ -89,9 +89,21 @@ public class RecyclerCapitulos extends RecyclerView.Adapter<RecyclerCapitulos.Vi
                             if (saveSerie.getTemporadas().get(nTemporada).getCapitulos_vistos().get(Integer.parseInt(recyclerbtnMarcarComoVisto.getTag().toString())) == 1) {
                                 recyclerbtnMarcarComoVisto.setImageResource(R.drawable.ic_visto_true);
                             }
-                            recyclerbtnMarcarComoVisto.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
+                        }
+                    }
+                }
+            });
+
+            recyclerbtnMarcarComoVisto.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    db.collection("usuarios").document(UserData.ID_USER_DB).collection("series_guardadas").whereEqualTo("id_serie", idSerie).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                if (task.getResult().getDocuments().size() > 0) {
+                                    DocumentSnapshot dn = task.getResult().getDocuments().get(0);
+                                    SaveSerie saveSerie = dn.toObject(SaveSerie.class);
                                     for (int i = 0; i < saveSerie.getTemporadas().get(nTemporada).getCapitulos_vistos().size(); i++) {
                                         if (Integer.parseInt(recyclerbtnMarcarComoVisto.getTag().toString()) == i) {
                                             System.out.println(recyclerbtnMarcarComoVisto.getTag().toString());
@@ -112,9 +124,9 @@ public class RecyclerCapitulos extends RecyclerView.Adapter<RecyclerCapitulos.Vi
                                         }
                                     }
                                 }
-                            });
+                            }
                         }
-                    }
+                    });
                 }
             });
         }
