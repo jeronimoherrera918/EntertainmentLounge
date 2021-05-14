@@ -36,7 +36,7 @@ import es.iesoretania.entertainmentlounge.R;
 
 public class ChatsFragment extends Fragment {
     EditText etMensajesChat;
-    Button btnEnviarMensaje, btnComprobarMensajes;
+    Button btnEnviarMensaje;
     RecyclerView listRecyclerUsuarios;
     List<Usuario> listaUsuarios;
     List<String> listaUsuariosKeys;
@@ -58,7 +58,6 @@ public class ChatsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         etMensajesChat = view.findViewById(R.id.etMensajeChat);
         btnEnviarMensaje = view.findViewById(R.id.btnEnviarMensaje);
-        btnComprobarMensajes = view.findViewById(R.id.btnComprobarMensajes);
         listRecyclerUsuarios = view.findViewById(R.id.listRecyclerUsuarios);
         db = FirebaseFirestore.getInstance();
 
@@ -86,26 +85,5 @@ public class ChatsFragment extends Fragment {
                 }
             }
         });
-
-        /* btnComprobarMensajes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                db.collection("mensajes").whereEqualTo("idMensaje", 1).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot dn : task.getResult()) {
-                                Mensaje mensaje = dn.toObject(Mensaje.class);
-                                SimpleDateFormat sfg = new SimpleDateFormat("dd/MM/yyyy");
-                                String fecha = sfg.format(mensaje.getFecha().toDate());
-                                Log.d("MENSAJE_DATA", mensaje.getMensaje());
-                                Log.d("MENSAJE_DATA", mensaje.getFecha().toDate().toString());
-                                Log.d("MENSAJE_DATA", fecha);
-                            }
-                        }
-                    }
-                });
-            }
-        }); */
     }
 }
