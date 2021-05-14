@@ -13,12 +13,12 @@
         android:layout_marginTop="213dp"
         android:layout_marginEnd="16dp"
         android:backgroundTint="#FFFFFF"
-        app:rippleColor="@color/azul_app"
-        app:borderWidth="0dp"
         android:clickable="true"
         android:src="@android:drawable/ic_menu_edit"
+        app:borderWidth="0dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:rippleColor="@color/azul_app" />
 
     <LinearLayout
         android:id="@+id/linearLayout3"

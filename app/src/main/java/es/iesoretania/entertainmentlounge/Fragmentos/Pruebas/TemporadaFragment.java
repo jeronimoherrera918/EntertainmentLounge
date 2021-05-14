@@ -13,6 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import es.iesoretania.entertainmentlounge.Adapters.RecyclerCapitulos;
 import es.iesoretania.entertainmentlounge.Clases.SerieData.Serie;
 import es.iesoretania.entertainmentlounge.R;
@@ -20,6 +22,7 @@ import es.iesoretania.entertainmentlounge.R;
 public class TemporadaFragment extends Fragment {
     Serie serie;
     RecyclerView listRecyclerCapitulos;
+    FloatingActionButton fabGuardarCambios;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -37,10 +40,11 @@ public class TemporadaFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         listRecyclerCapitulos = view.findViewById(R.id.listRecyclerCapitulos);
+        fabGuardarCambios = view.findViewById(R.id.fabGuardarCambios);
         if (getArguments() != null) {
             TemporadaFragmentArgs temporadaFragmentArgs = TemporadaFragmentArgs.fromBundle(getArguments());
             serie = temporadaFragmentArgs.getSerie();
-            RecyclerCapitulos recyclerCapitulos = new RecyclerCapitulos(serie.getTemporadas().get(temporadaFragmentArgs.getNTemporada()).getCapitulos(), listRecyclerCapitulos.getContext(), serie.getId_serie(), temporadaFragmentArgs.getNTemporada());
+            RecyclerCapitulos recyclerCapitulos = new RecyclerCapitulos(serie.getTemporadas().get(temporadaFragmentArgs.getNTemporada()).getCapitulos(), listRecyclerCapitulos.getContext(), serie.getId_serie(), temporadaFragmentArgs.getNTemporada(), fabGuardarCambios);
             recyclerCapitulos.setOnItemClickListener(new RecyclerCapitulos.ClickListener() {
                 @Override
                 public void onItemClick(int position, View v) {
