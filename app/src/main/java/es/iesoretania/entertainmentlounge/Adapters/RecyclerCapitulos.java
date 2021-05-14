@@ -135,8 +135,8 @@ public class RecyclerCapitulos extends RecyclerView.Adapter<RecyclerCapitulos.Vi
             fabGuardarCambios.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    db.collection("usuarios").document(UserData.ID_USER_DB).collection("series_guardadas").document(dn.getId()).set(saveSerieGlobal);
                     sw = 0;
+                    db.collection("usuarios").document(UserData.ID_USER_DB).collection("series_guardadas").document(dn.getId()).set(saveSerieGlobal);
                     fabGuardarCambios.setBackgroundTintList(ColorStateList.valueOf(Color.DKGRAY));
                     Snackbar.make(v, "Cambios guardados correctamente", Snackbar.LENGTH_SHORT).setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE).setBackgroundTint(Color.DKGRAY).show();
                 }
