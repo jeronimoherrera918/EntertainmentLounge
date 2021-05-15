@@ -19,7 +19,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.Random;
@@ -39,6 +41,8 @@ public class ChatFragment extends Fragment {
     Button btnEnviarMensajeUsuario;
     RecyclerView listRecyclerMensajes;
     FirebaseFirestore db;
+    RecyclerChat recyclerChat;
+    Chat chatEmisor, chatReceptor;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -74,6 +78,7 @@ public class ChatFragment extends Fragment {
             }
         });
 
+        // SI EL CHAT NO EXISTE, SE CREA //
         db.collection("usuarios").document(UserData.ID_USER_DB).collection("chats").whereEqualTo("idReceptor", keyUser).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -87,6 +92,7 @@ public class ChatFragment extends Fragment {
             }
         });
 
+        // SI EL CHAT NO EXISTE, SE CREA //
         db.collection("usuarios").document(keyUser).collection("chats").whereEqualTo("idReceptor", UserData.ID_USER_DB).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -100,23 +106,35 @@ public class ChatFragment extends Fragment {
             }
         });
 
-        // TODO: ORDENAR POR FECHA LOS MENSAJES
-        // TODO: PONER FECHA AL MOSTRAR EL MENSAJE
-
+        // RECOGEMOS LA LISTA DE MENSAJES //
         db.collection("usuarios").document(UserData.ID_USER_DB).collection("chats").whereEqualTo("idReceptor", keyUser).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     DocumentSnapshot dn = task.getResult().getDocuments().get(0);
                     Chat chat = dn.toObject(Chat.class);
-                    RecyclerChat recyclerChat = new RecyclerChat(chat.getListaMensajes(), listRecyclerMensajes.getContext());
+                    recyclerChat = new RecyclerChat(chat.getListaMensajes(), listRecyclerMensajes.getContext());
                     listRecyclerMensajes.setHasFixedSize(true);
                     listRecyclerMensajes.setLayoutManager(new LinearLayoutManager(listRecyclerMensajes.getContext()));
                     listRecyclerMensajes.setAdapter(recyclerChat);
+
+                    db.collection("usuarios").document(UserData.ID_USER_DB).collection("chats").whereEqualTo("idReceptor", keyUser).addSnapshotListener(new EventListener<QuerySnapshot>() {
+                        @Override
+                        public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                            if (value.toObjects(Chat.class) != null) {
+                                Chat chat = value.toObjects(Chat.class).get(0);
+                                System.out.println(chat.getListaMensajes().size());
+                                recyclerChat.setItems(chat.getListaMensajes());
+                                recyclerChat.notifyDataSetChanged();
+                                listRecyclerMensajes.scrollToPosition(recyclerChat.getItemCount() - 1);
+                            }
+                        }
+                    });
                 }
             }
         });
 
+        // ENVIAMOS EL MENSAJE //
         btnEnviarMensajeUsuario.setOnClickListener(new View.OnClickListener() {
             String keyMensaje = generarID(12);
 
@@ -129,26 +147,42 @@ public class ChatFragment extends Fragment {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             DocumentSnapshot dn = task.getResult().getDocuments().get(0);
-                            Chat chat = dn.toObject(Chat.class);
-                            chat.getListaMensajes().add(crearMensaje(keyMensaje, UserData.ID_USER_DB, keyUser, mensaje));
-                            db.collection("usuarios").document(UserData.ID_USER_DB).collection("chats").document(dn.getId()).set(chat);
-                        }
-                    }
-                });
+                            chatEmisor = dn.toObject(Chat.class);
+                            chatEmisor.getListaMensajes().add(crearMensaje(keyMensaje, UserData.ID_USER_DB, keyUser, mensaje));
+                            db.collection("usuarios").document(UserData.ID_USER_DB).collection("chats").document(dn.getId()).set(chatEmisor);
 
-                db.collection("usuarios").document(keyUser).collection("chats").whereEqualTo("idReceptor", UserData.ID_USER_DB).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot dn = task.getResult().getDocuments().get(0);
-                            Chat chat = dn.toObject(Chat.class);
-                            chat.getListaMensajes().add(crearMensaje(keyMensaje, UserData.ID_USER_DB, keyUser, mensaje));
-                            db.collection("usuarios").document(keyUser).collection("chats").document(dn.getId()).set(chat);
+                            db.collection("usuarios").document(keyUser).collection("chats").whereEqualTo("idReceptor", UserData.ID_USER_DB).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        DocumentSnapshot dn = task.getResult().getDocuments().get(0);
+                                        chatReceptor = dn.toObject(Chat.class);
+                                        chatReceptor.getListaMensajes().add(crearMensaje(keyMensaje, UserData.ID_USER_DB, keyUser, mensaje));
+                                        db.collection("usuarios").document(keyUser).collection("chats").document(dn.getId()).set(chatReceptor);
+
+                                        recyclerChat.setItems(chatEmisor.getListaMensajes());
+                                        recyclerChat.notifyDataSetChanged();
+                                        listRecyclerMensajes.scrollToPosition(recyclerChat.getItemCount() - 1);
+                                    }
+                                }
+                            });
                         }
                     }
                 });
             }
         });
+
+        // Ay por mi SANTO PAPA que esto funciona vale vale vale oleeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+        /*
+        db.collection("usuarios").document(UserData.ID_USER_DB).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                if (value.toObject(Usuario.class) != null) {
+                    System.out.println(value.toObject(Usuario.class).getNombre_completo());
+                }
+            }
+        });
+        */
     }
 
     private Mensaje crearMensaje(String keyMensaje, String idEmisor, String idReceptor, String tMensaje) {

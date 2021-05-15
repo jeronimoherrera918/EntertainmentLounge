@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -79,8 +80,12 @@ public class RecyclerChat extends RecyclerView.Adapter<RecyclerChat.ViewHolder> 
 
             if (!mensaje.getIdEmisor().equals(UserData.ID_USER_DB)) {
                 rlMensaje.setBackgroundColor(Color.parseColor("#2887BE"));
+                recyclerMensajeChat.setGravity(Gravity.LEFT);
+                recyclerEmisorChat.setGravity(Gravity.LEFT);
             } else {
                 rlMensaje.setBackgroundColor(Color.parseColor("#1C587B"));
+                recyclerMensajeChat.setGravity(Gravity.RIGHT);
+                recyclerEmisorChat.setGravity(Gravity.RIGHT);
             }
         }
     }

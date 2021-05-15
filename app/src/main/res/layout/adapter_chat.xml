@@ -22,19 +22,20 @@
             android:padding="2dp">
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_marginStart="2dp"
                 android:layout_marginLeft="2dp"
                 android:layout_marginTop="2dp"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/recyclerEmisorChat"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingLeft="11dp"
+                    android:paddingRight="11dp"
                     android:paddingTop="3dp"
                     android:text="EMISOR"
                     android:textColor="@color/white"
@@ -50,9 +51,10 @@
 
                 <TextView
                     android:id="@+id/recyclerMensajeChat"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingLeft="12dp"
+                    android:paddingRight="12dp"
                     android:paddingTop="20dp"
                     android:paddingBottom="4dp"
                     android:text="MENSAJE"
