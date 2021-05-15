@@ -1,10 +1,13 @@
 package es.iesoretania.entertainmentlounge.Adapters;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,18 +15,19 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import es.iesoretania.entertainmentlounge.Clases.SerieData.Mensaje;
+import es.iesoretania.entertainmentlounge.Clases.UserData;
 import es.iesoretania.entertainmentlounge.R;
 
 public class RecyclerChat extends RecyclerView.Adapter<RecyclerChat.ViewHolder> {
     private List<Mensaje> listaMensajes;
     private LayoutInflater layoutInflater;
     private Context context;
-    RecyclerChat.ClickListener clickListener;
+    ClickListener clickListener;
 
     public RecyclerChat(List<Mensaje> listaMensajes, Context context) {
         this.layoutInflater = LayoutInflater.from(context);
-        this.listaMensajes = listaMensajes;
         this.context = context;
+        this.listaMensajes = listaMensajes;
     }
 
     @Override
@@ -47,17 +51,20 @@ public class RecyclerChat extends RecyclerView.Adapter<RecyclerChat.ViewHolder> 
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView recyclerMensajeChat, recyclerEmisorChat, recyclerReceptorChat;
+        TextView recyclerMensajeChat, recyclerEmisorChat;
+        RelativeLayout rlMensaje;
 
         public ViewHolder(View v) {
             super(v);
             recyclerMensajeChat = v.findViewById(R.id.recyclerMensajeChat);
             recyclerEmisorChat = v.findViewById(R.id.recyclerEmisorChat);
-            recyclerReceptorChat = v.findViewById(R.id.recyclerReceptorChat);
+            rlMensaje = v.findViewById(R.id.rlMensaje);
+
             if (clickListener != null) {
                 v.setOnClickListener(this);
             }
         }
+
 
         @Override
         public void onClick(View v) {
@@ -67,12 +74,14 @@ public class RecyclerChat extends RecyclerView.Adapter<RecyclerChat.ViewHolder> 
         }
 
         public void bindData(final Mensaje mensaje) {
-            // TODO: ORDENAR POR FECHA LOS MENSAJES
-            // TODO: PONER FECHA AL MOSTRAR EL MENSAJE
-
             recyclerMensajeChat.setText(mensaje.getMensaje());
             recyclerEmisorChat.setText("EMISOR: " + mensaje.getIdEmisor());
-            recyclerReceptorChat.setText("RECEPTOR: " + mensaje.getIdReceptor());
+
+            if (!mensaje.getIdEmisor().equals(UserData.ID_USER_DB)) {
+                rlMensaje.setBackgroundColor(Color.parseColor("#2887BE"));
+            } else {
+                rlMensaje.setBackgroundColor(Color.parseColor("#1C587B"));
+            }
         }
     }
 

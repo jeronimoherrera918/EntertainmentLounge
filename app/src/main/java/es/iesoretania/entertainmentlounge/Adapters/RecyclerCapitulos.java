@@ -3,13 +3,19 @@ package es.iesoretania.entertainmentlounge.Adapters;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.media.Rating;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -75,13 +81,14 @@ public class RecyclerCapitulos extends RecyclerView.Adapter<RecyclerCapitulos.Vi
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView recyclerNombreCapitulo, recyclerPuntuacionMediaCapitulo;
-        ImageButton recyclerbtnMarcarComoVisto;
+        ImageButton recyclerbtnMarcarComoVisto, recyclerbtnPuntuarCapitulo;
 
         public ViewHolder(View v) {
             super(v);
             recyclerNombreCapitulo = v.findViewById(R.id.recyclerNombreCapitulo);
             recyclerPuntuacionMediaCapitulo = v.findViewById(R.id.recyclerPuntuacionMediaCapitulo);
             recyclerbtnMarcarComoVisto = v.findViewById(R.id.recyclerbtnMarcarComoVisto);
+            recyclerbtnPuntuarCapitulo = v.findViewById(R.id.recyclerbtnPuntuarCapitulo);
             db = FirebaseFirestore.getInstance();
 
             if (clickListener != null) {
@@ -99,14 +106,16 @@ public class RecyclerCapitulos extends RecyclerView.Adapter<RecyclerCapitulos.Vi
                                 recyclerbtnMarcarComoVisto.setImageResource(R.drawable.ic_visto_true);
                             }
                         }
+                        activarBotones();
                     }
                 }
             });
+        }
 
+        private void activarBotones() {
             recyclerbtnMarcarComoVisto.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
                     if (sw == 0) {
                         sw = 1;
                         fabGuardarCambios.setBackgroundTintList(ColorStateList.valueOf(Color.GREEN));

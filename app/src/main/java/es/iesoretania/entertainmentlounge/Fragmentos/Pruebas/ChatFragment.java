@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,14 +18,10 @@ import android.widget.TextView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.auth.User;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 import es.iesoretania.entertainmentlounge.Adapters.RecyclerChat;
@@ -37,6 +32,7 @@ import es.iesoretania.entertainmentlounge.Clases.Usuario;
 import es.iesoretania.entertainmentlounge.R;
 
 public class ChatFragment extends Fragment {
+    String nameReceptor;
     String keyUser;
     EditText etMensajeUsuario;
     TextView tvEnviarMensajeA;
@@ -63,15 +59,18 @@ public class ChatFragment extends Fragment {
         btnEnviarMensajeUsuario = view.findViewById(R.id.btnEnviarMensajeUsuario);
         tvEnviarMensajeA = view.findViewById(R.id.tvEnviarMensajeA);
         listRecyclerMensajes = view.findViewById(R.id.listRecyclerMensajes);
+
         if (getArguments() != null) {
             ChatFragmentArgs chatFragmentArgs = ChatFragmentArgs.fromBundle(getArguments());
             keyUser = chatFragmentArgs.getKeyUser();
         }
+
         db.collection("usuarios").document(keyUser).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 Usuario usuario = task.getResult().toObject(Usuario.class);
-                tvEnviarMensajeA.setText("Enviar mensaje a " + usuario.getNickname());
+                nameReceptor = usuario.getNickname();
+                tvEnviarMensajeA.setText("Enviar mensaje a " + nameReceptor);
             }
         });
 

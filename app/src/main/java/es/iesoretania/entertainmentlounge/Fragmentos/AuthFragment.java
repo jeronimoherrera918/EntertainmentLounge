@@ -68,6 +68,7 @@ public class AuthFragment extends Fragment {
             FirebaseAuth.getInstance().signOut();
         } // else if (CHECKBOX MARCADO) {}
         btnEntrar = view.findViewById(R.id.btnEntrar);
+        btnEntrar.setEnabled(true);
         etEmail = view.findViewById(R.id.etEmail);
         etPassword = view.findViewById(R.id.etPassword);
         etEmail.setText("jerohg98@gmail.com");
@@ -100,6 +101,7 @@ public class AuthFragment extends Fragment {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
+                                btnEntrar.setEnabled(false);
                                 // if (task.getResult().getUser().isEmailVerified()) {
                                 CollectionReference usuariosRef = db.collection("usuarios");
                                 Query query = usuariosRef.whereEqualTo("email", task.getResult().getUser().getEmail());
@@ -151,5 +153,6 @@ public class AuthFragment extends Fragment {
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
         loadingLogin.setVisibility(View.INVISIBLE);
+        btnEntrar.setEnabled(true);
     }
 }

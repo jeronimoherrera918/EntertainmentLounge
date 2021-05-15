@@ -14,10 +14,9 @@
         android:orientation="vertical">
 
         <RelativeLayout
-            android:id="@+id/rlMensaje"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/azul_app"
+            android:background="@color/grey"
             android:orientation="horizontal"
             android:padding="2dp">
 
