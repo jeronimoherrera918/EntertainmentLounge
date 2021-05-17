@@ -1,9 +1,13 @@
 package es.iesoretania.entertainmentlounge.Clases.SerieData;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Capitulo {
     private String nombre;
     private int nVotos;
     private Double puntuacion;
+    private List<Comentario> listaComentarios;
 
     public Capitulo() {
     }
@@ -12,6 +16,7 @@ public class Capitulo {
         this.nombre = nombre;
         this.nVotos = nVotos;
         this.puntuacion = puntuacion;
+        this.listaComentarios = new ArrayList<>();
     }
 
     public String getNombre() {
@@ -36,5 +41,13 @@ public class Capitulo {
 
     public void setPuntuacion(Double puntuacion) {
         this.puntuacion = puntuacion;
+    }
+
+    public List<Comentario> getListaComentarios() {
+        return listaComentarios;
+    }
+
+    public void setListaComentarios(List<Comentario> listaComentarios) {
+        this.listaComentarios = listaComentarios;
     }
 }
