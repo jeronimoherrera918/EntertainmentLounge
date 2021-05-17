@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RatingBar;
@@ -40,6 +42,7 @@ public class RecyclerCapitulos extends RecyclerView.Adapter<RecyclerCapitulos.Vi
     private Context context;
     private String idSerie;
     private int nTemporada;
+    private Animation inAnimation, outAnimation;
     // ---------------- //
     SaveSerie saveSerieGlobal;
     DocumentSnapshot dn;
@@ -56,6 +59,9 @@ public class RecyclerCapitulos extends RecyclerView.Adapter<RecyclerCapitulos.Vi
         this.idSerie = idSerie;
         this.nTemporada = nTemporada;
         this.fabGuardarCambios = fabGuardarCambios;
+
+        inAnimation = AnimationUtils.loadAnimation(context, R.anim.fade_in);
+        outAnimation = AnimationUtils.loadAnimation(context, R.anim.fade_out);
     }
 
     @Override
@@ -88,7 +94,6 @@ public class RecyclerCapitulos extends RecyclerView.Adapter<RecyclerCapitulos.Vi
             recyclerNombreCapitulo = v.findViewById(R.id.recyclerNombreCapitulo);
             recyclerPuntuacionMediaCapitulo = v.findViewById(R.id.recyclerPuntuacionMediaCapitulo);
             recyclerbtnMarcarComoVisto = v.findViewById(R.id.recyclerbtnMarcarComoVisto);
-            recyclerbtnPuntuarCapitulo = v.findViewById(R.id.recyclerbtnPuntuarCapitulo);
             db = FirebaseFirestore.getInstance();
 
             if (clickListener != null) {
@@ -103,7 +108,7 @@ public class RecyclerCapitulos extends RecyclerView.Adapter<RecyclerCapitulos.Vi
                             dn = task.getResult().getDocuments().get(0);
                             saveSerieGlobal = dn.toObject(SaveSerie.class);
                             if (saveSerieGlobal.getTemporadas().get(nTemporada).getCapitulos_vistos().get(Integer.parseInt(recyclerbtnMarcarComoVisto.getTag().toString())) == 1) {
-                                recyclerbtnMarcarComoVisto.setImageResource(R.drawable.ic_visto_true);
+                                recyclerbtnMarcarComoVisto.setImageResource(R.drawable.ic_check_true);
                             }
                         }
                         activarBotones();
@@ -125,12 +130,16 @@ public class RecyclerCapitulos extends RecyclerView.Adapter<RecyclerCapitulos.Vi
                         if (Integer.parseInt(recyclerbtnMarcarComoVisto.getTag().toString()) == i) {
                             switch (saveSerieGlobal.getTemporadas().get(nTemporada).getCapitulos_vistos().get(Integer.parseInt(recyclerbtnMarcarComoVisto.getTag().toString()))) {
                                 case 1: {
-                                    recyclerbtnMarcarComoVisto.setImageResource(R.drawable.ic_visto_false);
+                                    Animation animation = AnimationUtils.loadAnimation(v.getContext(), R.anim.fade_in);
+                                    recyclerbtnMarcarComoVisto.startAnimation(animation);
+                                    recyclerbtnMarcarComoVisto.setImageResource(R.drawable.ic_check_false);
                                     saveSerieGlobal.getTemporadas().get(nTemporada).getCapitulos_vistos().set(Integer.parseInt(recyclerbtnMarcarComoVisto.getTag().toString()), 0);
                                 }
                                 break;
                                 case 0: {
-                                    recyclerbtnMarcarComoVisto.setImageResource(R.drawable.ic_visto_true);
+                                    Animation animation = AnimationUtils.loadAnimation(v.getContext(), R.anim.fade_in);
+                                    recyclerbtnMarcarComoVisto.startAnimation(animation);
+                                    recyclerbtnMarcarComoVisto.setImageResource(R.drawable.ic_check_true);
                                     saveSerieGlobal.getTemporadas().get(nTemporada).getCapitulos_vistos().set(Integer.parseInt(recyclerbtnMarcarComoVisto.getTag().toString()), 1);
                                 }
                                 break;

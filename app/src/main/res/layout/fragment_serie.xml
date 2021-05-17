@@ -7,9 +7,9 @@
     tools:context=".Fragmentos.Pruebas.SerieFragment">
 
     <ImageView
-        android:id="@+id/imageView7"
+        android:id="@+id/imgSerieCabecera"
         android:layout_width="0dp"
-        android:layout_height="150dp"
+        android:layout_height="250dp"
         android:scaleType="fitXY"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,27 +24,27 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView7">
+        app:layout_constraintTop_toBottomOf="@+id/imgSerieCabecera">
 
         <TextView
             android:id="@+id/tvSerieNombre"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text=""
+            android:text="Nombre de la serie"
             android:textColor="@color/black" />
 
         <TextView
             android:id="@+id/tvSerieGenero"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text=""
+            android:text="Genero de la serie"
             android:textColor="@color/black" />
 
         <TextView
             android:id="@+id/tvSerieDescripcion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text=""
+            android:text="Descripcion de la serie"
             android:textColor="@color/black" />
 
         <Space

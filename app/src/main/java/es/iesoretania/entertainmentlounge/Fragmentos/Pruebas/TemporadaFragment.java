@@ -33,7 +33,6 @@ public class TemporadaFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_temporada, container, false);
     }
 
@@ -54,7 +53,7 @@ public class TemporadaFragment extends Fragment {
             recyclerCapitulos.setOnItemClickListener(new RecyclerCapitulos.ClickListener() {
                 @Override
                 public void onItemClick(int position, View v) {
-
+                    Navigation.findNavController(v).navigate(R.id.action_nav_temporada_to_nav_capitulo);
                 }
             });
             listRecyclerCapitulos.setHasFixedSize(true);
