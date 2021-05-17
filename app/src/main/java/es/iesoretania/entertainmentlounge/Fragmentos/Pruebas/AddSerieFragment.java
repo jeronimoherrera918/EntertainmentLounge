@@ -5,7 +5,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,8 +31,10 @@ public class AddSerieFragment extends Fragment {
     Button btnAddSerieAgregar, btnAddSerieAgregarTemporada, btnAddSerieAgregarCapitulo;
     EditText etAddSerieNombre, etAddSerieGenero, etAddSerieDescripcion, etAddSerieNombreCapitulo;
     Serie serie;
+    // ----- //
     DocumentReference newRef;
     String newKey;
+    // ----- //
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

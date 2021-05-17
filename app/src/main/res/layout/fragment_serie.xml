@@ -24,25 +24,22 @@
                 android:id="@+id/tvSerieNombre"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TextView" />
+                android:text=""
+                android:textColor="@color/black" />
 
             <TextView
                 android:id="@+id/tvSerieGenero"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TextView" />
+                android:text=""
+                android:textColor="@color/black" />
 
             <TextView
                 android:id="@+id/tvSerieDescripcion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TextView" />
-
-            <TextView
-                android:id="@+id/tvSerieNumTemporadas"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="TextView" />
+                android:text=""
+                android:textColor="@color/black" />
 
             <Space
                 android:layout_width="match_parent"
@@ -59,7 +56,19 @@
             <ListView
                 android:id="@+id/listaTemporadas"
                 android:layout_width="match_parent"
-                android:layout_height="162dp"/>
+                android:layout_height="162dp" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="15dp" />
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Pon un comentario en la serie"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
 
             <Space
                 android:layout_width="match_parent"
@@ -71,14 +80,17 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:gravity="start|top"
-                android:inputType="textMultiLine" />
+                android:hint="Escribe aquí el comentario..."
+                android:inputType="textMultiLine"
+                android:textColorHint="@color/grey" />
 
             <Button
                 android:id="@+id/btnComentar"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:backgroundTint="#16618D"
-                android:text="Comentar" />
+                android:text="Comentar"
+                android:textColor="@color/white" />
         </LinearLayout>
     </ScrollView>
 

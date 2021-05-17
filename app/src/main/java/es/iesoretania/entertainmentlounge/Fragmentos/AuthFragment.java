@@ -2,7 +2,6 @@ package es.iesoretania.entertainmentlounge.Fragmentos;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -25,7 +24,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -62,8 +60,6 @@ public class AuthFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        // TODO: Nota interesante: Cuando se inicia sesion en Firebase, si yo cierro la aplicación, la sesión se mantiene abierta
-        // TODO: Gracias a esto, puedo poner un CheckBox que le permita al usuario mantener la sesión abierta
         if (FirebaseAuth.getInstance().getCurrentUser() != null && UserData.ID_USER_DB != null) { // Si ya hay un usuario logueado, no podrá llegar a este fragmento nunca
             Log.d("USER:LOGGED", FirebaseAuth.getInstance().getCurrentUser().getEmail());
             Log.d("USER:LOGGED", FirebaseAuth.getInstance().getCurrentUser().getUid());
@@ -72,6 +68,7 @@ public class AuthFragment extends Fragment {
             FirebaseAuth.getInstance().signOut();
         } // else if (CHECKBOX MARCADO) {}
         btnEntrar = view.findViewById(R.id.btnEntrar);
+        btnEntrar.setEnabled(true);
         etEmail = view.findViewById(R.id.etEmail);
         etPassword = view.findViewById(R.id.etPassword);
         etEmail.setText("jerohg98@gmail.com");
@@ -85,6 +82,8 @@ public class AuthFragment extends Fragment {
     }
 
     private void setup() {
+        loadingLogin.setEnabled(false);
+
         tvRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -95,12 +94,15 @@ public class AuthFragment extends Fragment {
         btnEntrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                loadingLogin.setEnabled(true);
                 loadingLogin.setVisibility(View.VISIBLE);
                 if (!etEmail.getText().toString().isEmpty() && !etPassword.getText().toString().isEmpty()) {
                     fAuth.signInWithEmailAndPassword(etEmail.getText().toString(), etPassword.getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
+                                btnEntrar.setEnabled(false);
+                                // if (task.getResult().getUser().isEmailVerified()) {
                                 CollectionReference usuariosRef = db.collection("usuarios");
                                 Query query = usuariosRef.whereEqualTo("email", task.getResult().getUser().getEmail());
                                 query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -121,6 +123,9 @@ public class AuthFragment extends Fragment {
                                         }
                                     }
                                 });
+                                // } else {
+                                //  Toast.makeText(getContext(), "No has verificado el correo. Veríficalo antes de poder acceder a la aplicación", Toast.LENGTH_SHORT).show();
+                                // }
                             } else {
                                 showAlert();
                             }
@@ -148,5 +153,6 @@ public class AuthFragment extends Fragment {
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
         loadingLogin.setVisibility(View.INVISIBLE);
+        btnEntrar.setEnabled(true);
     }
 }

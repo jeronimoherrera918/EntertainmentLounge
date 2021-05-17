@@ -7,7 +7,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,13 +18,14 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import es.iesoretania.entertainmentlounge.Clases.Usuario;
@@ -87,7 +87,23 @@ public class RegisterFragment extends Fragment {
                                         @Override
                                         public void onComplete(@NonNull Task<AuthResult> task) {
                                             if (task.isSuccessful()) {
-                                                loadingRegister.setVisibility(View.INVISIBLE);
+                                                // Recuperamos el usuario que acabamos de registrar
+                                                FirebaseUser newUser = fAuth.getCurrentUser();
+                                                /*
+                                                // Le mandamos un correo de verificación
+                                                newUser.sendEmailVerification().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                    @Override
+                                                    public void onSuccess(Void aVoid) {
+                                                        Toast.makeText(getContext(), "Correo de verificación enviado", Toast.LENGTH_SHORT).show();
+                                                    }
+                                                }).addOnFailureListener(new OnFailureListener() {
+                                                    @Override
+                                                    public void onFailure(@NonNull Exception e) {
+                                                        Log.d("ERROR", "Verification Email not sent" + e.getMessage());
+                                                    }
+                                                });
+                                                */
+                                                // Registramos los datos del usuario aunque no haya confirmado aún el correo electrónico
                                                 Usuario usuario = new Usuario();
                                                 usuario.setEmail(etEmailRegistro.getText().toString());
                                                 usuario.setNickname(etNicknameRegistro.getText().toString());
@@ -95,13 +111,14 @@ public class RegisterFragment extends Fragment {
                                                 usuario.setNombre_completo(etNombreCompletoRegistro.getText().toString());
                                                 usuario.setFechaNacimiento(etFechaRegistro.getText().toString());
                                                 firestoredb.collection("usuarios").add(usuario);
+                                                loadingRegister.setVisibility(View.INVISIBLE);
                                             } else {
                                                 showAlert();
                                             }
                                         }
                                     });
                                 } else {
-                                    Toast.makeText(v.getContext(), "Introduce los datos antes de intentar entrar", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(v.getContext(), "Introduce todos los datos antes de intentar registrarte", Toast.LENGTH_SHORT).show();
                                     loadingRegister.setVisibility(View.INVISIBLE);
                                 }
                             }
@@ -119,7 +136,7 @@ public class RegisterFragment extends Fragment {
         builder.setMessage("Se ha producido un error, comprueba los datos e inténtalo de nuevo");
         builder.setTitle("Error");
         builder.setCancelable(false);
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton("Vale", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 

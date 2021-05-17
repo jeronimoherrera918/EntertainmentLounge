@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,7 +39,7 @@ import es.iesoretania.entertainmentlounge.Clases.UserData;
 import es.iesoretania.entertainmentlounge.R;
 
 public class SerieFragment extends Fragment {
-    TextView tvSerieNombre, tvSerieGenero, tvSerieDescripcion, tvSerieNumTemporadas;
+    TextView tvSerieNombre, tvSerieGenero, tvSerieDescripcion;
     Button btnSerieSave, btnComentar;
     EditText etComentario;
     ListView listaTemporadas;
@@ -64,12 +65,13 @@ public class SerieFragment extends Fragment {
         tvSerieNombre = view.findViewById(R.id.tvSerieNombre);
         tvSerieGenero = view.findViewById(R.id.tvSerieGenero);
         tvSerieDescripcion = view.findViewById(R.id.tvSerieDescripcion);
-        tvSerieNumTemporadas = view.findViewById(R.id.tvSerieNumTemporadas);
         btnSerieSave = view.findViewById(R.id.btnSerieSave);
 
+        /* -- ELEMENTOS TESTS PARA LOS COMENTARIOS -- */
         btnComentar = view.findViewById(R.id.btnComentar);
         listaTemporadas = view.findViewById(R.id.listaTemporadas);
         etComentario = view.findViewById(R.id.etComentario);
+        /* --       FIN DE LOS ELEMENTOS TESTS      -- */
 
         if (getArguments() != null) {
             SerieFragmentArgs args = SerieFragmentArgs.fromBundle(getArguments());
@@ -88,10 +90,8 @@ public class SerieFragment extends Fragment {
                         tvSerieNombre.setText(serie.getNombre());
                         tvSerieGenero.setText(serie.getGenero());
                         tvSerieDescripcion.setText(serie.getDescripcion());
-                        tvSerieNumTemporadas.setText("Número de temporadas: " + serie.getTemporadas().size() + "\nNúmero de capítulos temporada 1: " + serie.getTemporadas().get(0).getCapitulos().size());
                         adapterListaTemporadas();
-                        comprobacionSerie();
-
+                        setupSerie();
                     }
                 }
             }
@@ -104,44 +104,40 @@ public class SerieFragment extends Fragment {
         listaTemporadas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(view.getContext(), "Posición: " + position, Toast.LENGTH_SHORT).show();
+                Navigation.findNavController(view).navigate(SerieFragmentDirections.actionNavSerieToNavTemporada(serie, serie.getNombre(), position));
             }
         });
     }
 
-    private void comprobacionSerie() {
+    private void setupSerie() {
+        adapterListaTemporadas();
         db.collection("usuarios").document(UserData.ID_USER_DB).collection("series_guardadas").whereEqualTo("id_serie", key).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     if (task.getResult().size() > 0) {
-                        btnSerieSave.setEnabled(false);
-                        btnSerieSave.setBackgroundColor(Color.RED);
-                        if (task.getResult().getDocuments().get(0) != null) {
-                            Toast.makeText(getContext(), "Tienes la serie guardada", Toast.LENGTH_SHORT).show();
-                            btnComentar.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    // Entrar en profundidad con esto
-                                    Comentario comentario = new Comentario();
-                                    comentario.setComentario(etComentario.getText().toString());
-                                    comentario.setId_usuario(UserData.ID_USER_DB);
-                                    comentario.setNum_likes(0);
-                                    db.collection("series").document(key).collection("comentarios").add(comentario);
-                                }
-                            });
-                        }
+                        estadoBotonGuardar(false);
                     } else {
-                        btnSave_noGuardada();
-                        Toast.makeText(getContext(), "No tienes la serie guardada", Toast.LENGTH_SHORT).show();
+                        estadoBotonGuardar(true);
                     }
                 }
             }
         });
     }
 
-    private void btnSave_noGuardada() {
-        btnSerieSave.setEnabled(true);
+    private void estadoBotonGuardar(boolean estado) {
+        if (!estado) {
+            btnSerieSave.setEnabled(false);
+            activarComentarios();
+        } else {
+            btnSerieSave.setEnabled(true);
+            activarGuardado();
+        }
+    }
+
+    private void activarGuardado() {
+        btnSerieSave.setBackgroundColor(Color.parseColor("#16618D"));
+        btnComentar.setBackgroundColor(Color.GRAY);
         btnSerieSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -161,8 +157,25 @@ public class SerieFragment extends Fragment {
                             saveSerie.getTemporadas().add(saveTemporadaSerie);
                         }
                         db.collection("usuarios").document(UserData.ID_USER_DB).collection("series_guardadas").add(saveSerie);
+                        btnSerieSave.setEnabled(false);
+                        activarComentarios();
                     }
                 });
+            }
+        });
+    }
+
+    private void activarComentarios() {
+        btnComentar.setBackgroundColor(Color.parseColor("#16618D"));
+        btnSerieSave.setBackgroundColor(Color.GRAY);
+        btnComentar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Comentario comentario = new Comentario();
+                comentario.setComentario(etComentario.getText().toString());
+                comentario.setId_usuario(UserData.ID_USER_DB);
+                comentario.setNum_likes(0);
+                db.collection("series").document(key).collection("comentarios").add(comentario);
             }
         });
     }
