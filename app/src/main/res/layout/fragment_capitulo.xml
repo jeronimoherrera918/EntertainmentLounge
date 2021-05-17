@@ -14,7 +14,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/bg_auth" />
+        app:srcCompat="@drawable/ic_sobrenosotros_1" />
 
     <ImageButton
         android:id="@+id/btnMarcarComoVistoCap"
@@ -52,6 +52,15 @@
             android:textSize="18sp"
             android:textStyle="bold" />
 
+        <View
+            android:id="@+id/divider10"
+            android:layout_width="230dp"
+            android:layout_height="3dp"
+            android:layout_gravity="center"
+            android:layout_margin="3dp"
+            android:background="@color/azul_app"
+            android:backgroundTint="@color/azul_app" />
+
         <RatingBar
             android:id="@+id/rbPuntuarCapitulo"
             style="@style/Widget.AppCompat.RatingBar"
@@ -60,6 +69,7 @@
             android:layout_gravity="center"
             android:max="10"
             android:progress="0"
+            android:progressBackgroundTint="#C5C5C5"
             android:progressTint="#ECDA43" />
 
         <View
@@ -85,6 +95,17 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/listRecyclerComentarios"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="wrap_content">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:backgroundTint="@color/azul_app"
+            android:text="Comentar"
+            android:textColor="@color/white" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
