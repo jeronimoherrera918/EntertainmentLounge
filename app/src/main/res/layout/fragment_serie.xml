@@ -6,92 +6,97 @@
     android:layout_height="match_parent"
     tools:context=".Fragmentos.Pruebas.SerieFragment">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <ImageView
+        android:id="@+id/imageView7"
+        android:layout_width="0dp"
+        android:layout_height="150dp"
+        android:scaleType="fitXY"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/bg_auth" />
 
-        <LinearLayout
-            android:id="@+id/linearLayout2"
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView7">
+
+        <TextView
+            android:id="@+id/tvSerieNombre"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="33dp"
-            android:layout_marginEnd="15dp"
-            android:layout_marginBottom="330dp"
-            android:orientation="vertical">
+            android:text=""
+            android:textColor="@color/black" />
 
-            <TextView
-                android:id="@+id/tvSerieNombre"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text=""
-                android:textColor="@color/black" />
+        <TextView
+            android:id="@+id/tvSerieGenero"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textColor="@color/black" />
 
-            <TextView
-                android:id="@+id/tvSerieGenero"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text=""
-                android:textColor="@color/black" />
+        <TextView
+            android:id="@+id/tvSerieDescripcion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textColor="@color/black" />
 
-            <TextView
-                android:id="@+id/tvSerieDescripcion"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text=""
-                android:textColor="@color/black" />
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="8dp" />
 
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="8dp" />
+        <Button
+            android:id="@+id/btnSerieSave"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#16618D"
+            android:text="Guardar serie"
+            android:textColor="@color/white" />
 
-            <Button
-                android:id="@+id/btnSerieSave"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:backgroundTint="#16618D"
-                android:text="Guardar serie"
-                android:textColor="@color/white" />
+        <ListView
+            android:id="@+id/listaTemporadas"
+            android:layout_width="match_parent"
+            android:layout_height="120dp" />
 
-            <ListView
-                android:id="@+id/listaTemporadas"
-                android:layout_width="match_parent"
-                android:layout_height="162dp" />
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="15dp" />
 
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="15dp" />
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Pon un comentario en la serie"
+            android:textColor="@color/black"
+            android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/textView3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Pon un comentario en la serie"
-                android:textColor="@color/black"
-                android:textStyle="bold" />
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="8dp" />
 
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="8dp" />
+        <EditText
+            android:id="@+id/etComentario"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:gravity="start|top"
+            android:hint="Escribe aquí el comentario..."
+            android:inputType="textMultiLine"
+            android:textColorHint="@color/grey" />
 
-            <EditText
-                android:id="@+id/etComentario"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:gravity="start|top"
-                android:hint="Escribe aquí el comentario..."
-                android:inputType="textMultiLine"
-                android:textColorHint="@color/grey" />
-
-            <Button
-                android:id="@+id/btnComentar"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:backgroundTint="#16618D"
-                android:text="Comentar"
-                android:textColor="@color/white" />
-        </LinearLayout>
-    </ScrollView>
+        <Button
+            android:id="@+id/btnComentar"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#16618D"
+            android:text="Comentar"
+            android:textColor="@color/white" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

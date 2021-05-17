@@ -69,7 +69,7 @@ public class ChatFragment extends Fragment {
             keyUser = chatFragmentArgs.getKeyUser();
         }
 
-        // ESTO LO MÁS SEGURO ES QUE VAYA FUERA //
+        // ESTO LO MÁS SEGURO ES QUE VAYA FUERA pero de momento se queda //
         db.collection("usuarios").document(keyUser).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
