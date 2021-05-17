@@ -69,6 +69,7 @@ public class ChatFragment extends Fragment {
             keyUser = chatFragmentArgs.getKeyUser();
         }
 
+        // ESTO LO MÁS SEGURO ES QUE VAYA FUERA //
         db.collection("usuarios").document(keyUser).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -78,7 +79,14 @@ public class ChatFragment extends Fragment {
             }
         });
 
-        // SI EL CHAT NO EXISTE, SE CREA //
+        setupChat();
+    }
+
+    private void setupChat() {
+        comprobarChats();
+    }
+
+    private void comprobarChats() {
         db.collection("usuarios").document(UserData.ID_USER_DB).collection("chats").whereEqualTo("idReceptor", keyUser).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -88,53 +96,42 @@ public class ChatFragment extends Fragment {
                         chat.setIdReceptor(keyUser);
                         db.collection("usuarios").document(UserData.ID_USER_DB).collection("chats").document().set(chat);
                     }
-                }
-            }
-        });
 
-        // SI EL CHAT NO EXISTE, SE CREA //
-        db.collection("usuarios").document(keyUser).collection("chats").whereEqualTo("idReceptor", UserData.ID_USER_DB).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    if (task.getResult().size() == 0) {
-                        Chat chat = new Chat();
-                        chat.setIdReceptor(UserData.ID_USER_DB);
-                        db.collection("usuarios").document(keyUser).collection("chats").document().set(chat);
-                    }
-                }
-            }
-        });
-
-        // RECOGEMOS LA LISTA DE MENSAJES //
-        db.collection("usuarios").document(UserData.ID_USER_DB).collection("chats").whereEqualTo("idReceptor", keyUser).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot dn = task.getResult().getDocuments().get(0);
-                    Chat chat = dn.toObject(Chat.class);
-                    recyclerChat = new RecyclerChat(chat.getListaMensajes(), listRecyclerMensajes.getContext());
-                    listRecyclerMensajes.setHasFixedSize(true);
-                    listRecyclerMensajes.setLayoutManager(new LinearLayoutManager(listRecyclerMensajes.getContext()));
-                    listRecyclerMensajes.setAdapter(recyclerChat);
-
-                    db.collection("usuarios").document(UserData.ID_USER_DB).collection("chats").whereEqualTo("idReceptor", keyUser).addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    db.collection("usuarios").document(keyUser).collection("chats").whereEqualTo("idReceptor", UserData.ID_USER_DB).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
-                        public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                            if (value.toObjects(Chat.class) != null) {
-                                Chat chat = value.toObjects(Chat.class).get(0);
-                                System.out.println(chat.getListaMensajes().size());
-                                recyclerChat.setItems(chat.getListaMensajes());
-                                recyclerChat.notifyDataSetChanged();
-                                listRecyclerMensajes.scrollToPosition(recyclerChat.getItemCount() - 1);
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                if (task.getResult().size() == 0) {
+                                    Chat chat = new Chat();
+                                    chat.setIdReceptor(UserData.ID_USER_DB);
+                                    db.collection("usuarios").document(keyUser).collection("chats").document().set(chat);
+                                }
+
+                                db.collection("usuarios").document(UserData.ID_USER_DB).collection("chats").whereEqualTo("idReceptor", keyUser).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+                                            DocumentSnapshot dn = task.getResult().getDocuments().get(0);
+                                            Chat chat = dn.toObject(Chat.class);
+                                            recyclerChat = new RecyclerChat(chat.getListaMensajes(), listRecyclerMensajes.getContext());
+                                            listRecyclerMensajes.setHasFixedSize(true);
+                                            listRecyclerMensajes.setLayoutManager(new LinearLayoutManager(listRecyclerMensajes.getContext()));
+                                            listRecyclerMensajes.setAdapter(recyclerChat);
+
+                                            setupEnviarMensaje();
+                                            oyenteChat();
+                                        }
+                                    }
+                                });
                             }
                         }
                     });
                 }
             }
         });
+    }
 
-        // ENVIAMOS EL MENSAJE //
+    private void setupEnviarMensaje() {
         btnEnviarMensajeUsuario.setOnClickListener(new View.OnClickListener() {
             String keyMensaje = generarID(12);
 
@@ -171,18 +168,21 @@ public class ChatFragment extends Fragment {
                 });
             }
         });
+    }
 
-        // Ay por mi SANTO PAPA que esto funciona vale vale vale oleeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-        /*
-        db.collection("usuarios").document(UserData.ID_USER_DB).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+    private void oyenteChat() {
+        db.collection("usuarios").document(UserData.ID_USER_DB).collection("chats").whereEqualTo("idReceptor", keyUser).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
-            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                if (value.toObject(Usuario.class) != null) {
-                    System.out.println(value.toObject(Usuario.class).getNombre_completo());
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                if (value.toObjects(Chat.class) != null) {
+                    Chat chat = value.toObjects(Chat.class).get(0);
+                    System.out.println(chat.getListaMensajes().size());
+                    recyclerChat.setItems(chat.getListaMensajes());
+                    recyclerChat.notifyDataSetChanged();
+                    listRecyclerMensajes.scrollToPosition(recyclerChat.getItemCount() - 1);
                 }
             }
         });
-        */
     }
 
     private Mensaje crearMensaje(String keyMensaje, String idEmisor, String idReceptor, String tMensaje) {

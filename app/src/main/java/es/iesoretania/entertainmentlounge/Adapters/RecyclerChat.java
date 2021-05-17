@@ -1,9 +1,7 @@
 package es.iesoretania.entertainmentlounge.Adapters;
 
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -52,13 +50,13 @@ public class RecyclerChat extends RecyclerView.Adapter<RecyclerChat.ViewHolder> 
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView recyclerMensajeChat, recyclerEmisorChat;
+        TextView recyclerMensajeChat, recyclerFechaChat;
         RelativeLayout rlMensaje;
 
         public ViewHolder(View v) {
             super(v);
             recyclerMensajeChat = v.findViewById(R.id.recyclerMensajeChat);
-            recyclerEmisorChat = v.findViewById(R.id.recyclerEmisorChat);
+            recyclerFechaChat = v.findViewById(R.id.recyclerFechaChat);
             rlMensaje = v.findViewById(R.id.rlMensaje);
 
             if (clickListener != null) {
@@ -76,16 +74,16 @@ public class RecyclerChat extends RecyclerView.Adapter<RecyclerChat.ViewHolder> 
 
         public void bindData(final Mensaje mensaje) {
             recyclerMensajeChat.setText(mensaje.getMensaje());
-            recyclerEmisorChat.setText("EMISOR: " + mensaje.getIdEmisor());
+            recyclerFechaChat.setText(mensaje.getFecha().toDate().toString());
 
             if (!mensaje.getIdEmisor().equals(UserData.ID_USER_DB)) {
                 rlMensaje.setBackgroundColor(Color.parseColor("#2887BE"));
                 recyclerMensajeChat.setGravity(Gravity.LEFT);
-                recyclerEmisorChat.setGravity(Gravity.LEFT);
+                recyclerFechaChat.setGravity(Gravity.LEFT);
             } else {
                 rlMensaje.setBackgroundColor(Color.parseColor("#1C587B"));
                 recyclerMensajeChat.setGravity(Gravity.RIGHT);
-                recyclerEmisorChat.setGravity(Gravity.RIGHT);
+                recyclerFechaChat.setGravity(Gravity.RIGHT);
             }
         }
     }

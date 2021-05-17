@@ -55,6 +55,8 @@
             android:id="@+id/btnEnviarMensajeUsuario"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Enviar mensaje" />
+            android:backgroundTint="@color/azul_app"
+            android:text="Enviar mensaje"
+            android:textColor="@color/white" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
