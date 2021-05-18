@@ -106,7 +106,14 @@
         android:id="@+id/nav_capitulo"
         android:name="es.iesoretania.entertainmentlounge.Fragmentos.Pruebas.CapituloFragment"
         android:label="Capitulo X de X"
-        tools:layout="@layout/fragment_capitulo" />
+        tools:layout="@layout/fragment_capitulo" >
+        <argument
+            android:name="serie"
+            app:argType="es.iesoretania.entertainmentlounge.Clases.SerieData.Serie" />
+        <argument
+            android:name="position"
+            app:argType="integer" />
+    </fragment>
     <fragment
         android:id="@+id/nav_temporada"
         android:name="es.iesoretania.entertainmentlounge.Fragmentos.Pruebas.TemporadaFragment"
