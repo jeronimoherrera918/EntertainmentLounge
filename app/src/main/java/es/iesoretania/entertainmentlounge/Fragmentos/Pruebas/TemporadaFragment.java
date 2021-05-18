@@ -53,7 +53,7 @@ public class TemporadaFragment extends Fragment {
             recyclerCapitulos.setOnItemClickListener(new RecyclerCapitulos.ClickListener() {
                 @Override
                 public void onItemClick(int position, View v) {
-                    Navigation.findNavController(v).navigate(TemporadaFragmentDirections.actionNavTemporadaToNavCapitulo(serie, position));
+                    Navigation.findNavController(v).navigate(TemporadaFragmentDirections.actionNavTemporadaToNavCapitulo(serie, position, temporadaFragmentArgs.getNTemporada()));
                 }
             });
             listRecyclerCapitulos.setHasFixedSize(true);
