@@ -3,15 +3,15 @@ package es.iesoretania.entertainmentlounge.Clases.SerieData;
 public class Comentario {
     private String comentario;
     private String id_usuario;
-    private int num_likes;
+    private String id_comentario;
 
     public Comentario() {
     }
 
-    public Comentario(String comentario, String id_usuario, int num_likes) {
+    public Comentario(String comentario, String id_usuario, String id_comentario) {
         this.comentario = comentario;
         this.id_usuario = id_usuario;
-        this.num_likes = num_likes;
+        this.id_comentario = id_comentario;
     }
 
     public String getComentario() {
@@ -30,11 +30,11 @@ public class Comentario {
         this.id_usuario = id_usuario;
     }
 
-    public int getNum_likes() {
-        return num_likes;
+    public String getId_comentario() {
+        return id_comentario;
     }
 
-    public void setNum_likes(int num_likes) {
-        this.num_likes = num_likes;
+    public void setId_comentario(String id_comentario) {
+        this.id_comentario = id_comentario;
     }
 }

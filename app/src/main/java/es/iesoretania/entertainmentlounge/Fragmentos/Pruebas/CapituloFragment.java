@@ -5,22 +5,29 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RatingBar;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.List;
+import java.util.Random;
 
+import es.iesoretania.entertainmentlounge.Adapters.RecyclerComentarios;
 import es.iesoretania.entertainmentlounge.Clases.SaveSerieData.SaveSerie;
 import es.iesoretania.entertainmentlounge.Clases.SerieData.Comentario;
 import es.iesoretania.entertainmentlounge.Clases.SerieData.Serie;
@@ -30,6 +37,9 @@ import es.iesoretania.entertainmentlounge.R;
 public class CapituloFragment extends Fragment {
     RatingBar rbPuntuarCapitulo;
     ImageButton btnMarcarComoVistoCap;
+    RecyclerView listRecyclerComentarios;
+    Button btnCapComentar;
+    EditText etCapComentario;
 
     CapituloFragmentArgs capituloFragmentArgs;
     Serie serie;
@@ -54,6 +64,8 @@ public class CapituloFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         rbPuntuarCapitulo = view.findViewById(R.id.rbPuntuarCapitulo);
         btnMarcarComoVistoCap = view.findViewById(R.id.btnMarcarComoVistoCap);
+        btnCapComentar = view.findViewById(R.id.btnCapComentar);
+        etCapComentario = view.findViewById(R.id.etCapComentario);
         db = FirebaseFirestore.getInstance();
 
         if (getArguments() != null) {
@@ -77,7 +89,8 @@ public class CapituloFragment extends Fragment {
                         btnMarcarComoVistoCap.setImageResource(R.drawable.ic_check_true);
                     }
                     activarGuardarCapitulo();
-
+                    mostrarComentarios();
+                    activarComentarios();
                 }
             }
         });
@@ -105,5 +118,36 @@ public class CapituloFragment extends Fragment {
     private void mostrarComentarios() {
         List<Comentario> listaComentarios = serie.getTemporadas().get(nTemporada).getCapitulos().get(nCapitulo).getListaComentarios();
 
+        RecyclerComentarios recyclerComentarios = new RecyclerComentarios(listaComentarios, getContext());
+
+        listRecyclerComentarios = this.getView().findViewById(R.id.listRecyclerComentarios);
+        listRecyclerComentarios.setHasFixedSize(true);
+        listRecyclerComentarios.setLayoutManager(new LinearLayoutManager(listRecyclerComentarios.getContext()));
+        listRecyclerComentarios.setAdapter(recyclerComentarios);
+    }
+
+    private void activarComentarios() {
+        btnCapComentar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Comentario comentario = new Comentario();
+                comentario.setComentario(etCapComentario.getText().toString());
+                comentario.setId_usuario(UserData.ID_USER_DB);
+                comentario.setId_comentario(generarID(6));
+                serie.getTemporadas().get(nTemporada).getCapitulos().get(nCapitulo).getListaComentarios().add(comentario);
+            }
+        });
+    }
+
+    private String generarID(int tam) {
+        String key = "";
+        Random random = new Random();
+        for (int i = 0; i < tam; i++) {
+            char randomizedCharacter_1 = (char) (random.nextInt(26) + 'A');
+            key += randomizedCharacter_1;
+            char randomizedCharacter_2 = (char) (random.nextInt(26) + 'a');
+            key += randomizedCharacter_2;
+        }
+        return key;
     }
 }
