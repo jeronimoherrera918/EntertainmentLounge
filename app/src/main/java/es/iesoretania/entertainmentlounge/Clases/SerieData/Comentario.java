@@ -1,9 +1,14 @@
 package es.iesoretania.entertainmentlounge.Clases.SerieData;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Comentario {
     private String comentario;
     private String id_usuario;
     private String id_comentario;
+    private Integer nLikes;
+    private List<String> ids_likes;
 
     public Comentario() {
     }
@@ -12,6 +17,8 @@ public class Comentario {
         this.comentario = comentario;
         this.id_usuario = id_usuario;
         this.id_comentario = id_comentario;
+        this.nLikes = 0;
+        ids_likes = new ArrayList<>();
     }
 
     public String getComentario() {
@@ -36,5 +43,21 @@ public class Comentario {
 
     public void setId_comentario(String id_comentario) {
         this.id_comentario = id_comentario;
+    }
+
+    public Integer getnLikes() {
+        return nLikes;
+    }
+
+    public void setnLikes(Integer nLikes) {
+        this.nLikes = nLikes;
+    }
+
+    public List<String> getIds_likes() {
+        return ids_likes;
+    }
+
+    public void setIds_likes(List<String> ids_likes) {
+        this.ids_likes = ids_likes;
     }
 }
