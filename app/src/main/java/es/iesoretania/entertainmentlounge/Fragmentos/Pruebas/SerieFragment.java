@@ -40,8 +40,7 @@ import es.iesoretania.entertainmentlounge.R;
 
 public class SerieFragment extends Fragment {
     TextView tvSerieNombre, tvSerieGenero, tvSerieDescripcion;
-    Button btnSerieSave, btnComentar;
-    EditText etComentario;
+    Button btnSerieSave;
     ListView listaTemporadas;
     String key;
     FirebaseFirestore db;
@@ -67,11 +66,7 @@ public class SerieFragment extends Fragment {
         tvSerieDescripcion = view.findViewById(R.id.tvSerieDescripcion);
         btnSerieSave = view.findViewById(R.id.btnSerieSave);
 
-        /* -- ELEMENTOS TESTS PARA LOS COMENTARIOS -- */
-        btnComentar = view.findViewById(R.id.btnComentar);
         listaTemporadas = view.findViewById(R.id.listaTemporadas);
-        etComentario = view.findViewById(R.id.etComentario);
-        /* --       FIN DE LOS ELEMENTOS TESTS      -- */
 
         if (getArguments() != null) {
             SerieFragmentArgs args = SerieFragmentArgs.fromBundle(getArguments());
@@ -128,7 +123,7 @@ public class SerieFragment extends Fragment {
     private void estadoBotonGuardar(boolean estado) {
         if (!estado) {
             btnSerieSave.setEnabled(false);
-            activarComentarios();
+            btnSerieSave.setBackgroundColor(Color.GRAY);
         } else {
             btnSerieSave.setEnabled(true);
             activarGuardado();
@@ -137,7 +132,6 @@ public class SerieFragment extends Fragment {
 
     private void activarGuardado() {
         btnSerieSave.setBackgroundColor(Color.parseColor("#16618D"));
-        btnComentar.setBackgroundColor(Color.GRAY);
         btnSerieSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -158,24 +152,9 @@ public class SerieFragment extends Fragment {
                         }
                         db.collection("usuarios").document(UserData.ID_USER_DB).collection("series_guardadas").add(saveSerie);
                         btnSerieSave.setEnabled(false);
-                        activarComentarios();
+                        btnSerieSave.setBackgroundColor(Color.GRAY);
                     }
                 });
-            }
-        });
-    }
-
-    private void activarComentarios() {
-        btnComentar.setBackgroundColor(Color.parseColor("#16618D"));
-        btnSerieSave.setBackgroundColor(Color.GRAY);
-        btnComentar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Comentario comentario = new Comentario();
-                comentario.setComentario(etComentario.getText().toString());
-                comentario.setId_usuario(UserData.ID_USER_DB);
-                comentario.setNum_likes(0);
-                db.collection("series").document(key).collection("comentarios").add(comentario);
             }
         });
     }

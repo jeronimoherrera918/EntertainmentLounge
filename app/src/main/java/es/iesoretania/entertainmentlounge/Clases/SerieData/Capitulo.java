@@ -12,10 +12,10 @@ public class Capitulo {
     public Capitulo() {
     }
 
-    public Capitulo(String nombre, int nVotos, Double puntuacion) {
+    public Capitulo(String nombre, Double puntuacion) {
         this.nombre = nombre;
-        this.nVotos = nVotos;
         this.puntuacion = puntuacion;
+        this.nVotos = 0;
         this.listaComentarios = new ArrayList<>();
     }
 

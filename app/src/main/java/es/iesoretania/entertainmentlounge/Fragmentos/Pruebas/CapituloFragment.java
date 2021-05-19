@@ -20,10 +20,13 @@ import android.widget.RatingBar;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -84,13 +87,16 @@ public class CapituloFragment extends Fragment {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
-                    saveSerie = task.getResult().getDocuments().get(0).toObject(SaveSerie.class);
-                    if (saveSerie.getTemporadas().get(nTemporada).getCapitulos_vistos().get(capituloFragmentArgs.getPosition()) == 1) {
-                        btnMarcarComoVistoCap.setImageResource(R.drawable.ic_check_true);
+                    if (task.getResult().size() > 0) {
+                        saveSerie = task.getResult().getDocuments().get(0).toObject(SaveSerie.class);
+                        if (saveSerie.getTemporadas().get(nTemporada).getCapitulos_vistos().get(capituloFragmentArgs.getPosition()) == 1) {
+                            btnMarcarComoVistoCap.setImageResource(R.drawable.ic_check_true);
+                            activarComentarios();
+                            activarPuntuar();
+                        }
+                        activarGuardarCapitulo();
                     }
-                    activarGuardarCapitulo();
                     mostrarComentarios();
-                    activarComentarios();
                 }
             }
         });
@@ -134,7 +140,23 @@ public class CapituloFragment extends Fragment {
                 comentario.setComentario(etCapComentario.getText().toString());
                 comentario.setId_usuario(UserData.ID_USER_DB);
                 comentario.setId_comentario(generarID(6));
-                serie.getTemporadas().get(nTemporada).getCapitulos().get(nCapitulo).getListaComentarios().add(comentario);
+                comentario.setnLikes(0);
+                comentario.setIds_likes(new ArrayList<>());
+                serie.getTemporadas().get(nTemporada).getCapitulos().get(capituloFragmentArgs.getPosition()).getListaComentarios().add(comentario);
+                db.collection("series").document(serie.getId_serie()).set(serie);
+            }
+        });
+    }
+
+    private void activarPuntuar() {
+        rbPuntuarCapitulo.setEnabled(true);
+        rbPuntuarCapitulo.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                // Aquí hacer que si la puntuación actual del usuario es diferente a la que ponga en el RatingBar
+                // Aparezca un botón flotante para guardar los cambios
+                // Si es igual, el botón desaparece (o al darle a este mismo botón para guardar)
+                System.out.println(rating);
             }
         });
     }

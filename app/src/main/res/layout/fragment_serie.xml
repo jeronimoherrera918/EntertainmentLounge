@@ -20,6 +20,9 @@
         android:id="@+id/linearLayout2"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="5dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -62,41 +65,8 @@
         <ListView
             android:id="@+id/listaTemporadas"
             android:layout_width="match_parent"
-            android:layout_height="120dp" />
+            android:layout_height="match_parent" />
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="15dp" />
-
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Pon un comentario en la serie"
-            android:textColor="@color/black"
-            android:textStyle="bold" />
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="8dp" />
-
-        <EditText
-            android:id="@+id/etComentario"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:gravity="start|top"
-            android:hint="Escribe aquí el comentario..."
-            android:inputType="textMultiLine"
-            android:textColorHint="@color/grey" />
-
-        <Button
-            android:id="@+id/btnComentar"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:backgroundTint="#16618D"
-            android:text="Comentar"
-            android:textColor="@color/white" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

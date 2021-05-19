@@ -110,8 +110,8 @@ public class RecyclerCapitulos extends RecyclerView.Adapter<RecyclerCapitulos.Vi
                             if (saveSerieGlobal.getTemporadas().get(nTemporada).getCapitulos_vistos().get(Integer.parseInt(recyclerbtnMarcarComoVisto.getTag().toString())) == 1) {
                                 recyclerbtnMarcarComoVisto.setImageResource(R.drawable.ic_check_true);
                             }
+                            activarBotones();
                         }
-                        activarBotones();
                     }
                 }
             });

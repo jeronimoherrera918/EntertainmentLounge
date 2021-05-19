@@ -65,17 +65,20 @@ public class AddSerieFragment extends Fragment {
         btnAddSerieAgregarCapitulo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Capitulo capitulo = new Capitulo();
-                capitulo.setNombre(etAddSerieNombreCapitulo.getText().toString());
-                capitulo.setPuntuacion(0.0);
+                Capitulo capitulo = new Capitulo(etAddSerieNombreCapitulo.getText().toString(), 0.0);
+//                capitulo.setNombre(etAddSerieNombreCapitulo.getText().toString());
+//                capitulo.setPuntuacion(0.0);
+//                capitulo.setListaComentarios(new ArrayList<>());
+//                capitulo.setnVotos(0);
                 capitulos.add(capitulo);
             }
         });
         btnAddSerieAgregarTemporada.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Temporada temporada = new Temporada();
-                temporada.getCapitulos().addAll(capitulos);
+                Temporada temporada = new Temporada(capitulos, 0.0);
+//                temporada.getCapitulos().addAll(capitulos);
+//                temporada.setPuntuacion(0.0);
                 serie.getTemporadas().add(temporada);
                 capitulos.clear();
             }
