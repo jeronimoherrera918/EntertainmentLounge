@@ -64,13 +64,16 @@ public class AddSerieFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Capitulo capitulo = new Capitulo(etAddSerieNombreCapitulo.getText().toString(), 0.0);
+                System.out.println(capitulo.getNombre());
                 capitulos.add(capitulo);
             }
         });
         btnAddSerieAgregarTemporada.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Temporada temporada = new Temporada(capitulos, 0.0);
+                Temporada temporada = new Temporada();
+                temporada.getCapitulos().addAll(capitulos);
+                temporada.setPuntuacion(0.0);
                 serie.getTemporadas().add(temporada);
                 capitulos.clear();
             }
