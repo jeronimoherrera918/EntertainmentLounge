@@ -31,10 +31,8 @@ public class AddSerieFragment extends Fragment {
     Button btnAddSerieAgregar, btnAddSerieAgregarTemporada, btnAddSerieAgregarCapitulo;
     EditText etAddSerieNombre, etAddSerieGenero, etAddSerieDescripcion, etAddSerieNombreCapitulo;
     Serie serie;
-    // ----- //
     DocumentReference newRef;
     String newKey;
-    // ----- //
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -66,10 +64,6 @@ public class AddSerieFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Capitulo capitulo = new Capitulo(etAddSerieNombreCapitulo.getText().toString(), 0.0);
-//                capitulo.setNombre(etAddSerieNombreCapitulo.getText().toString());
-//                capitulo.setPuntuacion(0.0);
-//                capitulo.setListaComentarios(new ArrayList<>());
-//                capitulo.setnVotos(0);
                 capitulos.add(capitulo);
             }
         });
@@ -77,8 +71,6 @@ public class AddSerieFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Temporada temporada = new Temporada(capitulos, 0.0);
-//                temporada.getCapitulos().addAll(capitulos);
-//                temporada.setPuntuacion(0.0);
                 serie.getTemporadas().add(temporada);
                 capitulos.clear();
             }

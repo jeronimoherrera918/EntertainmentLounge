@@ -59,12 +59,10 @@ public class RecyclerChat extends RecyclerView.Adapter<RecyclerChat.ViewHolder> 
             recyclerMensajeChat = v.findViewById(R.id.recyclerMensajeChat);
             recyclerFechaChat = v.findViewById(R.id.recyclerFechaChat);
             rlMensaje = v.findViewById(R.id.rlMensaje);
-
             if (clickListener != null) {
                 v.setOnClickListener(this);
             }
         }
-
 
         @Override
         public void onClick(View v) {
@@ -78,7 +76,6 @@ public class RecyclerChat extends RecyclerView.Adapter<RecyclerChat.ViewHolder> 
             String formato = "dd-MM-yyyy - HH:mm";
             SimpleDateFormat sdf = new SimpleDateFormat(formato);
             recyclerFechaChat.setText(sdf.format(mensaje.getFecha().toDate()));
-
             if (!mensaje.getIdEmisor().equals(UserData.ID_USER_DB)) {
                 rlMensaje.setBackgroundColor(Color.parseColor("#2887BE"));
                 recyclerMensajeChat.setGravity(Gravity.LEFT);

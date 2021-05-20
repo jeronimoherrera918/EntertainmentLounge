@@ -65,9 +65,7 @@ public class SerieFragment extends Fragment {
         tvSerieGenero = view.findViewById(R.id.tvSerieGenero);
         tvSerieDescripcion = view.findViewById(R.id.tvSerieDescripcion);
         btnSerieSave = view.findViewById(R.id.btnSerieSave);
-
         listaTemporadas = view.findViewById(R.id.listaTemporadas);
-
         if (getArguments() != null) {
             SerieFragmentArgs args = SerieFragmentArgs.fromBundle(getArguments());
             key = args.getKey();

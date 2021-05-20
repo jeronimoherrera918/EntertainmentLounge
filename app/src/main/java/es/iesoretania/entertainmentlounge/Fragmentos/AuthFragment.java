@@ -83,14 +83,12 @@ public class AuthFragment extends Fragment {
 
     private void setup() {
         loadingLogin.setEnabled(false);
-
         tvRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Navigation.findNavController(v).navigate(R.id.action_nav_login_to_nav_register);
             }
         });
-
         btnEntrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

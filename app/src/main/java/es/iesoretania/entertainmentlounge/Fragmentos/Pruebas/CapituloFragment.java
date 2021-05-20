@@ -20,6 +20,7 @@ import android.widget.RatingBar;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.DocumentReference;
@@ -43,12 +44,11 @@ public class CapituloFragment extends Fragment {
     RecyclerView listRecyclerComentarios;
     Button btnCapComentar;
     EditText etCapComentario;
-
+    FloatingActionButton fabGuardarCambiosCap;
     CapituloFragmentArgs capituloFragmentArgs;
     Serie serie;
     Integer nCapitulo, nTemporada;
     SaveSerie saveSerie;
-
     FirebaseFirestore db;
 
     @Override
@@ -69,16 +69,15 @@ public class CapituloFragment extends Fragment {
         btnMarcarComoVistoCap = view.findViewById(R.id.btnMarcarComoVistoCap);
         btnCapComentar = view.findViewById(R.id.btnCapComentar);
         etCapComentario = view.findViewById(R.id.etCapComentario);
+        fabGuardarCambiosCap = view.findViewById(R.id.fabGuardarCambiosCap);
         db = FirebaseFirestore.getInstance();
-
+        rbPuntuarCapitulo.setEnabled(false);
         if (getArguments() != null) {
             capituloFragmentArgs = CapituloFragmentArgs.fromBundle(getArguments());
             serie = capituloFragmentArgs.getSerie();
-            System.out.println(serie.getId_serie());
             nCapitulo = capituloFragmentArgs.getPosition() + 1;
             nTemporada = capituloFragmentArgs.getNTemporada();
         }
-
         comprobacionesIniciales();
     }
 
@@ -148,14 +147,23 @@ public class CapituloFragment extends Fragment {
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
                 if (rating < 0.5f) {
                     ratingBar.setRating(0.5f);
-                    Snackbar.make(rbPuntuarCapitulo.getRootView(), "Si vas a votar, debes ser mayor a cero", Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(rbPuntuarCapitulo.getRootView(), "Si vas a votar, debe ser mayor a cero", Snackbar.LENGTH_SHORT).show();
                 }
                 Double d = Double.valueOf(rating);
                 saveSerie.getTemporadas().get(nTemporada).getCapitulos_puntuacion().set(capituloFragmentArgs.getPosition(), d);
-                // CUANDO OCURRA ESTO, ACTIVAR EL FLOATING ACTION BUTTON DE GUARDAR CAMBIOS //
-                System.out.println(saveSerie.getTemporadas().get(nTemporada).getCapitulos_puntuacion().get(capituloFragmentArgs.getPosition()));
+                // System.out.println(saveSerie.getTemporadas().get(nTemporada).getCapitulos_puntuacion().get(capituloFragmentArgs.getPosition()));
             }
         });
+    }
+
+    private void guardarCambios() {
+        if (saveSerie.getTemporadas().get(nTemporada).getCapitulos_puntuacion().get(capituloFragmentArgs.getPosition()) == 0) {
+            // serie.getTemporadas().get(nTemporada).getCapitulos().get(capituloFragmentArgs.getPosition()).setnVotos(getNVotos() + 1);
+            // Aquí calcular la media pero madre mía esto va a ser un locurón
+            // Hacer una función eficiente para calcular la media (recoger el valor actual + los números de votos + sumarle la nota actual del usuario)
+        } else {
+
+        }
     }
 
     private String generarID(int tam) {

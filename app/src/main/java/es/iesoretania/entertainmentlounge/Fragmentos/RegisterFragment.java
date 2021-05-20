@@ -99,7 +99,7 @@ public class RegisterFragment extends Fragment {
                                                 }).addOnFailureListener(new OnFailureListener() {
                                                     @Override
                                                     public void onFailure(@NonNull Exception e) {
-                                                        Log.d("ERROR", "Verification Email not sent" + e.getMessage());
+                                                        Log.d("ERROR", "Ha ocurrido un error al enviar el correo de verificación" + e.getMessage());
                                                     }
                                                 });
                                                 */

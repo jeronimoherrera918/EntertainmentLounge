@@ -43,10 +43,8 @@ public class RecyclerCapitulos extends RecyclerView.Adapter<RecyclerCapitulos.Vi
     private String idSerie;
     private int nTemporada;
     private Animation inAnimation, outAnimation;
-    // ---------------- //
     SaveSerie saveSerieGlobal;
     DocumentSnapshot dn;
-    // ---------------- //
     FloatingActionButton fabGuardarCambios;
     private int sw = 0;
     ClickListener clickListener;
@@ -59,7 +57,6 @@ public class RecyclerCapitulos extends RecyclerView.Adapter<RecyclerCapitulos.Vi
         this.idSerie = idSerie;
         this.nTemporada = nTemporada;
         this.fabGuardarCambios = fabGuardarCambios;
-
         inAnimation = AnimationUtils.loadAnimation(context, R.anim.fade_in);
         outAnimation = AnimationUtils.loadAnimation(context, R.anim.fade_out);
     }
@@ -95,11 +92,9 @@ public class RecyclerCapitulos extends RecyclerView.Adapter<RecyclerCapitulos.Vi
             recyclerPuntuacionMediaCapitulo = v.findViewById(R.id.recyclerPuntuacionMediaCapitulo);
             recyclerbtnMarcarComoVisto = v.findViewById(R.id.recyclerbtnMarcarComoVisto);
             db = FirebaseFirestore.getInstance();
-
             if (clickListener != null) {
                 v.setOnClickListener(this);
             }
-
             db.collection("usuarios").document(UserData.ID_USER_DB).collection("series_guardadas").whereEqualTo("id_serie", idSerie).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -125,7 +120,6 @@ public class RecyclerCapitulos extends RecyclerView.Adapter<RecyclerCapitulos.Vi
                         sw = 1;
                         fabGuardarCambios.setBackgroundTintList(ColorStateList.valueOf(Color.GREEN));
                     }
-
                     for (int i = 0; i < saveSerieGlobal.getTemporadas().get(nTemporada).getCapitulos_vistos().size(); i++) {
                         if (Integer.parseInt(recyclerbtnMarcarComoVisto.getTag().toString()) == i) {
                             switch (saveSerieGlobal.getTemporadas().get(nTemporada).getCapitulos_vistos().get(Integer.parseInt(recyclerbtnMarcarComoVisto.getTag().toString()))) {

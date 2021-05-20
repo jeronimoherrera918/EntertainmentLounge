@@ -63,12 +63,10 @@ public class ChatFragment extends Fragment {
         btnEnviarMensajeUsuario = view.findViewById(R.id.btnEnviarMensajeUsuario);
         tvEnviarMensajeA = view.findViewById(R.id.tvEnviarMensajeA);
         listRecyclerMensajes = view.findViewById(R.id.listRecyclerMensajes);
-
         if (getArguments() != null) {
             ChatFragmentArgs chatFragmentArgs = ChatFragmentArgs.fromBundle(getArguments());
             keyUser = chatFragmentArgs.getKeyUser();
         }
-
         // ESTO LO MÁS SEGURO ES QUE VAYA FUERA pero de momento se queda //
         db.collection("usuarios").document(keyUser).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -78,15 +76,10 @@ public class ChatFragment extends Fragment {
                 tvEnviarMensajeA.setText("Enviar mensaje a " + nameReceptor);
             }
         });
-
         setupChat();
     }
 
     private void setupChat() {
-        comprobarChats();
-    }
-
-    private void comprobarChats() {
         db.collection("usuarios").document(UserData.ID_USER_DB).collection("chats").whereEqualTo("idReceptor", keyUser).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -96,7 +89,6 @@ public class ChatFragment extends Fragment {
                         chat.setIdReceptor(keyUser);
                         db.collection("usuarios").document(UserData.ID_USER_DB).collection("chats").document().set(chat);
                     }
-
                     db.collection("usuarios").document(keyUser).collection("chats").whereEqualTo("idReceptor", UserData.ID_USER_DB).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -106,7 +98,6 @@ public class ChatFragment extends Fragment {
                                     chat.setIdReceptor(UserData.ID_USER_DB);
                                     db.collection("usuarios").document(keyUser).collection("chats").document().set(chat);
                                 }
-
                                 db.collection("usuarios").document(UserData.ID_USER_DB).collection("chats").whereEqualTo("idReceptor", keyUser).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                     @Override
                                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -117,7 +108,6 @@ public class ChatFragment extends Fragment {
                                             listRecyclerMensajes.setHasFixedSize(true);
                                             listRecyclerMensajes.setLayoutManager(new LinearLayoutManager(listRecyclerMensajes.getContext()));
                                             listRecyclerMensajes.setAdapter(recyclerChat);
-
                                             setupEnviarMensaje();
                                             oyenteChat();
                                         }
@@ -147,7 +137,6 @@ public class ChatFragment extends Fragment {
                             chatEmisor = dn.toObject(Chat.class);
                             chatEmisor.getListaMensajes().add(crearMensaje(keyMensaje, UserData.ID_USER_DB, keyUser, mensaje));
                             db.collection("usuarios").document(UserData.ID_USER_DB).collection("chats").document(dn.getId()).set(chatEmisor);
-
                             db.collection("usuarios").document(keyUser).collection("chats").whereEqualTo("idReceptor", UserData.ID_USER_DB).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                 @Override
                                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -156,7 +145,6 @@ public class ChatFragment extends Fragment {
                                         chatReceptor = dn.toObject(Chat.class);
                                         chatReceptor.getListaMensajes().add(crearMensaje(keyMensaje, UserData.ID_USER_DB, keyUser, mensaje));
                                         db.collection("usuarios").document(keyUser).collection("chats").document(dn.getId()).set(chatReceptor);
-
                                         recyclerChat.setItems(chatEmisor.getListaMensajes());
                                         recyclerChat.notifyDataSetChanged();
                                         listRecyclerMensajes.scrollToPosition(recyclerChat.getItemCount() - 1);
@@ -186,12 +174,7 @@ public class ChatFragment extends Fragment {
     }
 
     private Mensaje crearMensaje(String keyMensaje, String idEmisor, String idReceptor, String tMensaje) {
-        Mensaje mensaje = new Mensaje();
-        mensaje.setIdMensaje(keyMensaje);
-        mensaje.setIdEmisor(idEmisor);
-        mensaje.setIdReceptor(idReceptor);
-        mensaje.setMensaje(tMensaje);
-        mensaje.setFecha(Timestamp.now());
+        Mensaje mensaje = new Mensaje(keyMensaje, idEmisor, idReceptor, tMensaje, Timestamp.now());
         return mensaje;
     }
 
