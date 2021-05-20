@@ -106,6 +106,8 @@ public class CapituloFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (saveSerie.getTemporadas().get(nTemporada).getCapitulos_vistos().get(nCapitulo) == 1) {
+                    // PONER UNA CONFIRMACIÓN DE SI QUIERE REALMENTE MARCARLO COMO "NO VISTO"
+                    // if(condition){...code...}else{...code...} //
                     Animation animation = AnimationUtils.loadAnimation(v.getContext(), R.anim.fade_in);
                     btnMarcarComoVistoCap.startAnimation(animation);
                     saveSerie.getTemporadas().get(nTemporada).getCapitulos_vistos().set(nCapitulo, 0);
