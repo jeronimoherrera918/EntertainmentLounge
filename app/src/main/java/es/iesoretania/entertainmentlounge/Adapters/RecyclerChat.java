@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import es.iesoretania.entertainmentlounge.Clases.SerieData.Mensaje;
@@ -74,7 +75,9 @@ public class RecyclerChat extends RecyclerView.Adapter<RecyclerChat.ViewHolder> 
 
         public void bindData(final Mensaje mensaje) {
             recyclerMensajeChat.setText(mensaje.getMensaje());
-            recyclerFechaChat.setText(mensaje.getFecha().toDate().toString());
+            String formato = "dd-MM-yyyy - HH:mm";
+            SimpleDateFormat sdf = new SimpleDateFormat(formato);
+            recyclerFechaChat.setText(sdf.format(mensaje.getFecha().toDate()));
 
             if (!mensaje.getIdEmisor().equals(UserData.ID_USER_DB)) {
                 rlMensaje.setBackgroundColor(Color.parseColor("#2887BE"));

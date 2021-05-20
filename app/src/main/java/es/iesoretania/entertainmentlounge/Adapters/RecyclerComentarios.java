@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -45,8 +46,11 @@ public class RecyclerComentarios extends RecyclerView.Adapter<RecyclerComentario
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        TextView recyclerComentarioEmisor, recyclerComentarioMensaje;
         public ViewHolder(View v) {
             super(v);
+            recyclerComentarioEmisor = v.findViewById(R.id.recyclerComentarioEmisor);
+            recyclerComentarioMensaje = v.findViewById(R.id.recyclerComentarioMensaje);
         }
 
         @Override
@@ -55,7 +59,8 @@ public class RecyclerComentarios extends RecyclerView.Adapter<RecyclerComentario
         }
 
         public void bindData(final Comentario comentario) {
-
+            recyclerComentarioEmisor.setText(comentario.getId_usuario());
+            recyclerComentarioMensaje.setText(comentario.getComentario());
         }
     }
 }

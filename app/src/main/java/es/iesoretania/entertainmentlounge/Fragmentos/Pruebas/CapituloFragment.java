@@ -122,10 +122,8 @@ public class CapituloFragment extends Fragment {
     }
 
     private void mostrarComentarios() {
-        List<Comentario> listaComentarios = serie.getTemporadas().get(nTemporada).getCapitulos().get(nCapitulo).getListaComentarios();
-
+        List<Comentario> listaComentarios = serie.getTemporadas().get(nTemporada).getCapitulos().get(capituloFragmentArgs.getPosition()).getListaComentarios();
         RecyclerComentarios recyclerComentarios = new RecyclerComentarios(listaComentarios, getContext());
-
         listRecyclerComentarios = this.getView().findViewById(R.id.listRecyclerComentarios);
         listRecyclerComentarios.setHasFixedSize(true);
         listRecyclerComentarios.setLayoutManager(new LinearLayoutManager(listRecyclerComentarios.getContext()));
@@ -136,12 +134,7 @@ public class CapituloFragment extends Fragment {
         btnCapComentar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Comentario comentario = new Comentario();
-                comentario.setComentario(etCapComentario.getText().toString());
-                comentario.setId_usuario(UserData.ID_USER_DB);
-                comentario.setId_comentario(generarID(6));
-                comentario.setnLikes(0);
-                comentario.setIds_likes(new ArrayList<>());
+                Comentario comentario = new Comentario(etCapComentario.getText().toString(), UserData.ID_USER_DB, generarID(6));
                 serie.getTemporadas().get(nTemporada).getCapitulos().get(capituloFragmentArgs.getPosition()).getListaComentarios().add(comentario);
                 db.collection("series").document(serie.getId_serie()).set(serie);
             }
@@ -153,10 +146,14 @@ public class CapituloFragment extends Fragment {
         rbPuntuarCapitulo.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                // Aquí hacer que si la puntuación actual del usuario es diferente a la que ponga en el RatingBar
-                // Aparezca un botón flotante para guardar los cambios
-                // Si es igual, el botón desaparece (o al darle a este mismo botón para guardar)
-                System.out.println(rating);
+                if (rating < 0.5f) {
+                    ratingBar.setRating(0.5f);
+                    Snackbar.make(rbPuntuarCapitulo.getRootView(), "Si vas a votar, debes ser mayor a cero", Snackbar.LENGTH_SHORT).show();
+                }
+                Double d = Double.valueOf(rating);
+                saveSerie.getTemporadas().get(nTemporada).getCapitulos_puntuacion().set(capituloFragmentArgs.getPosition(), d);
+                // CUANDO OCURRA ESTO, ACTIVAR EL FLOATING ACTION BUTTON DE GUARDAR CAMBIOS //
+                System.out.println(saveSerie.getTemporadas().get(nTemporada).getCapitulos_puntuacion().get(capituloFragmentArgs.getPosition()));
             }
         });
     }
