@@ -25,9 +25,10 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        app:backgroundTint="@color/grey"
         android:clickable="true"
+        android:enabled="false"
         android:src="@drawable/ic_confirm_changes"
+        app:backgroundTint="@color/azul_app"
         app:borderWidth="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />

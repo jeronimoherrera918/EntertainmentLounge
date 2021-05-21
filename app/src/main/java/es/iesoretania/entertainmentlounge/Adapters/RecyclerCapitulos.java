@@ -118,7 +118,8 @@ public class RecyclerCapitulos extends RecyclerView.Adapter<RecyclerCapitulos.Vi
                 public void onClick(View v) {
                     if (sw == 0) {
                         sw = 1;
-                        fabGuardarCambios.setBackgroundTintList(ColorStateList.valueOf(Color.GREEN));
+                        fabGuardarCambios.setEnabled(true);
+                        // fabGuardarCambios.setBackgroundTintList(ColorStateList.valueOf(Color.GREEN));
                     }
                     for (int i = 0; i < saveSerieGlobal.getTemporadas().get(nTemporada).getCapitulos_vistos().size(); i++) {
                         if (Integer.parseInt(recyclerbtnMarcarComoVisto.getTag().toString()) == i) {
@@ -149,7 +150,8 @@ public class RecyclerCapitulos extends RecyclerView.Adapter<RecyclerCapitulos.Vi
                 public void onClick(View v) {
                     sw = 0;
                     db.collection("usuarios").document(UserData.ID_USER_DB).collection("series_guardadas").document(dn.getId()).set(saveSerieGlobal);
-                    fabGuardarCambios.setBackgroundTintList(ColorStateList.valueOf(Color.DKGRAY));
+                    fabGuardarCambios.setEnabled(false);
+                    // fabGuardarCambios.setBackgroundTintList(ColorStateList.valueOf(Color.DKGRAY));
                     Snackbar.make(v, "Cambios guardados correctamente", Snackbar.LENGTH_SHORT).setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE).setBackgroundTint(Color.DKGRAY).show();
                 }
             });

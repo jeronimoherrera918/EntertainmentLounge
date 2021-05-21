@@ -89,6 +89,8 @@ public class CapituloFragment extends Fragment {
                     if (task.getResult().size() > 0) {
                         saveSerie = task.getResult().getDocuments().get(0).toObject(SaveSerie.class);
                         if (saveSerie.getTemporadas().get(nTemporada).getCapitulos_vistos().get(capituloFragmentArgs.getPosition()) == 1) {
+                            Float f = Float.valueOf(String.valueOf(saveSerie.getTemporadas().get(nTemporada).getCapitulos_puntuacion().get(capituloFragmentArgs.getPosition())));
+                            rbPuntuarCapitulo.setRating(f);
                             btnMarcarComoVistoCap.setImageResource(R.drawable.ic_check_true);
                             activarComentarios();
                             activarPuntuar();
@@ -147,13 +149,9 @@ public class CapituloFragment extends Fragment {
         rbPuntuarCapitulo.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                if (rating < 0.5f) {
-                    ratingBar.setRating(0.5f);
-                    Snackbar.make(rbPuntuarCapitulo.getRootView(), "Si vas a votar, debe ser mayor a cero", Snackbar.LENGTH_SHORT).show();
-                }
                 Double d = Double.valueOf(rating);
                 saveSerie.getTemporadas().get(nTemporada).getCapitulos_puntuacion().set(capituloFragmentArgs.getPosition(), d);
-                // System.out.println(saveSerie.getTemporadas().get(nTemporada).getCapitulos_puntuacion().get(capituloFragmentArgs.getPosition()));
+                fabGuardarCambiosCap.setEnabled(true);
             }
         });
     }
