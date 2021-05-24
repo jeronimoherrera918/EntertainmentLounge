@@ -2,6 +2,7 @@ package es.iesoretania.entertainmentlounge.Fragmentos;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -16,11 +17,14 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -29,6 +33,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import es.iesoretania.entertainmentlounge.Clases.UserData;
 import es.iesoretania.entertainmentlounge.Clases.Usuario;
@@ -41,8 +47,10 @@ public class AuthFragment extends Fragment {
     TextView tvRegister;
     ProgressBar loadingLogin;
     CheckBox chkbxMantenerSesion;
+    ImageView imgLogoApp;
     FirebaseAuth fAuth;
     FirebaseFirestore db;
+    FirebaseStorage firebaseStorage;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -60,7 +68,7 @@ public class AuthFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if (FirebaseAuth.getInstance().getCurrentUser() != null && UserData.ID_USER_DB != null) { // Si ya hay un usuario logueado, no podrá llegar a este fragmento nunca
+        if (FirebaseAuth.getInstance().getCurrentUser() != null && UserData.ID_USER_DB != null) {
             Log.d("USER:LOGGED", FirebaseAuth.getInstance().getCurrentUser().getEmail());
             Log.d("USER:LOGGED", FirebaseAuth.getInstance().getCurrentUser().getUid());
             Navigation.findNavController(view).navigate(R.id.action_nav_login_to_profileFragment);
@@ -76,9 +84,28 @@ public class AuthFragment extends Fragment {
         tvRegister = view.findViewById(R.id.tvRegister);
         chkbxMantenerSesion = view.findViewById(R.id.chkbxMantenerSesion);
         loadingLogin = view.findViewById(R.id.loadingLogin);
+        imgLogoApp = view.findViewById(R.id.imgLogoApp);
         fAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         setup();
+
+
+        /*
+             SUBIR FOTOS A FIREBASE STORAGE Y PODER UTILIZARLAS POR NOMBRE //
+             ORDENAR LAS FOTOS POR CARPETAS
+             - FOTOS DE PERFIL
+             - FOTOS PARA LAS SERIES
+
+        firebaseStorage = FirebaseStorage.getInstance("gs://connectfirebasetest-9a345.appspot.com");
+        StorageReference storageReference = firebaseStorage.getReference().child("Pie1900x600.jpg");
+        storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Glide.with(getContext()).load(uri).into(imgLogoApp);
+            }
+        });
+        */
+        Glide.with(getContext()).load("https://upload.wikimedia.org/wikipedia/commons/8/85/Logo-Test.png").into(imgLogoApp);
     }
 
     private void setup() {

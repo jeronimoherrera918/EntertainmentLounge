@@ -1,5 +1,6 @@
 package es.iesoretania.entertainmentlounge.Fragmentos.Pruebas;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -19,6 +20,7 @@ import android.widget.ImageButton;
 import android.widget.RatingBar;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
@@ -108,7 +110,7 @@ public class CapituloFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (saveSerie.getTemporadas().get(nTemporada).getCapitulos_vistos().get(nCapitulo) == 1) {
-                    // PONER UNA CONFIRMACIÓN DE SI QUIERE REALMENTE MARCARLO COMO "NO VISTO"
+                    // PONER UNA CONFIRMACIÓN DE SI QUIERE REALMENTE MARCARLO COMO "NO VISTO" //
                     // if(condition){...code...}else{...code...} //
                     Animation animation = AnimationUtils.loadAnimation(v.getContext(), R.anim.fade_in);
                     btnMarcarComoVistoCap.startAnimation(animation);
@@ -150,20 +152,48 @@ public class CapituloFragment extends Fragment {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
                 Double d = Double.valueOf(rating);
-                saveSerie.getTemporadas().get(nTemporada).getCapitulos_puntuacion().set(capituloFragmentArgs.getPosition(), d);
                 fabGuardarCambiosCap.setEnabled(true);
+                activarGuardarCambios();
+            }
+        });
+    }
+
+    private void activarGuardarCambios() {
+        fabGuardarCambiosCap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                guardarCambios();
             }
         });
     }
 
     private void guardarCambios() {
-        if (saveSerie.getTemporadas().get(nTemporada).getCapitulos_puntuacion().get(capituloFragmentArgs.getPosition()) == 0) {
-            // serie.getTemporadas().get(nTemporada).getCapitulos().get(capituloFragmentArgs.getPosition()).setnVotos(getNVotos() + 1);
-            // Aquí calcular la media pero madre mía esto va a ser un locurón
-            // Hacer una función eficiente para calcular la media (recoger el valor actual + los números de votos + sumarle la nota actual del usuario)
-        } else {
-
+        if (saveSerie.getTemporadas().get(nTemporada).getCapitulos_puntuacion().get(capituloFragmentArgs.getPosition()) == 0 && rbPuntuarCapitulo.getRating() > 0f) {
+            // ESTO ACTUALIZA PUNTUACIÓN DE UN CAPÍTULO EN CONCRETO //
+            int nVotosActuales = serie.getTemporadas().get(nTemporada).getCapitulos().get(capituloFragmentArgs.getPosition()).getnVotos() + 1;
+            double puntuacionActual = serie.getTemporadas().get(nTemporada).getCapitulos().get(capituloFragmentArgs.getPosition()).getPuntuacionTotal() + Double.valueOf(rbPuntuarCapitulo.getRating());
+            serie.getTemporadas().get(nTemporada).getCapitulos().get(capituloFragmentArgs.getPosition()).setnVotos(nVotosActuales);
+            serie.getTemporadas().get(nTemporada).getCapitulos().get(capituloFragmentArgs.getPosition()).setPuntuacionTotal(puntuacionActual);
+            serie.getTemporadas().get(nTemporada).getCapitulos().get(capituloFragmentArgs.getPosition()).setPuntuacion(puntuacionActual / nVotosActuales);
+            saveSerie.getTemporadas().get(nTemporada).getCapitulos_puntuacion().set(capituloFragmentArgs.getPosition(), Double.valueOf(rbPuntuarCapitulo.getRating()));
         }
+        db.collection("series").document(serie.getId_serie()).set(serie).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                db.collection("usuarios").document(UserData.ID_USER_DB).collection("series_guardadas").whereEqualTo("id_serie", serie.getId_serie()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        db.collection("usuarios").document(UserData.ID_USER_DB).collection("series_guardadas").document(task.getResult().getDocuments().get(0).getId()).set(saveSerie).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Snackbar.make(getView(), "Cambios guardados correctamente", Snackbar.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                });
+            }
+        });
+        fabGuardarCambiosCap.setEnabled(false);
     }
 
     private String generarID(int tam) {

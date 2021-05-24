@@ -7,6 +7,7 @@ public class Capitulo {
     private String nombre;
     private int nVotos;
     private Double puntuacion;
+    private Double puntuacionTotal;
     private List<Comentario> listaComentarios;
 
     public Capitulo() {
@@ -15,6 +16,7 @@ public class Capitulo {
     public Capitulo(String nombre, Double puntuacion) {
         this.nombre = nombre;
         this.puntuacion = puntuacion;
+        this.puntuacionTotal = 0.0;
         this.nVotos = 0;
         this.listaComentarios = new ArrayList<>();
     }
@@ -41,6 +43,14 @@ public class Capitulo {
 
     public void setPuntuacion(Double puntuacion) {
         this.puntuacion = puntuacion;
+    }
+
+    public Double getPuntuacionTotal() {
+        return puntuacionTotal;
+    }
+
+    public void setPuntuacionTotal(Double puntuacionTotal) {
+        this.puntuacionTotal = puntuacionTotal;
     }
 
     public List<Comentario> getListaComentarios() {
