@@ -23,6 +23,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import es.iesoretania.entertainmentlounge.Clases.SerieData.Serie;
 import es.iesoretania.entertainmentlounge.Clases.UserData;
 import es.iesoretania.entertainmentlounge.Clases.Usuario;
 import es.iesoretania.entertainmentlounge.R;
@@ -55,6 +56,7 @@ public class ProfileFragment extends Fragment {
         imgProfileFoto = view.findViewById(R.id.imgProfileFoto);
         fAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
+
         db.collection("usuarios").document(UserData.ID_USER_DB).collection("series_guardadas").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {

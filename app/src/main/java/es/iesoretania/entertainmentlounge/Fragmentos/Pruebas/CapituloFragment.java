@@ -49,9 +49,10 @@ public class CapituloFragment extends Fragment {
     FloatingActionButton fabGuardarCambiosCap;
     CapituloFragmentArgs capituloFragmentArgs;
     Serie serie;
-    Integer nCapitulo, nTemporada;
+    Integer nCapitulo, nCapituloPos, nTemporada;
     SaveSerie saveSerie;
     FirebaseFirestore db;
+    Boolean sw = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -78,6 +79,7 @@ public class CapituloFragment extends Fragment {
             capituloFragmentArgs = CapituloFragmentArgs.fromBundle(getArguments());
             serie = capituloFragmentArgs.getSerie();
             nCapitulo = capituloFragmentArgs.getPosition() + 1;
+            nCapituloPos = capituloFragmentArgs.getPosition();
             nTemporada = capituloFragmentArgs.getNTemporada();
         }
         comprobacionesIniciales();
@@ -90,13 +92,16 @@ public class CapituloFragment extends Fragment {
                 if (task.isSuccessful()) {
                     if (task.getResult().size() > 0) {
                         saveSerie = task.getResult().getDocuments().get(0).toObject(SaveSerie.class);
-                        if (saveSerie.getTemporadas().get(nTemporada).getCapitulos_vistos().get(capituloFragmentArgs.getPosition()) == 1) {
-                            Float f = Float.valueOf(String.valueOf(saveSerie.getTemporadas().get(nTemporada).getCapitulos_puntuacion().get(capituloFragmentArgs.getPosition())));
+                        if (saveSerie.getTemporadas().get(nTemporada).getCapitulos_vistos().get(nCapituloPos) == 1) {
+                            Float f = Float.valueOf(String.valueOf(saveSerie.getTemporadas().get(nTemporada).getCapitulos_puntuacion().get(nCapituloPos)));
                             rbPuntuarCapitulo.setRating(f);
                             btnMarcarComoVistoCap.setImageResource(R.drawable.ic_check_true);
-                            activarComentarios();
-                            activarPuntuar();
+                        } else {
+                            rbPuntuarCapitulo.setEnabled(false);
+                            btnCapComentar.setEnabled(false);
                         }
+                        activarComentarios();
+                        activarPuntuar();
                         activarGuardarCapitulo();
                     }
                     mostrarComentarios();
@@ -109,25 +114,36 @@ public class CapituloFragment extends Fragment {
         btnMarcarComoVistoCap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (saveSerie.getTemporadas().get(nTemporada).getCapitulos_vistos().get(nCapitulo) == 1) {
+                if (!sw) {
+                    sw = true;
+                    fabGuardarCambiosCap.setEnabled(true);
+                    activarGuardarCambios();
+                }
+
+                if (saveSerie.getTemporadas().get(nTemporada).getCapitulos_vistos().get(nCapituloPos) == 1) {
                     // PONER UNA CONFIRMACIÓN DE SI QUIERE REALMENTE MARCARLO COMO "NO VISTO" //
                     // if(condition){...code...}else{...code...} //
                     Animation animation = AnimationUtils.loadAnimation(v.getContext(), R.anim.fade_in);
                     btnMarcarComoVistoCap.startAnimation(animation);
-                    saveSerie.getTemporadas().get(nTemporada).getCapitulos_vistos().set(nCapitulo, 0);
+                    saveSerie.getTemporadas().get(nTemporada).getCapitulos_vistos().set(nCapituloPos, 0);
                     btnMarcarComoVistoCap.setImageResource(R.drawable.ic_check_false);
+                    rbPuntuarCapitulo.setRating(0f);
+                    rbPuntuarCapitulo.setEnabled(false);
+                    btnCapComentar.setEnabled(false);
                 } else {
                     Animation animation = AnimationUtils.loadAnimation(v.getContext(), R.anim.fade_in);
                     btnMarcarComoVistoCap.startAnimation(animation);
-                    saveSerie.getTemporadas().get(nTemporada).getCapitulos_vistos().set(nCapitulo, 1);
+                    saveSerie.getTemporadas().get(nTemporada).getCapitulos_vistos().set(nCapituloPos, 1);
                     btnMarcarComoVistoCap.setImageResource(R.drawable.ic_check_true);
+                    rbPuntuarCapitulo.setEnabled(true);
+                    btnCapComentar.setEnabled(true);
                 }
             }
         });
     }
 
     private void mostrarComentarios() {
-        List<Comentario> listaComentarios = serie.getTemporadas().get(nTemporada).getCapitulos().get(capituloFragmentArgs.getPosition()).getListaComentarios();
+        List<Comentario> listaComentarios = serie.getTemporadas().get(nTemporada).getCapitulos().get(nCapituloPos).getListaComentarios();
         RecyclerComentarios recyclerComentarios = new RecyclerComentarios(listaComentarios, getContext());
         listRecyclerComentarios = this.getView().findViewById(R.id.listRecyclerComentarios);
         listRecyclerComentarios.setHasFixedSize(true);
@@ -140,20 +156,21 @@ public class CapituloFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Comentario comentario = new Comentario(etCapComentario.getText().toString(), UserData.ID_USER_DB, generarID(6));
-                serie.getTemporadas().get(nTemporada).getCapitulos().get(capituloFragmentArgs.getPosition()).getListaComentarios().add(comentario);
+                serie.getTemporadas().get(nTemporada).getCapitulos().get(nCapituloPos).getListaComentarios().add(comentario);
                 db.collection("series").document(serie.getId_serie()).set(serie);
             }
         });
     }
 
     private void activarPuntuar() {
-        rbPuntuarCapitulo.setEnabled(true);
         rbPuntuarCapitulo.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                Double d = Double.valueOf(rating);
-                fabGuardarCambiosCap.setEnabled(true);
-                activarGuardarCambios();
+                if (!sw) {
+                    sw = true;
+                    fabGuardarCambiosCap.setEnabled(true);
+                    activarGuardarCambios();
+                }
             }
         });
     }
@@ -168,15 +185,42 @@ public class CapituloFragment extends Fragment {
     }
 
     private void guardarCambios() {
-        if (saveSerie.getTemporadas().get(nTemporada).getCapitulos_puntuacion().get(capituloFragmentArgs.getPosition()) == 0 && rbPuntuarCapitulo.getRating() > 0f) {
-            // ESTO ACTUALIZA PUNTUACIÓN DE UN CAPÍTULO EN CONCRETO //
-            int nVotosActuales = serie.getTemporadas().get(nTemporada).getCapitulos().get(capituloFragmentArgs.getPosition()).getnVotos() + 1;
-            double puntuacionActual = serie.getTemporadas().get(nTemporada).getCapitulos().get(capituloFragmentArgs.getPosition()).getPuntuacionTotal() + Double.valueOf(rbPuntuarCapitulo.getRating());
-            serie.getTemporadas().get(nTemporada).getCapitulos().get(capituloFragmentArgs.getPosition()).setnVotos(nVotosActuales);
-            serie.getTemporadas().get(nTemporada).getCapitulos().get(capituloFragmentArgs.getPosition()).setPuntuacionTotal(puntuacionActual);
-            serie.getTemporadas().get(nTemporada).getCapitulos().get(capituloFragmentArgs.getPosition()).setPuntuacion(puntuacionActual / nVotosActuales);
-            saveSerie.getTemporadas().get(nTemporada).getCapitulos_puntuacion().set(capituloFragmentArgs.getPosition(), Double.valueOf(rbPuntuarCapitulo.getRating()));
+        // SI ES LA PRIMERA VEZ QUE PUNTUA UN CAPÍTULO //
+        if (saveSerie.getTemporadas().get(nTemporada).getCapitulos_puntuacion().get(nCapituloPos) == 0 && rbPuntuarCapitulo.getRating() > 0f) {
+            int nVotosActuales = serie.getTemporadas().get(nTemporada).getCapitulos().get(nCapituloPos).getnVotos() + 1;
+            double puntuacionActual = serie.getTemporadas().get(nTemporada).getCapitulos().get(nCapituloPos).getPuntuacionTotal() + Double.valueOf(rbPuntuarCapitulo.getRating());
+            serie.getTemporadas().get(nTemporada).getCapitulos().get(nCapituloPos).setnVotos(nVotosActuales);
+            serie.getTemporadas().get(nTemporada).getCapitulos().get(nCapituloPos).setPuntuacionTotal(puntuacionActual);
+            serie.getTemporadas().get(nTemporada).getCapitulos().get(nCapituloPos).setPuntuacion(puntuacionActual / nVotosActuales);
+            saveSerie.getTemporadas().get(nTemporada).getCapitulos_puntuacion().set(nCapituloPos, Double.valueOf(rbPuntuarCapitulo.getRating()));
         }
+
+        // SI YA LO HA PUNTUADO ANTERIORMENTE //
+        if (saveSerie.getTemporadas().get(nTemporada).getCapitulos_puntuacion().get(nCapituloPos) != 0 && rbPuntuarCapitulo.getRating() > 0f) {
+            int nVotosActuales = serie.getTemporadas().get(nTemporada).getCapitulos().get(nCapituloPos).getnVotos();
+            double puntuacionActual = serie.getTemporadas().get(nTemporada).getCapitulos().get(nCapituloPos).getPuntuacionTotal() - saveSerie.getTemporadas().get(nTemporada).getCapitulos_puntuacion().get(nCapituloPos) + Double.valueOf(rbPuntuarCapitulo.getRating());
+            serie.getTemporadas().get(nTemporada).getCapitulos().get(nCapituloPos).setPuntuacionTotal(puntuacionActual);
+            serie.getTemporadas().get(nTemporada).getCapitulos().get(nCapituloPos).setPuntuacion(puntuacionActual / nVotosActuales);
+            saveSerie.getTemporadas().get(nTemporada).getCapitulos_puntuacion().set(nCapituloPos, Double.valueOf(rbPuntuarCapitulo.getRating()));
+        }
+
+        // SI LO DESMARCA COMO VISTO //
+        if (saveSerie.getTemporadas().get(nTemporada).getCapitulos_vistos().get(nCapituloPos) == 0) {
+            if (saveSerie.getTemporadas().get(nTemporada).getCapitulos_puntuacion().get(nCapituloPos) != 0) {
+                int nVotosActuales = serie.getTemporadas().get(nTemporada).getCapitulos().get(nCapituloPos).getnVotos() - 1;
+                double puntuacionActual = serie.getTemporadas().get(nTemporada).getCapitulos().get(nCapituloPos).getPuntuacionTotal() - saveSerie.getTemporadas().get(nTemporada).getCapitulos_puntuacion().get(nCapituloPos);
+                serie.getTemporadas().get(nTemporada).getCapitulos().get(nCapituloPos).setnVotos(nVotosActuales);
+                if (nVotosActuales == 0) {
+                    serie.getTemporadas().get(nTemporada).getCapitulos().get(nCapituloPos).setPuntuacion(0.0);
+                    serie.getTemporadas().get(nTemporada).getCapitulos().get(nCapituloPos).setPuntuacionTotal(0.0);
+                } else {
+                    serie.getTemporadas().get(nTemporada).getCapitulos().get(nCapituloPos).setPuntuacion(puntuacionActual / nVotosActuales);
+                    serie.getTemporadas().get(nTemporada).getCapitulos().get(nCapituloPos).setPuntuacionTotal(puntuacionActual);
+                }
+            }
+            saveSerie.getTemporadas().get(nTemporada).getCapitulos_puntuacion().set(nCapituloPos, 0.0);
+        }
+
         db.collection("series").document(serie.getId_serie()).set(serie).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
@@ -193,6 +237,8 @@ public class CapituloFragment extends Fragment {
                 });
             }
         });
+
+        sw = false;
         fabGuardarCambiosCap.setEnabled(false);
     }
 

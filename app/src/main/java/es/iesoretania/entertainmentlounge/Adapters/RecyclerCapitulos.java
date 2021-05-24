@@ -119,7 +119,6 @@ public class RecyclerCapitulos extends RecyclerView.Adapter<RecyclerCapitulos.Vi
                     if (sw == 0) {
                         sw = 1;
                         fabGuardarCambios.setEnabled(true);
-                        // fabGuardarCambios.setBackgroundTintList(ColorStateList.valueOf(Color.GREEN));
                     }
                     for (int i = 0; i < saveSerieGlobal.getTemporadas().get(nTemporada).getCapitulos_vistos().size(); i++) {
                         if (Integer.parseInt(recyclerbtnMarcarComoVisto.getTag().toString()) == i) {
@@ -148,10 +147,12 @@ public class RecyclerCapitulos extends RecyclerView.Adapter<RecyclerCapitulos.Vi
             fabGuardarCambios.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    /*
+                        TODO: Cuando desmarcamos un episodio como visto desde aquí, hacer las mismas comprobaciones que en CapituloFragment
+                    */
                     sw = 0;
                     db.collection("usuarios").document(UserData.ID_USER_DB).collection("series_guardadas").document(dn.getId()).set(saveSerieGlobal);
                     fabGuardarCambios.setEnabled(false);
-                    // fabGuardarCambios.setBackgroundTintList(ColorStateList.valueOf(Color.DKGRAY));
                     Snackbar.make(v, "Cambios guardados correctamente", Snackbar.LENGTH_SHORT).setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE).setBackgroundTint(Color.DKGRAY).show();
                 }
             });
