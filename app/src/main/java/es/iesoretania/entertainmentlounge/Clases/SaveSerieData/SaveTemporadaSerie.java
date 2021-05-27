@@ -6,6 +6,7 @@ import java.util.List;
 public class SaveTemporadaSerie {
     private List<Integer> capitulos_vistos = new ArrayList<>();
     private List<Double> capitulos_puntuacion = new ArrayList<>();
+    private boolean vistaCompleta;
 
     public SaveTemporadaSerie() {
     }
@@ -13,6 +14,7 @@ public class SaveTemporadaSerie {
     public SaveTemporadaSerie(List<Integer> capitulos_vistos, List<Double> capitulos_puntuacion) {
         this.capitulos_vistos = capitulos_vistos;
         this.capitulos_puntuacion = capitulos_puntuacion;
+        this.vistaCompleta = false;
     }
 
     public List<Integer> getCapitulos_vistos() {
@@ -29,5 +31,13 @@ public class SaveTemporadaSerie {
 
     public void setCapitulos_puntuacion(List<Double> capitulos_puntuacion) {
         this.capitulos_puntuacion = capitulos_puntuacion;
+    }
+
+    public boolean isVistaCompleta() {
+        return vistaCompleta;
+    }
+
+    public void setVistaCompleta(boolean vistaCompleta) {
+        this.vistaCompleta = vistaCompleta;
     }
 }

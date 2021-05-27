@@ -74,6 +74,7 @@ public class AddSerieFragment extends Fragment {
                 Temporada temporada = new Temporada();
                 temporada.getCapitulos().addAll(capitulos);
                 temporada.setPuntuacion(0.0);
+                temporada.setPuntuacionTotal(0.0);
                 serie.getTemporadas().add(temporada);
                 capitulos.clear();
             }
