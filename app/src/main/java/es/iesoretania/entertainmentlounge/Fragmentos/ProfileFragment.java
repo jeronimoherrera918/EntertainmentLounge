@@ -49,6 +49,8 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        //region Declaración de los elementos del fragmento
         btnAddSerie = view.findViewById(R.id.btnAddSerie);
         tvNumSeriesGuardadas = view.findViewById(R.id.tvNumSeriesGuardadas);
         tvProfileNombre = view.findViewById(R.id.tvProfileNombre);
@@ -56,6 +58,7 @@ public class ProfileFragment extends Fragment {
         imgProfileFoto = view.findViewById(R.id.imgProfileFoto);
         fAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
+        //endregion
 
         db.collection("usuarios").document(UserData.ID_USER_DB).collection("series_guardadas").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
