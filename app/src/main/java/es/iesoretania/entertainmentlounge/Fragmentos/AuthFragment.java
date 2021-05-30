@@ -1,7 +1,9 @@
 package es.iesoretania.entertainmentlounge.Fragmentos;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -26,6 +28,7 @@ import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
@@ -68,98 +71,98 @@ public class AuthFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if (FirebaseAuth.getInstance().getCurrentUser() != null && UserData.ID_USER_DB != null) {
+
+        fAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
+
+        //region Comprobar si ha mantenido la sesión iniciada
+        if (comprobarSesion() && UserData.ID_USER_DB == null) {
+            FirebaseAuth.getInstance().signOut();
+            SharedPreferences sharedPreferences = getContext().getSharedPreferences("credenciales", Context.MODE_PRIVATE);
+            entrar(sharedPreferences.getString("email", "null"), sharedPreferences.getString("password", "null"));
+        } else if (FirebaseAuth.getInstance().getCurrentUser() != null && UserData.ID_USER_DB != null) {
             Log.d("USER:LOGGED", FirebaseAuth.getInstance().getCurrentUser().getEmail());
             Log.d("USER:LOGGED", FirebaseAuth.getInstance().getCurrentUser().getUid());
             Navigation.findNavController(view).navigate(R.id.action_nav_login_to_profileFragment);
-        } else if (FirebaseAuth.getInstance().getCurrentUser() != null && UserData.ID_USER_DB == null) {
+        } else {
             FirebaseAuth.getInstance().signOut();
-        } // else if (CHECKBOX MARCADO) {}
+        }
+        //endregion
+
+        //region Declaración de los elementos del fragmento
         btnEntrar = view.findViewById(R.id.btnEntrar);
         btnEntrar.setEnabled(true);
+
         etEmail = view.findViewById(R.id.etEmail);
         etPassword = view.findViewById(R.id.etPassword);
-        etEmail.setText("jerohg98@gmail.com");
-        etPassword.setText("jero1234");
+
         tvRegister = view.findViewById(R.id.tvRegister);
         chkbxMantenerSesion = view.findViewById(R.id.chkbxMantenerSesion);
         loadingLogin = view.findViewById(R.id.loadingLogin);
         imgLogoApp = view.findViewById(R.id.imgLogoApp);
-        fAuth = FirebaseAuth.getInstance();
-        db = FirebaseFirestore.getInstance();
-        setup();
+        //endregion
 
+        loguearse();
 
-        /*
-             SUBIR FOTOS A FIREBASE STORAGE Y PODER UTILIZARLAS POR NOMBRE //
-             ORDENAR LAS FOTOS POR CARPETAS
-             - FOTOS DE PERFIL
-             - FOTOS PARA LAS SERIES
-
-        firebaseStorage = FirebaseStorage.getInstance("gs://connectfirebasetest-9a345.appspot.com");
-        StorageReference storageReference = firebaseStorage.getReference().child("Pie1900x600.jpg");
-        storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                Glide.with(getContext()).load(uri).into(imgLogoApp);
-            }
-        });
-        */
+        // TEMPORAL
         Glide.with(getContext()).load("https://upload.wikimedia.org/wikipedia/commons/8/85/Logo-Test.png").into(imgLogoApp);
     }
 
-    private void setup() {
+    private void mantenerSesion() {
+        if (chkbxMantenerSesion.isChecked()) {
+            SharedPreferences sharedPreferences = getContext().getSharedPreferences("credenciales", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putBoolean("mantenerSesion", true);
+            editor.putString("email", etEmail.getText().toString());
+            editor.putString("password", etPassword.getText().toString());
+            editor.apply();
+        }
+    }
+
+    private boolean comprobarSesion() {
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences("credenciales", Context.MODE_PRIVATE);
+        return sharedPreferences.getBoolean("mantenerSesion", false);
+    }
+
+    private void loguearse() {
         loadingLogin.setEnabled(false);
-        tvRegister.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Navigation.findNavController(v).navigate(R.id.action_nav_login_to_nav_register);
+        tvRegister.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_nav_login_to_nav_register));
+
+        btnEntrar.setOnClickListener(v -> {
+            loadingLogin.setEnabled(true);
+            loadingLogin.setVisibility(View.VISIBLE);
+            if (!etEmail.getText().toString().isEmpty() && !etPassword.getText().toString().isEmpty()) {
+                entrar(etEmail.getText().toString(), etPassword.getText().toString());
+            } else {
+                Snackbar.make(v, "Debes introducir todos los datos antes de intentar entrar", Snackbar.LENGTH_SHORT).show();
+                loadingLogin.setVisibility(View.INVISIBLE);
             }
         });
-        btnEntrar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadingLogin.setEnabled(true);
-                loadingLogin.setVisibility(View.VISIBLE);
-                if (!etEmail.getText().toString().isEmpty() && !etPassword.getText().toString().isEmpty()) {
-                    fAuth.signInWithEmailAndPassword(etEmail.getText().toString(), etPassword.getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-                                btnEntrar.setEnabled(false);
-                                // if (task.getResult().getUser().isEmailVerified()) {
-                                CollectionReference usuariosRef = db.collection("usuarios");
-                                Query query = usuariosRef.whereEqualTo("email", task.getResult().getUser().getEmail());
-                                query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                        if (task.isSuccessful()) {
-                                            for (QueryDocumentSnapshot dn : task.getResult()) {
-                                                Usuario usuario = dn.toObject(Usuario.class);
-                                                UserData.USER_EMAIL = usuario.getEmail();
-                                                UserData.NICKNAME = usuario.getNickname();
-                                                UserData.FULL_NAME = usuario.getNombre_completo();
-                                                UserData.DATE = usuario.getFechaNacimiento();
-                                                UserData.PROFILE_PIC = usuario.getFotoPerfil();
-                                                UserData.ID_USER_DB = dn.getId();
-                                                Navigation.findNavController(v).navigate(R.id.action_nav_login_to_profileFragment);
-                                                loadingLogin.setVisibility(View.INVISIBLE);
-                                            }
-                                        }
-                                    }
-                                });
-                                // } else {
-                                //  Toast.makeText(getContext(), "No has verificado el correo. Veríficalo antes de poder acceder a la aplicación", Toast.LENGTH_SHORT).show();
-                                // }
-                            } else {
-                                showAlert();
-                            }
+    }
+
+    private void entrar(String email, String password) {
+        fAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(loguearse -> {
+            if (loguearse.isSuccessful()) {
+                btnEntrar.setEnabled(false);
+                // if (task.getResult().getUser().isEmailVerified()) {
+                CollectionReference usuariosRef = db.collection("usuarios");
+                Query query = usuariosRef.whereEqualTo("email", loguearse.getResult().getUser().getEmail());
+                query.get().addOnCompleteListener(entrar -> {
+                    if (entrar.isSuccessful()) {
+                        for (QueryDocumentSnapshot dn : entrar.getResult()) {
+                            UserData.USUARIO = dn.toObject(Usuario.class);
+                            UserData.ID_USER_DB = dn.getId();
+                            mantenerSesion();
+                            Navigation.findNavController(getView()).navigate(R.id.action_nav_login_to_profileFragment);
+                            loadingLogin.setVisibility(View.INVISIBLE);
                         }
-                    });
-                } else {
-                    Toast.makeText(v.getContext(), "Debes introducir todos los datos antes de intentar entrar", Toast.LENGTH_SHORT).show();
-                    loadingLogin.setVisibility(View.INVISIBLE);
-                }
+                    }
+                });
+                // } else {
+                //  Toast.makeText(getContext(), "No has verificado el correo. Veríficalo antes de poder acceder a la aplicación", Toast.LENGTH_SHORT).show();
+                // }
+            } else {
+                showAlert();
             }
         });
     }
@@ -181,3 +184,19 @@ public class AuthFragment extends Fragment {
         btnEntrar.setEnabled(true);
     }
 }
+
+/*
+     SUBIR FOTOS A FIREBASE STORAGE Y PODER UTILIZARLAS POR NOMBRE //
+     ORDENAR LAS FOTOS POR CARPETAS
+     - FOTOS DE PERFIL
+     - FOTOS PARA LAS SERIES
+
+firebaseStorage = FirebaseStorage.getInstance("gs://connectfirebasetest-9a345.appspot.com");
+StorageReference storageReference = firebaseStorage.getReference().child("Pie1900x600.jpg");
+storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+    @Override
+    public void onSuccess(Uri uri) {
+        Glide.with(getContext()).load(uri).into(imgLogoApp);
+    }
+});
+*/

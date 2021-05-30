@@ -1,7 +1,9 @@
 package es.iesoretania.entertainmentlounge.Fragmentos;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -44,20 +46,17 @@ public class CerrarSesionFragment extends Fragment {
         builder.setMessage("¿Seguro que quieres cerrar sesión?");
         builder.setTitle("Cerrar sesión");
         builder.setCancelable(false);
-        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                getActivity().onBackPressed();
-            }
-        });
-        builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                fAuth = FirebaseAuth.getInstance();
-                fAuth.signOut();
-                UserData.USER_EMAIL = null;
-                Navigation.findNavController(v).navigate(R.id.action_nav_cerrarSesion_to_nav_login);
-            }
+        builder.setNegativeButton("No", (dialog, which) -> getActivity().onBackPressed());
+        builder.setPositiveButton("Si", (dialog, which) -> {
+            FirebaseAuth.getInstance().signOut();
+            UserData.USUARIO.setEmail(null);
+            SharedPreferences sharedPreferences = getContext().getSharedPreferences("credenciales", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putBoolean("mantenerSesion", false);
+            editor.putString("email", null);
+            editor.putString("password", null);
+            editor.commit();
+            Navigation.findNavController(v).navigate(R.id.action_nav_cerrarSesion_to_nav_login);
         });
         AlertDialog alertDialog = builder.create();
         alertDialog.show();

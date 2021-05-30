@@ -65,6 +65,7 @@ public class ProfileFragment extends Fragment {
                 }
             }
         });
+
         db.collection("usuarios").document(UserData.ID_USER_DB).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -80,6 +81,7 @@ public class ProfileFragment extends Fragment {
                 }
             }
         });
+
         btnAddSerie.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

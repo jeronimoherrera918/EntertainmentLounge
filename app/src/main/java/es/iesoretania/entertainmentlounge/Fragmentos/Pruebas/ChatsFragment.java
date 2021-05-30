@@ -61,7 +61,7 @@ public class ChatsFragment extends Fragment {
         listRecyclerUsuarios = view.findViewById(R.id.listRecyclerUsuarios);
         db = FirebaseFirestore.getInstance();
 
-        db.collection("usuarios").whereNotEqualTo("email", UserData.USER_EMAIL).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        db.collection("usuarios").whereNotEqualTo("email", UserData.USUARIO.getEmail()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {

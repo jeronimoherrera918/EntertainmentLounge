@@ -56,6 +56,8 @@ public class RegisterFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        //region Declaración de elementos del fragmento
         btnRegistrarse = view.findViewById(R.id.btnRegistrarse);
         etNicknameRegistro = view.findViewById(R.id.etNicknameRegistro);
         etEmailRegistro = view.findViewById(R.id.etEmailRegistro);
@@ -65,6 +67,8 @@ public class RegisterFragment extends Fragment {
         loadingRegister = view.findViewById(R.id.loadingRegister);
         fAuth = FirebaseAuth.getInstance();
         firestoredb = FirebaseFirestore.getInstance();
+        //endregion
+
         setup();
     }
 
@@ -74,57 +78,39 @@ public class RegisterFragment extends Fragment {
             public void onClick(View v) {
                 loadingRegister.setVisibility(View.VISIBLE);
                 Query query = firestoredb.collection("usuarios").whereEqualTo("nickname", etNicknameRegistro.getText().toString());
-                query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            if (task.getResult().size() > 0) {
-                                Toast.makeText(getContext(), "El nickname elegido ya está registrado para otro usuario", Toast.LENGTH_SHORT).show();
-                                loadingRegister.setVisibility(View.INVISIBLE);
-                            } else {
-                                if (!etEmailRegistro.getText().toString().isEmpty() && !etPasswordRegistro.getText().toString().isEmpty() && !etNicknameRegistro.getText().toString().isEmpty() && !etNombreCompletoRegistro.getText().toString().isEmpty() && !etFechaRegistro.getText().toString().isEmpty()) {
-                                    fAuth.createUserWithEmailAndPassword(etEmailRegistro.getText().toString(), etPasswordRegistro.getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<AuthResult> task) {
-                                            if (task.isSuccessful()) {
-                                                // Recuperamos el usuario que acabamos de registrar
-                                                FirebaseUser newUser = fAuth.getCurrentUser();
-                                                /*
-                                                // Le mandamos un correo de verificación
-                                                newUser.sendEmailVerification().addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                    @Override
-                                                    public void onSuccess(Void aVoid) {
-                                                        Toast.makeText(getContext(), "Correo de verificación enviado", Toast.LENGTH_SHORT).show();
-                                                    }
-                                                }).addOnFailureListener(new OnFailureListener() {
-                                                    @Override
-                                                    public void onFailure(@NonNull Exception e) {
-                                                        Log.d("ERROR", "Ha ocurrido un error al enviar el correo de verificación" + e.getMessage());
-                                                    }
-                                                });
-                                                */
-                                                // Registramos los datos del usuario aunque no haya confirmado aún el correo electrónico
-                                                Usuario usuario = new Usuario();
-                                                usuario.setEmail(etEmailRegistro.getText().toString());
-                                                usuario.setNickname(etNicknameRegistro.getText().toString());
-                                                usuario.setFotoPerfil(null);
-                                                usuario.setNombre_completo(etNombreCompletoRegistro.getText().toString());
-                                                usuario.setFechaNacimiento(etFechaRegistro.getText().toString());
-                                                firestoredb.collection("usuarios").add(usuario);
-                                                loadingRegister.setVisibility(View.INVISIBLE);
-                                            } else {
-                                                showAlert();
-                                            }
-                                        }
-                                    });
-                                } else {
-                                    Toast.makeText(v.getContext(), "Introduce todos los datos antes de intentar registrarte", Toast.LENGTH_SHORT).show();
-                                    loadingRegister.setVisibility(View.INVISIBLE);
-                                }
-                            }
+                query.get().addOnCompleteListener(userExists -> {
+                    if (userExists.isSuccessful()) {
+                        if (userExists.getResult().size() > 0) {
+                            Toast.makeText(getContext(), "El nickname elegido ya está registrado para otro usuario", Toast.LENGTH_SHORT).show();
+                            loadingRegister.setVisibility(View.INVISIBLE);
                         } else {
-                            showAlert();
+                            if (!etEmailRegistro.getText().toString().isEmpty() && !etPasswordRegistro.getText().toString().isEmpty() && !etNicknameRegistro.getText().toString().isEmpty() && !etNombreCompletoRegistro.getText().toString().isEmpty() && !etFechaRegistro.getText().toString().isEmpty()) {
+                                fAuth.createUserWithEmailAndPassword(etEmailRegistro.getText().toString(), etPasswordRegistro.getText().toString()).addOnCompleteListener(createUserPassword -> {
+                                    if (createUserPassword.isSuccessful()) {
+                                        // Recuperamos el usuario que acabamos de registrar
+                                        FirebaseUser newUser = fAuth.getCurrentUser();
+                                        // Le mandamos un correo de verificación
+                                        newUser.sendEmailVerification().addOnSuccessListener(aVoid -> Toast.makeText(getContext(), "Correo de verificación enviado", Toast.LENGTH_SHORT).show()).addOnFailureListener(e -> Log.d("ERROR", "Ha ocurrido un error al enviar el correo de verificación" + e.getMessage()));
+                                        // Registramos los datos del usuario aunque no haya confirmado aún el correo electrónico
+                                        Usuario usuario = new Usuario();
+                                        usuario.setEmail(etEmailRegistro.getText().toString());
+                                        usuario.setNickname(etNicknameRegistro.getText().toString());
+                                        usuario.setFotoPerfil(null);
+                                        usuario.setNombre_completo(etNombreCompletoRegistro.getText().toString());
+                                        usuario.setFechaNacimiento(etFechaRegistro.getText().toString());
+                                        firestoredb.collection("usuarios").add(usuario);
+                                        loadingRegister.setVisibility(View.INVISIBLE);
+                                    } else {
+                                        showAlert();
+                                    }
+                                });
+                            } else {
+                                Toast.makeText(v.getContext(), "Introduce todos los datos antes de intentar registrarte", Toast.LENGTH_SHORT).show();
+                                loadingRegister.setVisibility(View.INVISIBLE);
+                            }
                         }
+                    } else {
+                        showAlert();
                     }
                 });
             }
