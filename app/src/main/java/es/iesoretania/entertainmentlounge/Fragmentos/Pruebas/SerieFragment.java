@@ -1,7 +1,8 @@
- package es.iesoretania.entertainmentlounge.Fragmentos.Pruebas;
+package es.iesoretania.entertainmentlounge.Fragmentos.Pruebas;
 
 import android.graphics.Color;
 
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -17,16 +18,21 @@ import android.widget.Button;
 
 import android.widget.EditText;
 
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import es.iesoretania.entertainmentlounge.Adapters.TemporadasSerieAdapter;
 import es.iesoretania.entertainmentlounge.Clases.SaveSerieData.SaveSerie;
@@ -41,9 +47,11 @@ import es.iesoretania.entertainmentlounge.R;
 public class SerieFragment extends Fragment {
     TextView tvSerieNombre, tvSerieGenero, tvSerieDescripcion;
     Button btnSerieSave;
+    ImageView imgSerieCabecera;
     ListView listaTemporadas;
     String key;
     FirebaseFirestore db;
+    FirebaseStorage firebaseStorage;
     Serie serie;
 
     @Override
@@ -65,6 +73,7 @@ public class SerieFragment extends Fragment {
         tvSerieGenero = view.findViewById(R.id.tvSerieGenero);
         tvSerieDescripcion = view.findViewById(R.id.tvSerieDescripcion);
         btnSerieSave = view.findViewById(R.id.btnSerieSave);
+        imgSerieCabecera = view.findViewById(R.id.imgSerieCabecera);
         listaTemporadas = view.findViewById(R.id.listaTemporadas);
         if (getArguments() != null) {
             SerieFragmentArgs args = SerieFragmentArgs.fromBundle(getArguments());
@@ -74,6 +83,10 @@ public class SerieFragment extends Fragment {
     }
 
     private void mostrarSerie() {
+        firebaseStorage = FirebaseStorage.getInstance();
+        StorageReference storageReference = firebaseStorage.getReference().child("series/" + key + ".jpg");
+        storageReference.getDownloadUrl().addOnSuccessListener(uri -> Glide.with(getContext()).load(uri).into(imgSerieCabecera));
+
         db.collection("series").whereEqualTo("id_serie", key).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
