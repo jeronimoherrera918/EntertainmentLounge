@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity implements DrawerController 
         NavigationView navigationView = findViewById(R.id.nav_view);
 
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_profile, R.id.nav_verSeries, R.id.nav_recomendaciones, R.id.nav_chats, R.id.nav_sobrenosotros, R.id.nav_cerrarSesion)
+                R.id.nav_profile, R.id.nav_verSeries, R.id.nav_recomendaciones, R.id.nav_misSeries, R.id.nav_chats, R.id.nav_sobrenosotros, R.id.nav_cerrarSesion)
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);

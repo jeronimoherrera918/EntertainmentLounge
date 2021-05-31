@@ -184,19 +184,3 @@ public class AuthFragment extends Fragment {
         btnEntrar.setEnabled(true);
     }
 }
-
-/*
-     SUBIR FOTOS A FIREBASE STORAGE Y PODER UTILIZARLAS POR NOMBRE //
-     ORDENAR LAS FOTOS POR CARPETAS
-     - FOTOS DE PERFIL
-     - FOTOS PARA LAS SERIES
-
-firebaseStorage = FirebaseStorage.getInstance("gs://connectfirebasetest-9a345.appspot.com");
-StorageReference storageReference = firebaseStorage.getReference().child("Pie1900x600.jpg");
-storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-    @Override
-    public void onSuccess(Uri uri) {
-        Glide.with(getContext()).load(uri).into(imgLogoApp);
-    }
-});
-*/

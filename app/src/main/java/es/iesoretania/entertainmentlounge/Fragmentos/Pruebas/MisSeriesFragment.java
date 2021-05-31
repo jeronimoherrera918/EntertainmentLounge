@@ -5,19 +5,44 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import es.iesoretania.entertainmentlounge.Adapters.RecyclerSeries;
+import es.iesoretania.entertainmentlounge.Clases.SaveSerieData.SaveSerie;
+import es.iesoretania.entertainmentlounge.Clases.SerieData.Serie;
+import es.iesoretania.entertainmentlounge.Clases.UserData;
 import es.iesoretania.entertainmentlounge.R;
 
 public class MisSeriesFragment extends Fragment {
+    RecyclerView recyclerMisSeries;
+    Spinner spFiltrosMisSeries;
+    FirebaseFirestore db;
+    List<Serie> listaSeries;
+    List<String> listaSeriesKeys;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_mis_series, container, false);
     }
 
@@ -29,7 +54,69 @@ public class MisSeriesFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        db = FirebaseFirestore.getInstance();
+        recyclerMisSeries = view.findViewById(R.id.recyclerMisSeries);
+        spFiltrosMisSeries = view.findViewById(R.id.spFiltrosMisSeries);
+        List<String> elementosSpinner = new ArrayList<>();
+        elementosSpinner.add("Nombre");
+        elementosSpinner.add("Genero");
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getContext(), R.layout.spinner_item, elementosSpinner);
+        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spFiltrosMisSeries.setAdapter(arrayAdapter);
+
+        db.collection("usuarios").document(UserData.ID_USER_DB).collection("series_guardadas").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    listaSeriesKeys = new ArrayList<>();
+                    for (QueryDocumentSnapshot dn : task.getResult()) {
+                        SaveSerie saveSerie = dn.toObject(SaveSerie.class);
+                        listaSeriesKeys.add(saveSerie.getId_serie());
+                    }
+
+                    listaSeries = new ArrayList<>();
+                    for (String k : listaSeriesKeys) {
+                        listaSeries.add(db.collection("series").document(k).get().getResult().toObject(Serie.class));
+                    }
+
+                    System.out.println(listaSeries);
+                }
+            }
+        });
+
+        /*
+        spFiltrosMisSeries.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                mostrarSeriesFiltro(parent.getItemAtPosition(position).toString().toLowerCase());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        */
     }
 
-
+    public void mostrarSeriesFiltro(String filtro) {
+        db.collection("series").orderBy(filtro).get().addOnCompleteListener(mostrarSeries -> {
+            if (mostrarSeries.isSuccessful()) {
+                listaSeries = new ArrayList<>();
+                listaSeriesKeys = new ArrayList<>();
+                for (QueryDocumentSnapshot dn : mostrarSeries.getResult()) {
+                    Serie serie = dn.toObject(Serie.class);
+                    listaSeries.add(serie);
+                    listaSeriesKeys.add(dn.getId());
+                }
+                RecyclerSeries recyclerSeries = new RecyclerSeries(listaSeries, recyclerMisSeries.getContext());
+                // recyclerSeries.setOnItemClickListener((position, v) -> Navigation.findNavController(v).navigate(VerSeriesFragmentDirections.actionNavVerSeriesToSerieFragment(listaSeriesKeys.get(position))));
+                recyclerMisSeries.setHasFixedSize(true);
+                recyclerMisSeries.setLayoutManager(new LinearLayoutManager(recyclerMisSeries.getContext()));
+                recyclerMisSeries.setAdapter(recyclerSeries);
+            } else {
+                Log.d("ERROR", mostrarSeries.getException().toString());
+            }
+        });
+    }
 }

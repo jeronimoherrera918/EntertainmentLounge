@@ -38,6 +38,8 @@ import es.iesoretania.entertainmentlounge.Clases.UserData;
 import es.iesoretania.entertainmentlounge.R;
 
 public class CapituloFragment extends Fragment {
+
+    //region Variables
     RatingBar rbPuntuarCapitulo;
     ImageButton btnMarcarComoVistoCap;
     RecyclerView listRecyclerComentarios;
@@ -51,6 +53,7 @@ public class CapituloFragment extends Fragment {
     FirebaseFirestore db;
     Boolean sw = false;
     Double puntuacionTemporadaOld = 0.0;
+    //endregion
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -97,6 +100,7 @@ public class CapituloFragment extends Fragment {
                 if (task.isSuccessful()) {
                     if (task.getResult().size() > 0) {
                         saveSerie = task.getResult().getDocuments().get(0).toObject(SaveSerie.class);
+
                         if (saveSerie.getTemporadas().get(nTemporada).getCapitulos_vistos().get(nCapituloPos) == 1) {
                             float f = Float.parseFloat(String.valueOf(saveSerie.getTemporadas().get(nTemporada).getCapitulos_puntuacion().get(nCapituloPos)));
                             rbPuntuarCapitulo.setRating(f);
@@ -107,10 +111,13 @@ public class CapituloFragment extends Fragment {
                             rbPuntuarCapitulo.setEnabled(false);
                             btnCapComentar.setEnabled(false);
                         }
-                        for (Double d : saveSerie.getTemporadas().get(nTemporada).getCapitulos_puntuacion()) {
-                            puntuacionTemporadaOld += d;
+
+                        if (saveSerie.getTemporadas().get(nTemporada).isVistaCompleta()) {
+                            for (Double d : saveSerie.getTemporadas().get(nTemporada).getCapitulos_puntuacion()) {
+                                puntuacionTemporadaOld += d;
+                            }
+                            puntuacionTemporadaOld = puntuacionTemporadaOld / serie.getTemporadas().get(nTemporada).getCapitulos().size();
                         }
-                        puntuacionTemporadaOld = puntuacionTemporadaOld / serie.getTemporadas().get(nTemporada).getCapitulos().size();
                         activarComentarios();
                         activarPuntuar();
                         activarGuardarCapitulo();
@@ -207,13 +214,13 @@ public class CapituloFragment extends Fragment {
         }
 
         // Si ya lo ha puntuado anteriormente
-        if (saveSerie.getTemporadas().get(nTemporada).getCapitulos_puntuacion().get(nCapituloPos) != 0 && rbPuntuarCapitulo.getRating() > 0f) {
-            int nVotosActuales = serie.getTemporadas().get(nTemporada).getCapitulos().get(nCapituloPos).getnVotos();
-            double puntuacionActual = serie.getTemporadas().get(nTemporada).getCapitulos().get(nCapituloPos).getPuntuacionTotal() - saveSerie.getTemporadas().get(nTemporada).getCapitulos_puntuacion().get(nCapituloPos) + (double) rbPuntuarCapitulo.getRating();
-            serie.getTemporadas().get(nTemporada).getCapitulos().get(nCapituloPos).setPuntuacionTotal(puntuacionActual);
-            serie.getTemporadas().get(nTemporada).getCapitulos().get(nCapituloPos).setPuntuacion(puntuacionActual / nVotosActuales);
-            saveSerie.getTemporadas().get(nTemporada).getCapitulos_puntuacion().set(nCapituloPos, (double) rbPuntuarCapitulo.getRating());
-        }
+            if (saveSerie.getTemporadas().get(nTemporada).getCapitulos_puntuacion().get(nCapituloPos) != 0 && rbPuntuarCapitulo.getRating() > 0f) {
+                int nVotosActuales = serie.getTemporadas().get(nTemporada).getCapitulos().get(nCapituloPos).getnVotos();
+                double puntuacionActual = serie.getTemporadas().get(nTemporada).getCapitulos().get(nCapituloPos).getPuntuacionTotal() - saveSerie.getTemporadas().get(nTemporada).getCapitulos_puntuacion().get(nCapituloPos) + (double) rbPuntuarCapitulo.getRating();
+                serie.getTemporadas().get(nTemporada).getCapitulos().get(nCapituloPos).setPuntuacionTotal(puntuacionActual);
+                serie.getTemporadas().get(nTemporada).getCapitulos().get(nCapituloPos).setPuntuacion(puntuacionActual / nVotosActuales);
+                saveSerie.getTemporadas().get(nTemporada).getCapitulos_puntuacion().set(nCapituloPos, (double) rbPuntuarCapitulo.getRating());
+            }
 
         // Si lo desmarca y lo actualiza a "no visto"
         if (saveSerie.getTemporadas().get(nTemporada).getCapitulos_vistos().get(nCapituloPos) == 0) {

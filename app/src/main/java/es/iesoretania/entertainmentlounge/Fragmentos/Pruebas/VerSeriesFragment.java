@@ -76,30 +76,22 @@ public class VerSeriesFragment extends Fragment {
     }
 
     public void mostrarSeriesFiltro(String filtro) {
-        db.collection("series").orderBy(filtro).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    listaSeries = new ArrayList<>();
-                    listaSeriesKeys = new ArrayList<>();
-                    for (QueryDocumentSnapshot dn : task.getResult()) {
-                        Serie serie = dn.toObject(Serie.class);
-                        listaSeries.add(serie);
-                        listaSeriesKeys.add(dn.getId());
-                    }
-                    RecyclerSeries recyclerSeries = new RecyclerSeries(listaSeries, listRecyclerSeries.getContext());
-                    recyclerSeries.setOnItemClickListener(new RecyclerSeries.ClickListener() {
-                        @Override
-                        public void onItemClick(int position, View v) {
-                            Navigation.findNavController(v).navigate(VerSeriesFragmentDirections.actionNavVerSeriesToSerieFragment(listaSeriesKeys.get(position)));
-                        }
-                    });
-                    listRecyclerSeries.setHasFixedSize(true);
-                    listRecyclerSeries.setLayoutManager(new LinearLayoutManager(listRecyclerSeries.getContext()));
-                    listRecyclerSeries.setAdapter(recyclerSeries);
-                } else {
-                    Log.d("ERROR", task.getException().toString());
+        db.collection("series").orderBy(filtro).get().addOnCompleteListener(mostrarSeries -> {
+            if (mostrarSeries.isSuccessful()) {
+                listaSeries = new ArrayList<>();
+                listaSeriesKeys = new ArrayList<>();
+                for (QueryDocumentSnapshot dn : mostrarSeries.getResult()) {
+                    Serie serie = dn.toObject(Serie.class);
+                    listaSeries.add(serie);
+                    listaSeriesKeys.add(dn.getId());
                 }
+                RecyclerSeries recyclerSeries = new RecyclerSeries(listaSeries, listRecyclerSeries.getContext());
+                recyclerSeries.setOnItemClickListener((position, v) -> Navigation.findNavController(v).navigate(VerSeriesFragmentDirections.actionNavVerSeriesToSerieFragment(listaSeriesKeys.get(position))));
+                listRecyclerSeries.setHasFixedSize(true);
+                listRecyclerSeries.setLayoutManager(new LinearLayoutManager(listRecyclerSeries.getContext()));
+                listRecyclerSeries.setAdapter(recyclerSeries);
+            } else {
+                Log.d("ERROR", mostrarSeries.getException().toString());
             }
         });
     }

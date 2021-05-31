@@ -44,6 +44,13 @@
             app:exitAnim="@anim/fade_out"
             app:popEnterAnim="@anim/fade_in"
             app:popExitAnim="@anim/fade_out" />
+        <action
+            android:id="@+id/action_nav_profile_to_nav_modificarDatos"
+            app:destination="@id/nav_modificarDatos"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out" />
     </fragment>
     <fragment
         android:id="@+id/nav_verSeries"
@@ -162,4 +169,9 @@
             android:name="keyUser"
             app:argType="string" />
     </fragment>
+    <fragment
+        android:id="@+id/nav_modificarDatos"
+        android:name="es.iesoretania.entertainmentlounge.Fragmentos.Pruebas.ModificarDatosFragment"
+        android:label="fragment_modificar_datos"
+        tools:layout="@layout/fragment_modificar_datos" />
 </navigation>

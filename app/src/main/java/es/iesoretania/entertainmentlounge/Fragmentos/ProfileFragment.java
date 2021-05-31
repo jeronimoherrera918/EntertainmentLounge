@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -32,6 +33,7 @@ public class ProfileFragment extends Fragment {
     TextView tvNumSeriesGuardadas, tvProfileNombre, tvProfileEmail;
     ImageView imgProfileFoto;
     Button btnAddSerie;
+    FloatingActionButton fabEditarPerfil;
     FirebaseAuth fAuth;
     FirebaseFirestore db;
 
@@ -52,6 +54,7 @@ public class ProfileFragment extends Fragment {
 
         //region Declaración de los elementos del fragmento
         btnAddSerie = view.findViewById(R.id.btnAddSerie);
+        fabEditarPerfil = view.findViewById(R.id.fabEditarPerfil);
         tvNumSeriesGuardadas = view.findViewById(R.id.tvNumSeriesGuardadas);
         tvProfileNombre = view.findViewById(R.id.tvProfileNombre);
         tvProfileEmail = view.findViewById(R.id.tvProfileEmail);
@@ -89,6 +92,13 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Navigation.findNavController(v).navigate(R.id.action_nav_profile_to_addSerieFragment);
+            }
+        });
+
+        fabEditarPerfil.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(v).navigate(R.id.action_nav_profile_to_nav_modificarDatos);
             }
         });
     }
