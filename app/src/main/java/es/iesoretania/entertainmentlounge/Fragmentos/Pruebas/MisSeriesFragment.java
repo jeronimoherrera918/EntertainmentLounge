@@ -21,6 +21,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -73,50 +74,50 @@ public class MisSeriesFragment extends Fragment {
                         SaveSerie saveSerie = dn.toObject(SaveSerie.class);
                         listaSeriesKeys.add(saveSerie.getId_serie());
                     }
+                    db.collection("series").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                listaSeries = new ArrayList<>();
+                                for (QueryDocumentSnapshot dn : task.getResult()) {
+                                    if (listaSeriesKeys.contains(dn.getId())) {
+                                        listaSeries.add(dn.toObject(Serie.class));
+                                    }
+                                }
+                                RecyclerSeries recyclerSeries = new RecyclerSeries(listaSeries, getContext());
+                                recyclerSeries.setOnItemClickListener((position, v) -> Navigation.findNavController(v).navigate(MisSeriesFragmentDirections.actionNavMisSeriesToNavSerie(listaSeriesKeys.get(position))));
+                                recyclerMisSeries.setHasFixedSize(true);
+                                recyclerMisSeries.setLayoutManager(new LinearLayoutManager(getContext()));
+                                recyclerMisSeries.setAdapter(recyclerSeries);
 
-                    listaSeries = new ArrayList<>();
-                    for (String k : listaSeriesKeys) {
-                        listaSeries.add(db.collection("series").document(k).get().getResult().toObject(Serie.class));
-                    }
+                                /*
+                                spFiltrosMisSeries.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                    @Override
+                                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                        mostrarSeriesFiltro(parent.getItemAtPosition(position).toString().toLowerCase());
+                                    }
 
-                    System.out.println(listaSeries);
+                                    @Override
+                                    public void onNothingSelected(AdapterView<?> parent) {
+
+                                    }
+                                });
+                                */
+                            }
+                        }
+                    });
                 }
             }
         });
-
-        /*
-        spFiltrosMisSeries.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                mostrarSeriesFiltro(parent.getItemAtPosition(position).toString().toLowerCase());
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-        */
     }
 
+    /*
     public void mostrarSeriesFiltro(String filtro) {
-        db.collection("series").orderBy(filtro).get().addOnCompleteListener(mostrarSeries -> {
-            if (mostrarSeries.isSuccessful()) {
-                listaSeries = new ArrayList<>();
-                listaSeriesKeys = new ArrayList<>();
-                for (QueryDocumentSnapshot dn : mostrarSeries.getResult()) {
-                    Serie serie = dn.toObject(Serie.class);
-                    listaSeries.add(serie);
-                    listaSeriesKeys.add(dn.getId());
-                }
-                RecyclerSeries recyclerSeries = new RecyclerSeries(listaSeries, recyclerMisSeries.getContext());
-                // recyclerSeries.setOnItemClickListener((position, v) -> Navigation.findNavController(v).navigate(VerSeriesFragmentDirections.actionNavVerSeriesToSerieFragment(listaSeriesKeys.get(position))));
-                recyclerMisSeries.setHasFixedSize(true);
-                recyclerMisSeries.setLayoutManager(new LinearLayoutManager(recyclerMisSeries.getContext()));
-                recyclerMisSeries.setAdapter(recyclerSeries);
-            } else {
-                Log.d("ERROR", mostrarSeries.getException().toString());
-            }
-        });
+        RecyclerSeries recyclerSeries = new RecyclerSeries(listaSeries, getContext());
+        recyclerSeries.setOnItemClickListener((position, v) -> Navigation.findNavController(v).navigate(VerSeriesFragmentDirections.actionNavVerSeriesToSerieFragment(listaSeriesKeys.get(position))));
+        recyclerMisSeries.setHasFixedSize(true);
+        recyclerMisSeries.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerMisSeries.setAdapter(recyclerSeries);
     }
+    */
 }

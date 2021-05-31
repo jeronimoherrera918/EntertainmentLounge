@@ -170,36 +170,25 @@ public class CapituloFragment extends Fragment {
     }
 
     private void activarComentarios() {
-        btnCapComentar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Comentario comentario = new Comentario(etCapComentario.getText().toString(), UserData.ID_USER_DB, generarID(6));
-                serie.getTemporadas().get(nTemporada).getCapitulos().get(nCapituloPos).getListaComentarios().add(comentario);
-                db.collection("series").document(serie.getId_serie()).set(serie);
-            }
+        btnCapComentar.setOnClickListener(v -> {
+            Comentario comentario = new Comentario(etCapComentario.getText().toString(), UserData.ID_USER_DB, generarID(6));
+            serie.getTemporadas().get(nTemporada).getCapitulos().get(nCapituloPos).getListaComentarios().add(comentario);
+            db.collection("series").document(serie.getId_serie()).set(serie);
         });
     }
 
     private void activarPuntuar() {
-        rbPuntuarCapitulo.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-            @Override
-            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                if (!sw) {
-                    sw = true;
-                    fabGuardarCambiosCap.setEnabled(true);
-                    activarGuardarCambios();
-                }
+        rbPuntuarCapitulo.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> {
+            if (!sw) {
+                sw = true;
+                fabGuardarCambiosCap.setEnabled(true);
+                activarGuardarCambios();
             }
         });
     }
 
     private void activarGuardarCambios() {
-        fabGuardarCambiosCap.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                guardarCambios();
-            }
-        });
+        fabGuardarCambiosCap.setOnClickListener(v -> guardarCambios());
     }
 
     private void guardarCambios() {
@@ -270,40 +259,63 @@ public class CapituloFragment extends Fragment {
     private void actualizarPuntuacionTemporada() {
         db.collection("series").document(serie.getId_serie()).get().addOnCompleteListener(buscarSerie -> {
             if (buscarSerie.isSuccessful()) {
-                Serie infoSerie = buscarSerie.getResult().toObject(Serie.class);
+                serie = buscarSerie.getResult().toObject(Serie.class);
                 if (!saveSerie.getTemporadas().get(nTemporada).getCapitulos_puntuacion().contains(0.0) && !saveSerie.getTemporadas().get(nTemporada).isVistaCompleta()) {
                     saveSerie.getTemporadas().get(nTemporada).setVistaCompleta(true);
-                    infoSerie.getTemporadas().get(nTemporada).setnVotos(infoSerie.getTemporadas().get(nTemporada).getnVotos() + 1);
+                    serie.getTemporadas().get(nTemporada).setnVotos(serie.getTemporadas().get(nTemporada).getnVotos() + 1);
                     double puntuacionTemporadaPersonal = 0.0;
                     for (Double d : saveSerie.getTemporadas().get(nTemporada).getCapitulos_puntuacion()) {
                         puntuacionTemporadaPersonal += d;
                     }
-                    puntuacionTemporadaPersonal = puntuacionTemporadaPersonal / infoSerie.getTemporadas().get(nTemporada).getCapitulos().size();
+                    puntuacionTemporadaPersonal = puntuacionTemporadaPersonal / serie.getTemporadas().get(nTemporada).getCapitulos().size();
 
-                    infoSerie.getTemporadas().get(nTemporada).setPuntuacionTotal(infoSerie.getTemporadas().get(nTemporada).getPuntuacionTotal() + puntuacionTemporadaPersonal);
-                    infoSerie.getTemporadas().get(nTemporada).setPuntuacion(infoSerie.getTemporadas().get(nTemporada).getPuntuacionTotal() / infoSerie.getTemporadas().get(nTemporada).getnVotos());
+                    serie.getTemporadas().get(nTemporada).setPuntuacionTotal(serie.getTemporadas().get(nTemporada).getPuntuacionTotal() + puntuacionTemporadaPersonal);
+                    serie.getTemporadas().get(nTemporada).setPuntuacion(serie.getTemporadas().get(nTemporada).getPuntuacionTotal() / serie.getTemporadas().get(nTemporada).getnVotos());
+
+                    db.collection("series").document(buscarSerie.getResult().getId()).set(serie).addOnCompleteListener(updateSerie -> {
+                        if (updateSerie.isSuccessful()) {
+                            db.collection("usuarios").document(UserData.ID_USER_DB).collection("series_guardadas").whereEqualTo("id_serie", saveSerie.getId_serie()).get().addOnCompleteListener(updateSaveSerie -> {
+                                if (updateSaveSerie.isSuccessful()) {
+                                    db.collection("usuarios").document(UserData.ID_USER_DB).collection("series_guardadas").document(updateSaveSerie.getResult().getDocuments().get(0).getId()).set(saveSerie);
+                                }
+                            });
+                        }
+                    });
                 } else if (saveSerie.getTemporadas().get(nTemporada).isVistaCompleta() && !saveSerie.getTemporadas().get(nTemporada).getCapitulos_puntuacion().contains(0.0)) {
                     double puntuacionTemporadaPersonal = 0.0;
                     for (Double d : saveSerie.getTemporadas().get(nTemporada).getCapitulos_puntuacion()) {
                         puntuacionTemporadaPersonal += d;
                     }
-                    puntuacionTemporadaPersonal = puntuacionTemporadaPersonal / infoSerie.getTemporadas().get(nTemporada).getCapitulos().size();
+                    puntuacionTemporadaPersonal = puntuacionTemporadaPersonal / serie.getTemporadas().get(nTemporada).getCapitulos().size();
 
-                    infoSerie.getTemporadas().get(nTemporada).setPuntuacionTotal(infoSerie.getTemporadas().get(nTemporada).getPuntuacionTotal() + puntuacionTemporadaPersonal - puntuacionTemporadaOld);
-                    infoSerie.getTemporadas().get(nTemporada).setPuntuacion(infoSerie.getTemporadas().get(nTemporada).getPuntuacionTotal() / infoSerie.getTemporadas().get(nTemporada).getnVotos());
+                    /*
+                        Multiplicar la puntuación total de la temporada por el número de votos
+                        Restar la puntuación de la temporada antigua del usuario
+                        Sumar la nueva puntuación de la temporada del usuario
+                        Dividir la puntuación total entre el número de votos
+                    */
 
+                    double puntuacionTotal = serie.getTemporadas().get(nTemporada).getPuntuacionTotal();
+                    puntuacionTotal -= puntuacionTemporadaOld;
+                    puntuacionTotal += puntuacionTemporadaPersonal;
+
+                    serie.getTemporadas().get(nTemporada).setPuntuacionTotal(puntuacionTotal);
+
+                    puntuacionTotal = puntuacionTotal / serie.getTemporadas().get(nTemporada).getnVotos();
+
+                    serie.getTemporadas().get(nTemporada).setPuntuacion(puntuacionTotal);
                     puntuacionTemporadaOld = puntuacionTemporadaPersonal;
-                }
 
-                db.collection("series").document(buscarSerie.getResult().getId()).set(infoSerie).addOnCompleteListener(updateSerie -> {
-                    if (updateSerie.isSuccessful()) {
-                        db.collection("usuarios").document(UserData.ID_USER_DB).collection("series_guardadas").whereEqualTo("id_serie", saveSerie.getId_serie()).get().addOnCompleteListener(updateSaveSerie -> {
-                            if (updateSaveSerie.isSuccessful()) {
-                                db.collection("usuarios").document(UserData.ID_USER_DB).collection("series_guardadas").document(updateSaveSerie.getResult().getDocuments().get(0).getId()).set(saveSerie);
-                            }
-                        });
-                    }
-                });
+                    db.collection("series").document(buscarSerie.getResult().getId()).set(serie).addOnCompleteListener(updateSerie -> {
+                        if (updateSerie.isSuccessful()) {
+                            db.collection("usuarios").document(UserData.ID_USER_DB).collection("series_guardadas").whereEqualTo("id_serie", saveSerie.getId_serie()).get().addOnCompleteListener(updateSaveSerie -> {
+                                if (updateSaveSerie.isSuccessful()) {
+                                    db.collection("usuarios").document(UserData.ID_USER_DB).collection("series_guardadas").document(updateSaveSerie.getResult().getDocuments().get(0).getId()).set(saveSerie);
+                                }
+                            });
+                        }
+                    });
+                }
             }
         });
     }
