@@ -96,13 +96,13 @@ public class ModificarDatosFragment extends Fragment {
         if (requestCode == GALLERY_INTENT && resultCode == RESULT_OK) {
             Uri uri = data.getData();
             Bitmap bitmapImage = null;
-            // TODO: Modificar esto para que cuando se suba la imagen, sea con el email del usuario
             try {
                 bitmapImage = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
                 firebaseStorage = FirebaseStorage.getInstance();
-                StorageReference storageReference = firebaseStorage.getReference().child("pruebas/prueba1.jpg");
+                StorageReference storageReference = firebaseStorage.getReference().child("usuarios/" + UserData.USUARIO.getEmail() + ".jpg");
                 storageReference.putFile(uri).addOnSuccessListener(taskSnapshot -> System.out.println("Foto subida correctamente"));
                 imgModFotoPerfil.setImageBitmap(bitmapImage);
+                infoUsuario.setFotoPerfil("usuarios/" + UserData.USUARIO.getEmail() + ".jpg");
             } catch (IOException e) {
                 e.printStackTrace();
             }
