@@ -143,30 +143,25 @@ public class SerieFragment extends Fragment {
 
     private void activarGuardado() {
         btnSerieSave.setBackgroundColor(Color.parseColor("#16618D"));
-        btnSerieSave.setOnClickListener(new View.OnClickListener() {
+        btnSerieSave.setOnClickListener(v -> db.collection("series").document(key).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
-            public void onClick(View v) {
-                db.collection("series").document(key).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        DocumentSnapshot dn = task.getResult();
-                        serie = dn.toObject(Serie.class);
-                        SaveSerie saveSerie = new SaveSerie();
-                        saveSerie.setId_serie(key);
-                        for (Temporada temp : serie.getTemporadas()) {
-                            SaveTemporadaSerie saveTemporadaSerie = new SaveTemporadaSerie();
-                            for (int i = 0; i < temp.getCapitulos().size(); i++) {
-                                saveTemporadaSerie.getCapitulos_vistos().add(0);
-                                saveTemporadaSerie.getCapitulos_puntuacion().add(0.0);
-                            }
-                            saveSerie.getTemporadas().add(saveTemporadaSerie);
-                        }
-                        db.collection("usuarios").document(UserData.ID_USER_DB).collection("series_guardadas").add(saveSerie);
-                        btnSerieSave.setEnabled(false);
-                        btnSerieSave.setBackgroundColor(Color.GRAY);
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                DocumentSnapshot dn = task.getResult();
+                serie = dn.toObject(Serie.class);
+                SaveSerie saveSerie = new SaveSerie();
+                saveSerie.setId_serie(key);
+                for (Temporada temp : serie.getTemporadas()) {
+                    SaveTemporadaSerie saveTemporadaSerie = new SaveTemporadaSerie();
+                    for (int i = 0; i < temp.getCapitulos().size(); i++) {
+                        saveTemporadaSerie.getCapitulos_vistos().add(0);
+                        saveTemporadaSerie.getCapitulos_puntuacion().add(0.0);
                     }
-                });
+                    saveSerie.getTemporadas().add(saveTemporadaSerie);
+                }
+                db.collection("usuarios").document(UserData.ID_USER_DB).collection("series_guardadas").add(saveSerie);
+                btnSerieSave.setEnabled(false);
+                btnSerieSave.setBackgroundColor(Color.GRAY);
             }
-        });
+        }));
     }
 }

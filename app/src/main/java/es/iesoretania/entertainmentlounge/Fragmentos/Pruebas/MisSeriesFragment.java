@@ -84,25 +84,12 @@ public class MisSeriesFragment extends Fragment {
                                         listaSeries.add(dn.toObject(Serie.class));
                                     }
                                 }
+
                                 RecyclerSeries recyclerSeries = new RecyclerSeries(listaSeries, getContext());
-                                recyclerSeries.setOnItemClickListener((position, v) -> Navigation.findNavController(v).navigate(MisSeriesFragmentDirections.actionNavMisSeriesToNavSerie(listaSeriesKeys.get(position))));
+                                recyclerSeries.setOnItemClickListener((position, v) -> Navigation.findNavController(v).navigate(MisSeriesFragmentDirections.actionNavMisSeriesToNavSerie(listaSeries.get(position).getId_serie())));
                                 recyclerMisSeries.setHasFixedSize(true);
                                 recyclerMisSeries.setLayoutManager(new LinearLayoutManager(getContext()));
                                 recyclerMisSeries.setAdapter(recyclerSeries);
-
-                                /*
-                                spFiltrosMisSeries.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                                    @Override
-                                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                                        mostrarSeriesFiltro(parent.getItemAtPosition(position).toString().toLowerCase());
-                                    }
-
-                                    @Override
-                                    public void onNothingSelected(AdapterView<?> parent) {
-
-                                    }
-                                });
-                                */
                             }
                         }
                     });
@@ -110,14 +97,4 @@ public class MisSeriesFragment extends Fragment {
             }
         });
     }
-
-    /*
-    public void mostrarSeriesFiltro(String filtro) {
-        RecyclerSeries recyclerSeries = new RecyclerSeries(listaSeries, getContext());
-        recyclerSeries.setOnItemClickListener((position, v) -> Navigation.findNavController(v).navigate(VerSeriesFragmentDirections.actionNavVerSeriesToSerieFragment(listaSeriesKeys.get(position))));
-        recyclerMisSeries.setHasFixedSize(true);
-        recyclerMisSeries.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerMisSeries.setAdapter(recyclerSeries);
-    }
-    */
 }

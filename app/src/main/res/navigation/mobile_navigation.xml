@@ -89,7 +89,7 @@
     <fragment
         android:id="@+id/nav_misSeries"
         android:name="es.iesoretania.entertainmentlounge.Fragmentos.Pruebas.MisSeriesFragment"
-        android:label="Mis series"
+        android:label="@string/menu_misSeries"
         tools:layout="@layout/fragment_mis_series" >
         <action
             android:id="@+id/action_nav_misSeries_to_nav_serie"
@@ -180,6 +180,6 @@
     <fragment
         android:id="@+id/nav_modificarDatos"
         android:name="es.iesoretania.entertainmentlounge.Fragmentos.Pruebas.ModificarDatosFragment"
-        android:label="fragment_modificar_datos"
+        android:label="@string/titleModificar_datos"
         tools:layout="@layout/fragment_modificar_datos" />
 </navigation>

@@ -16,6 +16,7 @@
     <string name="menu_profile">Mi perfil</string>
     <string name="menu_verSeries">Explorar</string>
     <string name="menu_recomendaciones">Descubrir</string>
+    <string name="menu_misSeries">Mis series</string>
     <string name="menu_chats">Chats</string>
     <string name="menu_sobrenosotros">Sobre nosotros</string>
     <string name="menu_cerrarsesion">Cerrar sesión</string>
@@ -33,6 +34,9 @@
 
     <!-- MI PERFIL FRAGMENT -->
 
+    <!-- MODIFICAR DATOS FRAGMENT -->
+    <string name="titleModificar_datos">Modificar datos</string>
+    <!-- MODIFICAR DATOS FRAGMENT -->
 
     <!-- SOBRE NOSOTROS FRAGMENT -->
     <string name="sobrenosotros_presentacion">Este proyecto ha sido realizado por un equipo de única persona, encargado del diseño, programación y comprobación de todas las funciones que componen esta aplicación.</string>
