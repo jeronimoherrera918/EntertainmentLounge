@@ -43,6 +43,7 @@ import es.iesoretania.entertainmentlounge.Clases.UserData;
 import es.iesoretania.entertainmentlounge.Clases.Usuario;
 import es.iesoretania.entertainmentlounge.MainActivity;
 import es.iesoretania.entertainmentlounge.R;
+import pl.droidsonroids.gif.GifImageView;
 
 public class AuthFragment extends Fragment {
     Button btnEntrar;
@@ -50,9 +51,9 @@ public class AuthFragment extends Fragment {
     TextView tvRegister;
     ProgressBar loadingLogin;
     CheckBox chkbxMantenerSesion;
-    ImageView imgLogoApp;
     FirebaseAuth fAuth;
     FirebaseFirestore db;
+    GifImageView logoGif;
     FirebaseStorage firebaseStorage;
 
     @Override
@@ -74,6 +75,7 @@ public class AuthFragment extends Fragment {
 
         fAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
+        firebaseStorage = FirebaseStorage.getInstance();
 
         //region Comprobar si ha mantenido la sesión iniciada
         if (comprobarSesion() && UserData.ID_USER_DB == null) {
@@ -95,14 +97,11 @@ public class AuthFragment extends Fragment {
         tvRegister = view.findViewById(R.id.tvRegister);
         chkbxMantenerSesion = view.findViewById(R.id.chkbxMantenerSesion);
         loadingLogin = view.findViewById(R.id.loadingLogin);
-        imgLogoApp = view.findViewById(R.id.imgLogoApp);
+        logoGif = view.findViewById(R.id.logoGif);
         //endregion
 
         loguearse();
 
-        // TEMPORAL
-        // TODO: Hacer el logo
-        Glide.with(getContext()).load("https://upload.wikimedia.org/wikipedia/commons/8/85/Logo-Test.png").into(imgLogoApp);
     }
 
     private void mantenerSesion() {

@@ -65,35 +65,30 @@ public class MisSeriesFragment extends Fragment {
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spFiltrosMisSeries.setAdapter(arrayAdapter);
 
-        db.collection("usuarios").document(UserData.ID_USER_DB).collection("series_guardadas").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    listaSeriesKeys = new ArrayList<>();
-                    for (QueryDocumentSnapshot dn : task.getResult()) {
-                        SaveSerie saveSerie = dn.toObject(SaveSerie.class);
-                        listaSeriesKeys.add(saveSerie.getId_serie());
-                    }
-                    db.collection("series").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
-                                listaSeries = new ArrayList<>();
-                                for (QueryDocumentSnapshot dn : task.getResult()) {
-                                    if (listaSeriesKeys.contains(dn.getId())) {
-                                        listaSeries.add(dn.toObject(Serie.class));
-                                    }
-                                }
+        db.collection("usuarios").document(UserData.ID_USER_DB).collection("series_guardadas").get().addOnCompleteListener(seriesDelUsuario -> {
+            if (seriesDelUsuario.isSuccessful()) {
+                listaSeriesKeys = new ArrayList<>();
+                for (QueryDocumentSnapshot dn : seriesDelUsuario.getResult()) {
+                    SaveSerie saveSerie = dn.toObject(SaveSerie.class);
+                    listaSeriesKeys.add(saveSerie.getId_serie());
+                }
 
-                                RecyclerSeries recyclerSeries = new RecyclerSeries(listaSeries, getContext());
-                                recyclerSeries.setOnItemClickListener((position, v) -> Navigation.findNavController(v).navigate(MisSeriesFragmentDirections.actionNavMisSeriesToNavSerie(listaSeries.get(position).getId_serie())));
-                                recyclerMisSeries.setHasFixedSize(true);
-                                recyclerMisSeries.setLayoutManager(new LinearLayoutManager(getContext()));
-                                recyclerMisSeries.setAdapter(recyclerSeries);
+                db.collection("series").get().addOnCompleteListener(recuperarSeries -> {
+                    if (recuperarSeries.isSuccessful()) {
+                        listaSeries = new ArrayList<>();
+                        for (QueryDocumentSnapshot dn : recuperarSeries.getResult()) {
+                            if (listaSeriesKeys.contains(dn.getId())) {
+                                listaSeries.add(dn.toObject(Serie.class));
                             }
                         }
-                    });
-                }
+
+                        RecyclerSeries recyclerSeries = new RecyclerSeries(listaSeries, getContext());
+                        recyclerSeries.setOnItemClickListener((position, v) -> Navigation.findNavController(v).navigate(MisSeriesFragmentDirections.actionNavMisSeriesToNavSerie(listaSeries.get(position).getId_serie())));
+                        recyclerMisSeries.setHasFixedSize(true);
+                        recyclerMisSeries.setLayoutManager(new LinearLayoutManager(getContext()));
+                        recyclerMisSeries.setAdapter(recyclerSeries);
+                    }
+                });
             }
         });
     }

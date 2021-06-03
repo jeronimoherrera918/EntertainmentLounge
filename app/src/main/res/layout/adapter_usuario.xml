@@ -11,13 +11,14 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:animateLayoutChanges="true"
         android:orientation="vertical">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#BAF17300"
+            android:background="@color/white"
             android:orientation="horizontal"
             android:padding="6dp">
 
@@ -31,7 +32,7 @@
                 android:layout_gravity="center"
                 android:paddingLeft="12dp"
                 android:paddingRight="12dp"
-                app:srcCompat="@drawable/ic_user" />
+                app:srcCompat="@drawable/ic_user_chat" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -48,9 +49,10 @@
                     android:id="@+id/recyclerNombreUsuario"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginRight="2dp"
                     android:layout_marginBottom="2dp"
                     android:text="NOMBRE"
-                    android:textColor="@color/white"
+                    android:textColor="@color/black"
                     android:textSize="16dp"
                     android:textStyle="bold" />
 
@@ -58,9 +60,10 @@
                     android:id="@+id/recyclerCorreoUsuario"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp"
                     android:layout_marginBottom="2dp"
                     android:text="CORREO"
-                    android:textColor="@color/white"
+                    android:textColor="@color/black"
                     android:textSize="14dp" />
             </LinearLayout>
         </RelativeLayout>

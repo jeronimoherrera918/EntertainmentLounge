@@ -7,22 +7,25 @@
     app:cardUseCompatPadding="true">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/recyclerComentarioEmisor"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="NOMBRE_USUARIO_EMISOR"
             android:textSize="18dp"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/recyclerComentarioMensaje"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:justificationMode="inter_word"
             android:text="COMENTARIO"
             android:textSize="14dp" />

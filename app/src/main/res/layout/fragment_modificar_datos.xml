@@ -22,25 +22,58 @@
         <EditText
             android:id="@+id/etModNickname"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
+            android:background="@drawable/custom_input"
+            android:backgroundTint="@color/azul_app"
+            android:drawableStart="@drawable/custom_user_icon"
+            android:drawablePadding="12dp"
             android:ems="10"
             android:hint="Nickname..."
-            android:inputType="textPersonName" />
+            android:inputType="textPersonName"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:textColor="@color/white"
+            android:textColorHint="@color/grey" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="15dp" />
 
         <EditText
             android:id="@+id/etModNombreCompleto"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
+            android:background="@drawable/custom_input"
+            android:backgroundTint="@color/azul_app"
+            android:drawableStart="@drawable/custom_user_icon"
+            android:drawablePadding="12dp"
             android:ems="10"
             android:hint="Nombre completo..."
-            android:inputType="textPersonName" />
+            android:inputType="textPersonName"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:textColor="@color/white"
+            android:textColorHint="@color/grey" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="15dp" />
 
         <EditText
             android:id="@+id/etModFecha"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
+            android:background="@drawable/custom_input"
+            android:backgroundTint="@color/azul_app"
+            android:drawableStart="@drawable/custom_user_icon"
+            android:drawablePadding="12dp"
             android:ems="10"
-            android:inputType="date" />
+            android:hint="Fecha de nacimiento..."
+            android:inputType="date"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:textColor="@color/white"
+            android:textColorHint="@color/grey" />
 
         <Space
             android:layout_width="match_parent"
@@ -61,7 +94,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Subir foto" />
+            android:backgroundTint="#16618D"
+            android:text="Subir foto"
+            android:textColor="@color/white" />
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -72,6 +107,7 @@
         android:layout_marginTop="462dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
+        android:backgroundTint="#16618D"
         android:clickable="true"
         android:src="@drawable/ic_save_serie"
         app:layout_constraintBottom_toBottomOf="parent"

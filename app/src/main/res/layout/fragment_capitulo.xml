@@ -10,64 +10,23 @@
         android:id="@+id/imgCapituloCabecera"
         android:layout_width="0dp"
         android:layout_height="250dp"
-        android:layout_marginBottom="8dp"
         android:scaleType="fitXY"
-        app:layout_constraintBottom_toTopOf="@+id/listRecyclerComentarios"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/bg_auth" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/listRecyclerComentarios"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:id="@+id/linearLayout8"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="5dp"
+        android:layout_marginEnd="8dp"
+        android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imgCapituloCabecera">
-
-    </androidx.recyclerview.widget.RecyclerView>
-
-    <ImageButton
-        android:id="@+id/btnMarcarComoVistoCap"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="188dp"
-        android:layout_marginEnd="16dp"
-        android:background="#00000000"
-        android:scaleType="fitCenter"
-        android:src="@drawable/ic_check_false"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabGuardarCambiosCap"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="600dp"
-        android:layout_marginEnd="16dp"
-        android:clickable="true"
-        android:enabled="false"
-        android:src="@drawable/ic_confirm_changes"
-        app:backgroundTint="@color/azul_app"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginBottom="8dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/listRecyclerComentarios">
 
         <TextView
             android:id="@+id/textView10"
@@ -79,15 +38,6 @@
             android:textColor="@color/black"
             android:textSize="18sp"
             android:textStyle="bold" />
-
-        <View
-            android:id="@+id/divider10"
-            android:layout_width="230dp"
-            android:layout_height="3dp"
-            android:layout_gravity="center"
-            android:layout_margin="3dp"
-            android:background="@color/azul_app"
-            android:backgroundTint="@color/azul_app" />
 
         <RatingBar
             android:id="@+id/rbPuntuarCapitulo"
@@ -137,5 +87,44 @@
             android:text="Comentar"
             android:textColor="@color/white" />
     </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/listRecyclerComentarios"
+        android:layout_width="match_parent"
+        android:layout_height="194dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout8">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <ImageButton
+        android:id="@+id/btnMarcarComoVistoCap"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="188dp"
+        android:layout_marginEnd="16dp"
+        android:background="#00000000"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_check_false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabGuardarCambiosCap"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="550dp"
+        android:layout_marginEnd="16dp"
+        android:clickable="true"
+        android:enabled="false"
+        android:src="@drawable/ic_confirm_changes"
+        app:backgroundTint="@color/azul_app"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

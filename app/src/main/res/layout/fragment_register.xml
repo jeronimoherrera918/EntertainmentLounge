@@ -8,34 +8,42 @@
 
     <LinearLayout
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
         android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <pl.droidsonroids.gif.GifImageView
+            android:id="@+id/logoGifRegister"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            android:layout_gravity="center"
+            android:src="@drawable/logo1" />
+
         <TextView
             android:id="@+id/textView2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Formulario de registro"
+            android:text="Introduce tus datos para completar tu registro"
             android:textAlignment="center"
             android:textColor="@color/black"
-            android:textSize="20sp"
             android:textStyle="bold" />
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="25dp" />
+            android:layout_height="10dp" />
 
         <EditText
             android:id="@+id/etNicknameRegistro"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="40dp"
             android:background="@drawable/custom_input"
             android:backgroundTint="@color/azul_app"
             android:drawableStart="@drawable/custom_user_icon"
@@ -55,7 +63,7 @@
         <EditText
             android:id="@+id/etEmailRegistro"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="40dp"
             android:background="@drawable/custom_input"
             android:backgroundTint="@color/azul_app"
             android:drawableStart="@drawable/custom_email_icon"
@@ -75,7 +83,7 @@
         <EditText
             android:id="@+id/etPasswordRegistro"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="40dp"
             android:background="@drawable/custom_input"
             android:backgroundTint="@color/azul_app"
             android:drawableStart="@drawable/custom_lock_icon"
@@ -95,7 +103,7 @@
         <EditText
             android:id="@+id/etNombreCompletoRegistro"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="40dp"
             android:background="@drawable/custom_input"
             android:backgroundTint="@color/azul_app"
             android:drawableStart="@drawable/custom_fullname_icon"
@@ -115,7 +123,7 @@
         <EditText
             android:id="@+id/etFechaRegistro"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="40dp"
             android:background="@drawable/custom_input"
             android:backgroundTint="@color/azul_app"
             android:drawableStart="@drawable/custom_date_icon"
@@ -136,7 +144,6 @@
             android:id="@+id/btnRegistrarse"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:backgroundTint="#16618D"
             android:text="Registrarse"
             android:textColor="@color/white" />

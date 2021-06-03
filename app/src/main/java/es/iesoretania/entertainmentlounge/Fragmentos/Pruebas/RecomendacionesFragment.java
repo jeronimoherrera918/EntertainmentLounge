@@ -13,9 +13,15 @@ import android.view.ViewGroup;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import es.iesoretania.entertainmentlounge.Clases.SaveSerieData.SaveSerie;
+import es.iesoretania.entertainmentlounge.Clases.SerieData.Serie;
 import es.iesoretania.entertainmentlounge.Clases.UserData;
 import es.iesoretania.entertainmentlounge.R;
 
@@ -40,15 +46,17 @@ public class RecomendacionesFragment extends Fragment {
         db = FirebaseFirestore.getInstance();
 
         // ESTRUCTURA DE LOS SELECT //
-        db.collection("usuarios").document(UserData.ID_USER_DB).collection("series_guardadas").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    if (task.getResult().getDocuments().size() >= 5) {
-                        // COMENZAR RECOMENDACIONES //
-                    } else {
-                        System.out.println("El usuario no tiene suficientes series para empezar a recomendarle otras");
+        db.collection("usuarios").document(UserData.ID_USER_DB).collection("series_guardadas").get().addOnCompleteListener(seriesGuardadas -> {
+            if (seriesGuardadas.isSuccessful()) {
+                if (seriesGuardadas.getResult().getDocuments().size() >= 5) {
+                    // COMENZAR RECOMENDACIONES //
+                    List<SaveSerie> listaSeries = new ArrayList<>();
+                    for (DocumentSnapshot dn : seriesGuardadas.getResult()) {
+                        listaSeries.add(dn.toObject(SaveSerie.class));
                     }
+
+                } else {
+                    System.out.println("El usuario no tiene suficientes series para empezar a recomendarle otras");
                 }
             }
         });

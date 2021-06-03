@@ -35,8 +35,6 @@ import es.iesoretania.entertainmentlounge.Clases.Usuario;
 import es.iesoretania.entertainmentlounge.R;
 
 public class ChatsFragment extends Fragment {
-    EditText etMensajesChat;
-    Button btnEnviarMensaje;
     RecyclerView listRecyclerUsuarios;
     List<Usuario> listaUsuarios;
     List<String> listaUsuariosKeys;
@@ -56,8 +54,6 @@ public class ChatsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        etMensajesChat = view.findViewById(R.id.etMensajeChat);
-        btnEnviarMensaje = view.findViewById(R.id.btnEnviarMensaje);
         listRecyclerUsuarios = view.findViewById(R.id.listRecyclerUsuarios);
         db = FirebaseFirestore.getInstance();
 
