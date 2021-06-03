@@ -25,11 +25,12 @@
             android:text="Formulario de registro"
             android:textAlignment="center"
             android:textColor="@color/black"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="5dp" />
+            android:layout_height="25dp" />
 
         <EditText
             android:id="@+id/etNicknameRegistro"
@@ -49,7 +50,7 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="8dp" />
+            android:layout_height="10dp" />
 
         <EditText
             android:id="@+id/etEmailRegistro"
@@ -69,7 +70,7 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="8dp" />
+            android:layout_height="10dp" />
 
         <EditText
             android:id="@+id/etPasswordRegistro"
@@ -89,7 +90,7 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="8dp" />
+            android:layout_height="10dp" />
 
         <EditText
             android:id="@+id/etNombreCompletoRegistro"
@@ -109,7 +110,7 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="8dp" />
+            android:layout_height="10dp" />
 
         <EditText
             android:id="@+id/etFechaRegistro"
@@ -129,7 +130,7 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="12dp" />
+            android:layout_height="18dp" />
 
         <Button
             android:id="@+id/btnRegistrarse"

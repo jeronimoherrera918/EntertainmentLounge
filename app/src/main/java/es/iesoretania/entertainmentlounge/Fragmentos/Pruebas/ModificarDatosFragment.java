@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -63,6 +64,7 @@ public class ModificarDatosFragment extends Fragment {
         imgModFotoPerfil = view.findViewById(R.id.imgModFotoPerfil);
         btnModSubirFoto = view.findViewById(R.id.btnModSubirFoto);
         db = FirebaseFirestore.getInstance();
+        firebaseStorage = FirebaseStorage.getInstance();
 
         db.collection("usuarios").document(UserData.ID_USER_DB).get().addOnCompleteListener(recogerUsuario -> {
             if (recogerUsuario.isSuccessful()) {
@@ -70,6 +72,9 @@ public class ModificarDatosFragment extends Fragment {
                 etModNickname.setText(infoUsuario.getNickname());
                 etModNombreCompleto.setText(infoUsuario.getNombre_completo());
                 etModFecha.setText(infoUsuario.getFechaNacimiento());
+
+                StorageReference storageReference = firebaseStorage.getReference().child(infoUsuario.getFotoPerfil());
+                storageReference.getDownloadUrl().addOnSuccessListener(uri -> Glide.with(getContext()).load(uri).into(imgModFotoPerfil));
 
                 btnModSubirFoto.setOnClickListener(v -> {
                     Intent intent = new Intent(Intent.ACTION_PICK);
@@ -98,7 +103,6 @@ public class ModificarDatosFragment extends Fragment {
             Bitmap bitmapImage = null;
             try {
                 bitmapImage = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
-                firebaseStorage = FirebaseStorage.getInstance();
                 StorageReference storageReference = firebaseStorage.getReference().child("usuarios/" + UserData.USUARIO.getEmail() + ".jpg");
                 storageReference.putFile(uri).addOnSuccessListener(taskSnapshot -> System.out.println("Foto subida correctamente"));
                 imgModFotoPerfil.setImageBitmap(bitmapImage);
