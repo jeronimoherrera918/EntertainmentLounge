@@ -143,10 +143,9 @@ public class SerieFragment extends Fragment {
 
     private void activarGuardado() {
         btnSerieSave.setBackgroundColor(Color.parseColor("#16618D"));
-        btnSerieSave.setOnClickListener(v -> db.collection("series").document(key).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                DocumentSnapshot dn = task.getResult();
+        btnSerieSave.setOnClickListener(v -> db.collection("series").document(key).get().addOnCompleteListener(guardarSerie -> {
+            if (guardarSerie.isSuccessful()) {
+                DocumentSnapshot dn = guardarSerie.getResult();
                 serie = dn.toObject(Serie.class);
                 SaveSerie saveSerie = new SaveSerie();
                 saveSerie.setId_serie(key);

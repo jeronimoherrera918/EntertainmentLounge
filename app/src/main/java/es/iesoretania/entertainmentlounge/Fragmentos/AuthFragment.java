@@ -81,8 +81,6 @@ public class AuthFragment extends Fragment {
             SharedPreferences sharedPreferences = getContext().getSharedPreferences("credenciales", Context.MODE_PRIVATE);
             entrar(sharedPreferences.getString("email", "null"), sharedPreferences.getString("password", "null"));
         } else if (FirebaseAuth.getInstance().getCurrentUser() != null && UserData.ID_USER_DB != null) {
-            Log.d("USER:LOGGED", FirebaseAuth.getInstance().getCurrentUser().getEmail());
-            Log.d("USER:LOGGED", FirebaseAuth.getInstance().getCurrentUser().getUid());
             Navigation.findNavController(view).navigate(R.id.action_nav_login_to_profileFragment);
         } else {
             FirebaseAuth.getInstance().signOut();
@@ -92,10 +90,8 @@ public class AuthFragment extends Fragment {
         //region Declaración de los elementos del fragmento
         btnEntrar = view.findViewById(R.id.btnEntrar);
         btnEntrar.setEnabled(true);
-
         etEmail = view.findViewById(R.id.etEmail);
         etPassword = view.findViewById(R.id.etPassword);
-
         tvRegister = view.findViewById(R.id.tvRegister);
         chkbxMantenerSesion = view.findViewById(R.id.chkbxMantenerSesion);
         loadingLogin = view.findViewById(R.id.loadingLogin);
@@ -105,6 +101,7 @@ public class AuthFragment extends Fragment {
         loguearse();
 
         // TEMPORAL
+        // TODO: Hacer el logo
         Glide.with(getContext()).load("https://upload.wikimedia.org/wikipedia/commons/8/85/Logo-Test.png").into(imgLogoApp);
     }
 
@@ -172,11 +169,8 @@ public class AuthFragment extends Fragment {
         builder.setMessage("Se ha producido un error, comprueba los datos e inténtalo de nuevo");
         builder.setTitle("Error");
         builder.setCancelable(false);
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
+        builder.setPositiveButton("OK", (dialog, which) -> {
 
-            }
         });
         AlertDialog alertDialog = builder.create();
         alertDialog.show();

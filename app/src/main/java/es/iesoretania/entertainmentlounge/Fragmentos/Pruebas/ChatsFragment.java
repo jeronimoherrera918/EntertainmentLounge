@@ -61,28 +61,20 @@ public class ChatsFragment extends Fragment {
         listRecyclerUsuarios = view.findViewById(R.id.listRecyclerUsuarios);
         db = FirebaseFirestore.getInstance();
 
-        db.collection("usuarios").whereNotEqualTo("email", UserData.USUARIO.getEmail()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    listaUsuarios = new ArrayList<>();
-                    listaUsuariosKeys = new ArrayList<>();
-                    for (QueryDocumentSnapshot dn : task.getResult()) {
-                        Usuario usuario = dn.toObject(Usuario.class);
-                        listaUsuarios.add(usuario);
-                        listaUsuariosKeys.add(dn.getId());
-                    }
-                    RecyclerUsuarios recyclerUsuarios = new RecyclerUsuarios(listaUsuarios, listRecyclerUsuarios.getContext());
-                    recyclerUsuarios.setOnItemClickListener(new RecyclerUsuarios.ClickListener() {
-                        @Override
-                        public void onItemClick(int position, View v) {
-                            Navigation.findNavController(v).navigate(ChatsFragmentDirections.actionNavChatsToNavChat(listaUsuariosKeys.get(position)));
-                        }
-                    });
-                    listRecyclerUsuarios.setHasFixedSize(true);
-                    listRecyclerUsuarios.setLayoutManager(new LinearLayoutManager(listRecyclerUsuarios.getContext()));
-                    listRecyclerUsuarios.setAdapter(recyclerUsuarios);
+        db.collection("usuarios").whereNotEqualTo("email", UserData.USUARIO.getEmail()).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                listaUsuarios = new ArrayList<>();
+                listaUsuariosKeys = new ArrayList<>();
+                for (QueryDocumentSnapshot dn : task.getResult()) {
+                    Usuario usuario = dn.toObject(Usuario.class);
+                    listaUsuarios.add(usuario);
+                    listaUsuariosKeys.add(dn.getId());
                 }
+                RecyclerUsuarios recyclerUsuarios = new RecyclerUsuarios(listaUsuarios, listRecyclerUsuarios.getContext());
+                recyclerUsuarios.setOnItemClickListener((position, v) -> Navigation.findNavController(v).navigate(ChatsFragmentDirections.actionNavChatsToNavChat(listaUsuariosKeys.get(position))));
+                listRecyclerUsuarios.setHasFixedSize(true);
+                listRecyclerUsuarios.setLayoutManager(new LinearLayoutManager(listRecyclerUsuarios.getContext()));
+                listRecyclerUsuarios.setAdapter(recyclerUsuarios);
             }
         });
     }

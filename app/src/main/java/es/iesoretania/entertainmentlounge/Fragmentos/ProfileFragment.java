@@ -70,32 +70,38 @@ public class ProfileFragment extends Fragment {
         firebaseStorage = FirebaseStorage.getInstance();
         //endregion
 
-        db.collection("usuarios").document(UserData.ID_USER_DB).collection("series_guardadas").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    tvNumSeriesGuardadas.setText("Número de series guardadas: " + task.getResult().size());
-                }
-            }
-        });
+//        db.collection("usuarios").document(UserData.ID_USER_DB).collection("series_guardadas").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                if (task.isSuccessful()) {
+//                    tvNumSeriesGuardadas.setText("Número de series guardadas: " + task.getResult().size());
+//                }
+//            }
+//        });
 
-        db.collection("usuarios").document(UserData.ID_USER_DB).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    Usuario usuario = task.getResult().toObject(Usuario.class);
-                    tvProfileNombre.setText("Bienvenido " + usuario.getNombre_completo());
-                    tvProfileEmail.setText(usuario.getEmail());
-                    Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.fade_in);
-                    animation.setDuration(2000);
-                    tvProfileNombre.startAnimation(animation);
-                    tvProfileEmail.startAnimation(animation);
+        tvProfileNombre.setText(UserData.USUARIO.getNombre_completo());
+        tvProfileEmail.setText(UserData.USUARIO.getEmail());
 
-                    StorageReference storageReference = firebaseStorage.getReference().child(usuario.getFotoPerfil());
-                    storageReference.getDownloadUrl().addOnSuccessListener(uri -> Glide.with(getContext()).load(uri).into(imgProfileFoto));
-                }
-            }
-        });
+        StorageReference storageReference = firebaseStorage.getReference().child(UserData.USUARIO.getFotoPerfil());
+        storageReference.getDownloadUrl().addOnSuccessListener(uri -> Glide.with(getContext()).load(uri).into(imgProfileFoto));
+
+//        db.collection("usuarios").document(UserData.ID_USER_DB).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//                if (task.isSuccessful()) {
+//                    Usuario usuario = task.getResult().toObject(Usuario.class);
+//                    tvProfileNombre.setText("Bienvenido " + usuario.getNombre_completo());
+//                    tvProfileEmail.setText(usuario.getEmail());
+//                    Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.fade_in);
+//                    animation.setDuration(2000);
+//                    tvProfileNombre.startAnimation(animation);
+//                    tvProfileEmail.startAnimation(animation);
+//
+//                    StorageReference storageReference = firebaseStorage.getReference().child(usuario.getFotoPerfil());
+//                    storageReference.getDownloadUrl().addOnSuccessListener(uri -> Glide.with(getContext()).load(uri).into(imgProfileFoto));
+//                }
+//            }
+//        });
 
         btnAddSerie.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_nav_profile_to_addSerieFragment));
         fabEditarPerfil.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_nav_profile_to_nav_modificarDatos));

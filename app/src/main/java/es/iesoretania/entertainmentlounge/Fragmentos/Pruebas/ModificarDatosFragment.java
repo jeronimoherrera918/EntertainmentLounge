@@ -89,6 +89,7 @@ public class ModificarDatosFragment extends Fragment {
                     db.collection("usuarios").document(UserData.ID_USER_DB).set(infoUsuario).addOnCompleteListener(guardarCambios -> {
                         if (guardarCambios.isSuccessful()) {
                             Snackbar.make(v, "Cambios guardados correctamente", Snackbar.LENGTH_SHORT).show();
+                            UserData.USUARIO = infoUsuario;
                         }
                     });
                 });

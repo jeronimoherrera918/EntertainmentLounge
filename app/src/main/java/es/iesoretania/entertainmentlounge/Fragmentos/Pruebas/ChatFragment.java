@@ -123,7 +123,7 @@ public class ChatFragment extends Fragment {
 
     private void setupEnviarMensaje() {
         btnEnviarMensajeUsuario.setOnClickListener(new View.OnClickListener() {
-            String keyMensaje = generarID(12);
+            String keyMensaje = generarID();
 
             @Override
             public void onClick(View v) {
@@ -178,11 +178,13 @@ public class ChatFragment extends Fragment {
         return mensaje;
     }
 
-    private String generarID(int tam) {
+    private String generarID() {
         String key = "";
         Random random = new Random();
-        for (int i = 0; i < tam; i++) {
+        for (int i = 0; i < 10; i++) {
             char randomizedCharacter = (char) (random.nextInt(26) + 'A');
+            key += randomizedCharacter;
+            randomizedCharacter = (char) (random.nextInt(26) + 'a');
             key += randomizedCharacter;
         }
         return key;

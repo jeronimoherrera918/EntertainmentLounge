@@ -19,11 +19,9 @@ import android.widget.ImageButton;
 import android.widget.RatingBar;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -94,36 +92,33 @@ public class CapituloFragment extends Fragment {
     }
 
     private void comprobacionesIniciales() {
-        db.collection("usuarios").document(UserData.ID_USER_DB).collection("series_guardadas").whereEqualTo("id_serie", serie.getId_serie()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    if (task.getResult().size() > 0) {
-                        saveSerie = task.getResult().getDocuments().get(0).toObject(SaveSerie.class);
+        db.collection("usuarios").document(UserData.ID_USER_DB).collection("series_guardadas").whereEqualTo("id_serie", serie.getId_serie()).get().addOnCompleteListener(usuarioHaGuardadoSerie -> {
+            if (usuarioHaGuardadoSerie.isSuccessful()) {
+                if (usuarioHaGuardadoSerie.getResult().size() > 0) {
+                    saveSerie = usuarioHaGuardadoSerie.getResult().getDocuments().get(0).toObject(SaveSerie.class);
 
-                        if (saveSerie.getTemporadas().get(nTemporada).getCapitulos_vistos().get(nCapituloPos) == 1) {
-                            float f = Float.parseFloat(String.valueOf(saveSerie.getTemporadas().get(nTemporada).getCapitulos_puntuacion().get(nCapituloPos)));
-                            rbPuntuarCapitulo.setRating(f);
-                            btnMarcarComoVistoCap.setImageResource(R.drawable.ic_check_true);
-                            rbPuntuarCapitulo.setEnabled(true);
-                            btnCapComentar.setEnabled(true);
-                        } else {
-                            rbPuntuarCapitulo.setEnabled(false);
-                            btnCapComentar.setEnabled(false);
-                        }
-
-                        if (saveSerie.getTemporadas().get(nTemporada).isVistaCompleta()) {
-                            for (Double d : saveSerie.getTemporadas().get(nTemporada).getCapitulos_puntuacion()) {
-                                puntuacionTemporadaOld += d;
-                            }
-                            puntuacionTemporadaOld = puntuacionTemporadaOld / serie.getTemporadas().get(nTemporada).getCapitulos().size();
-                        }
-                        activarComentarios();
-                        activarPuntuar();
-                        activarGuardarCapitulo();
+                    if (saveSerie.getTemporadas().get(nTemporada).getCapitulos_vistos().get(nCapituloPos) == 1) {
+                        float f = Float.parseFloat(String.valueOf(saveSerie.getTemporadas().get(nTemporada).getCapitulos_puntuacion().get(nCapituloPos)));
+                        rbPuntuarCapitulo.setRating(f);
+                        btnMarcarComoVistoCap.setImageResource(R.drawable.ic_check_true);
+                        rbPuntuarCapitulo.setEnabled(true);
+                        btnCapComentar.setEnabled(true);
+                    } else {
+                        rbPuntuarCapitulo.setEnabled(false);
+                        btnCapComentar.setEnabled(false);
                     }
-                    mostrarComentarios();
+
+                    if (saveSerie.getTemporadas().get(nTemporada).isVistaCompleta()) {
+                        for (Double d : saveSerie.getTemporadas().get(nTemporada).getCapitulos_puntuacion()) {
+                            puntuacionTemporadaOld += d;
+                        }
+                        puntuacionTemporadaOld = puntuacionTemporadaOld / serie.getTemporadas().get(nTemporada).getCapitulos().size();
+                    }
+                    activarComentarios();
+                    activarPuntuar();
+                    activarGuardarCapitulo();
                 }
+                mostrarComentarios();
             }
         });
     }
@@ -171,7 +166,7 @@ public class CapituloFragment extends Fragment {
 
     private void activarComentarios() {
         btnCapComentar.setOnClickListener(v -> {
-            Comentario comentario = new Comentario(etCapComentario.getText().toString(), UserData.ID_USER_DB, generarID(6));
+            Comentario comentario = new Comentario(etCapComentario.getText().toString(), UserData.ID_USER_DB, generarID());
             serie.getTemporadas().get(nTemporada).getCapitulos().get(nCapituloPos).getListaComentarios().add(comentario);
             db.collection("series").document(serie.getId_serie()).set(serie);
         });
@@ -230,25 +225,19 @@ public class CapituloFragment extends Fragment {
         }
 
         // Actualizamos
-        db.collection("series").document(serie.getId_serie()).set(serie).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()) {
-                    db.collection("usuarios").document(UserData.ID_USER_DB).collection("series_guardadas").whereEqualTo("id_serie", serie.getId_serie()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
-                                db.collection("usuarios").document(UserData.ID_USER_DB).collection("series_guardadas").document(task.getResult().getDocuments().get(0).getId()).set(saveSerie).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        Snackbar.make(getView(), "Cambios guardados correctamente", Snackbar.LENGTH_SHORT).show();
-                                        actualizarPuntuacionTemporada();
-                                    }
-                                });
+        db.collection("series").document(serie.getId_serie()).set(serie).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                db.collection("usuarios").document(UserData.ID_USER_DB).collection("series_guardadas").whereEqualTo("id_serie", serie.getId_serie()).get().addOnCompleteListener(task1 -> {
+                    if (task1.isSuccessful()) {
+                        db.collection("usuarios").document(UserData.ID_USER_DB).collection("series_guardadas").document(task1.getResult().getDocuments().get(0).getId()).set(saveSerie).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task1) {
+                                Snackbar.make(getView(), "Cambios guardados correctamente", Snackbar.LENGTH_SHORT).show();
+                                actualizarPuntuacionTemporada();
                             }
-                        }
-                    });
-                }
+                        });
+                    }
+                });
             }
         });
 
@@ -288,13 +277,6 @@ public class CapituloFragment extends Fragment {
                     }
                     puntuacionTemporadaPersonal = puntuacionTemporadaPersonal / serie.getTemporadas().get(nTemporada).getCapitulos().size();
 
-                    /*
-                        Multiplicar la puntuación total de la temporada por el número de votos
-                        Restar la puntuación de la temporada antigua del usuario
-                        Sumar la nueva puntuación de la temporada del usuario
-                        Dividir la puntuación total entre el número de votos
-                    */
-
                     double puntuacionTotal = serie.getTemporadas().get(nTemporada).getPuntuacionTotal();
                     puntuacionTotal -= puntuacionTemporadaOld;
                     puntuacionTotal += puntuacionTemporadaPersonal;
@@ -320,10 +302,10 @@ public class CapituloFragment extends Fragment {
         });
     }
 
-    private String generarID(int tam) {
+    private String generarID() {
         String key = "";
         Random random = new Random();
-        for (int i = 0; i < tam; i++) {
+        for (int i = 0; i < 10; i++) {
             char randomizedCharacter_1 = (char) (random.nextInt(26) + 'A');
             key += randomizedCharacter_1;
             char randomizedCharacter_2 = (char) (random.nextInt(26) + 'a');
