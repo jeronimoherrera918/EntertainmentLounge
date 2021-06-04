@@ -4,7 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Fragmentos.Pruebas.AddSerieFragment" >
+    tools:context=".Fragmentos.Pruebas.AddSerieFragment">
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="15dp" />
 
     <TextView
         android:id="@+id/textView4"
@@ -12,35 +16,72 @@
         android:layout_height="wrap_content"
         android:text="AÑADIR SERIES"
         android:textAlignment="center"
+        android:textColor="@color/black"
         android:textStyle="bold" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="15dp" />
+
+    <EditText
+        android:id="@+id/etAddSerieNombre"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/custom_input"
+        android:backgroundTint="@color/azul_app"
+        android:drawableStart="@drawable/custom_email_icon"
+        android:drawablePadding="12dp"
+        android:ems="10"
+        android:hint="Nombre..."
+        android:inputType="textPersonName"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:textColor="@color/white"
+        android:textColorHint="@color/grey" />
 
     <Space
         android:layout_width="match_parent"
         android:layout_height="5dp" />
 
     <EditText
-        android:id="@+id/etAddSerieNombre"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Nombre..."
-        android:inputType="textPersonName" />
-
-    <EditText
         android:id="@+id/etAddSerieGenero"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
+        android:background="@drawable/custom_input"
+        android:backgroundTint="@color/azul_app"
+        android:drawableStart="@drawable/custom_email_icon"
+        android:drawablePadding="12dp"
         android:ems="10"
         android:hint="Género..."
-        android:inputType="textPersonName" />
+        android:inputType="textPersonName"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:textColor="@color/white"
+        android:textColorHint="@color/grey" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="5dp" />
 
     <EditText
         android:id="@+id/etAddSerieDescripcion"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
+        android:background="@drawable/custom_input"
+        android:backgroundTint="@color/azul_app"
+        android:drawableStart="@drawable/custom_email_icon"
+        android:drawablePadding="12dp"
         android:ems="10"
         android:hint="Descripción..."
-        android:inputType="textPersonName" />
+        android:inputType="textPersonName"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:textColor="@color/white"
+        android:textColorHint="@color/grey" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="10dp" />
 
     <View
         android:id="@+id/divider2"
@@ -48,20 +89,37 @@
         android:layout_height="5dp"
         android:background="?android:attr/listDivider" />
 
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="15dp" />
+
     <TextView
         android:id="@+id/textView5"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="AÑADIR TEMPORADA"
-        android:textAlignment="center" />
+        android:textAlignment="center"
+        android:textColor="@color/black" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="15dp" />
 
     <EditText
         android:id="@+id/etAddSerieNombreCapitulo"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
+        android:background="@drawable/custom_input"
+        android:backgroundTint="@color/azul_app"
+        android:drawableStart="@drawable/custom_email_icon"
+        android:drawablePadding="12dp"
         android:ems="10"
         android:hint="Nombre capítulo"
-        android:inputType="textPersonName" />
+        android:inputType="textPersonName"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:textColor="@color/white"
+        android:textColorHint="@color/grey" />
 
     <Button
         android:id="@+id/btnAddSerieAgregarCapitulo"

@@ -12,6 +12,7 @@ public class Serie implements Parcelable {
     private String descripcion;
     private String genero;
     private Double puntuacion;
+    private Double puntuacionTotal;
     private List<String> plataformas = new ArrayList<>();
     List<Temporada> temporadas = new ArrayList<>();
 
@@ -24,6 +25,7 @@ public class Serie implements Parcelable {
         this.descripcion = descripcion;
         this.genero = genero;
         this.puntuacion = puntuacion;
+        this.puntuacionTotal = 0.0;
         this.plataformas = plataformas;
         this.temporadas = temporadas;
     }
@@ -37,6 +39,11 @@ public class Serie implements Parcelable {
             puntuacion = null;
         } else {
             puntuacion = in.readDouble();
+        }
+        if (in.readByte() == 0) {
+            puntuacionTotal = null;
+        } else {
+            puntuacionTotal = in.readDouble();
         }
         plataformas = in.createStringArrayList();
     }
@@ -109,6 +116,14 @@ public class Serie implements Parcelable {
         this.temporadas = temporadas;
     }
 
+    public Double getPuntuacionTotal() {
+        return puntuacionTotal;
+    }
+
+    public void setPuntuacionTotal(Double puntuacionTotal) {
+        this.puntuacionTotal = puntuacionTotal;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -125,6 +140,12 @@ public class Serie implements Parcelable {
         } else {
             dest.writeByte((byte) 1);
             dest.writeDouble(puntuacion);
+        }
+        if (puntuacionTotal == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeDouble(puntuacionTotal);
         }
         dest.writeStringList(plataformas);
     }

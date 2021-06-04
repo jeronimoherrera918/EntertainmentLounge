@@ -58,7 +58,8 @@
             android:id="@+id/btnSerieSave"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="#16618D"
+            android:backgroundTint="@color/grey"
+            android:enabled="false"
             android:text="Guardar serie"
             android:textColor="@color/white" />
 
