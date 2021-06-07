@@ -42,6 +42,8 @@ public class ModificarDatosFragment extends Fragment {
     FirebaseStorage firebaseStorage;
     Usuario infoUsuario;
     static final int GALLERY_INTENT = 1;
+    Bitmap bitmapImage;
+    Uri uri;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -90,6 +92,8 @@ public class ModificarDatosFragment extends Fragment {
                         if (guardarCambios.isSuccessful()) {
                             Snackbar.make(v, "Cambios guardados correctamente", Snackbar.LENGTH_SHORT).show();
                             UserData.USUARIO = infoUsuario;
+                            StorageReference storageReference2 = firebaseStorage.getReference().child("usuarios/" + UserData.USUARIO.getEmail() + ".jpg");
+                            storageReference2.putFile(uri).addOnSuccessListener(taskSnapshot -> System.out.println("Foto subida correctamente"));
                         }
                     });
                 });
@@ -100,12 +104,10 @@ public class ModificarDatosFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == GALLERY_INTENT && resultCode == RESULT_OK) {
-            Uri uri = data.getData();
-            Bitmap bitmapImage = null;
+            uri = data.getData();
+            bitmapImage = null;
             try {
                 bitmapImage = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
-                StorageReference storageReference = firebaseStorage.getReference().child("usuarios/" + UserData.USUARIO.getEmail() + ".jpg");
-                storageReference.putFile(uri).addOnSuccessListener(taskSnapshot -> System.out.println("Foto subida correctamente"));
                 imgModFotoPerfil.setImageBitmap(bitmapImage);
                 infoUsuario.setFotoPerfil("usuarios/" + UserData.USUARIO.getEmail() + ".jpg");
             } catch (IOException e) {

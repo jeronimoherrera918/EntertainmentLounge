@@ -87,6 +87,7 @@ public class AddSerieFragment extends Fragment {
                 serie.setGenero(etAddSerieGenero.getText().toString());
                 serie.setDescripcion(etAddSerieDescripcion.getText().toString());
                 serie.setPuntuacion(0.0);
+                serie.setPuntuacionTotal(0.0);
                 plataformas.add("Netflix");
                 serie.setPlataformas(plataformas);
                 newRef.set(serie);
