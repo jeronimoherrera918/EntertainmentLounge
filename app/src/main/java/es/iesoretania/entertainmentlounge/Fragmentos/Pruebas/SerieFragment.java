@@ -149,6 +149,7 @@ public class SerieFragment extends Fragment {
                 serie = dn.toObject(Serie.class);
                 SaveSerie saveSerie = new SaveSerie();
                 saveSerie.setId_serie(key);
+                saveSerie.setVistaCompleta(false);
                 for (Temporada temp : serie.getTemporadas()) {
                     SaveTemporadaSerie saveTemporadaSerie = new SaveTemporadaSerie();
                     for (int i = 0; i < temp.getCapitulos().size(); i++) {

@@ -45,7 +45,7 @@
             android:layout_height="50dp"
             android:background="@drawable/custom_input"
             android:backgroundTint="@color/azul_app"
-            android:drawableStart="@drawable/custom_user_icon"
+            android:drawableStart="@drawable/custom_fullname_icon"
             android:drawablePadding="12dp"
             android:ems="10"
             android:hint="Nombre completo..."
@@ -65,7 +65,7 @@
             android:layout_height="50dp"
             android:background="@drawable/custom_input"
             android:backgroundTint="@color/azul_app"
-            android:drawableStart="@drawable/custom_user_icon"
+            android:drawableStart="@drawable/custom_date_icon"
             android:drawablePadding="12dp"
             android:ems="10"
             android:hint="Fecha de nacimiento..."
@@ -84,7 +84,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:src="@drawable/ic_launcher_background" />
+            android:src="@drawable/ic_circles" />
 
         <Space
             android:layout_width="match_parent"
