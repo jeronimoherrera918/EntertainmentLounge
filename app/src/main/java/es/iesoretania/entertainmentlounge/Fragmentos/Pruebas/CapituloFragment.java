@@ -332,18 +332,18 @@ public class CapituloFragment extends Fragment {
         db.collection("series").document(serie.getId_serie()).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 serie = task.getResult().toObject(Serie.class);
-                boolean sw = true;
+                boolean sw2 = true;
                 // Como el objeto SaveTemporadaSerie tiene más campos
                 // No podemos utilizar saveSerie.getTemporadas().contains(false)
 
                 for (SaveTemporadaSerie saveTemporadaSerie : saveSerie.getTemporadas()) {
                     if (!saveTemporadaSerie.isVistaCompleta()) {
-                        sw = false; // Si hay alguna incompleta, ponemos el SW a false y paramos de comprobar, ya que el objetivo es que estén todas completas
+                        sw2 = false; // Si hay alguna incompleta, ponemos el SW a false y paramos de comprobar, ya que el objetivo es que estén todas completas
                         break;
                     }
                 }
 
-                if (sw) {
+                if (sw2) {
                     // Si es la primera vez que completa de ver una serie, se añade la puntuación al total de la serie y se le añade un voto //
                     if (!saveSerie.getVistaCompleta()) {
                         saveSerie.setVistaCompleta(true);
@@ -359,20 +359,20 @@ public class CapituloFragment extends Fragment {
                         serie.setPuntuacionTotal(serie.getPuntuacionTotal() + puntuacionSerieUsuario);
                         serie.setPuntuacion(serie.getPuntuacionTotal() / serie.getnVotos());
                         puntuacionSerieOld = serie.getPuntuacionTotal();
-                    }
-                    // Si ya la tiene vista completa, se actualiza la puntuación //
-                } else if (saveSerie.getVistaCompleta()) {
-                    double puntuacionSerieUsuario = 0.0;
-                    for (SaveTemporadaSerie saveTemporada : saveSerie.getTemporadas()) {
-                        double puntTempUsuario = 0.0;
-                        for (Double punt : saveTemporada.getCapitulos_puntuacion()) {
-                            puntTempUsuario = puntTempUsuario + punt;
+                    } else if (saveSerie.getVistaCompleta()) {
+                        // Si ya la tiene vista completa, se actualiza la puntuación //
+                        double puntuacionSerieUsuario = 0.0;
+                        for (SaveTemporadaSerie saveTemporada : saveSerie.getTemporadas()) {
+                            double puntTempUsuario = 0.0;
+                            for (Double punt : saveTemporada.getCapitulos_puntuacion()) {
+                                puntTempUsuario = puntTempUsuario + punt;
+                            }
+                            puntuacionSerieUsuario = puntuacionSerieUsuario + (puntTempUsuario / saveTemporada.getCapitulos_puntuacion().size());
                         }
-                        puntuacionSerieUsuario = puntuacionSerieUsuario + (puntTempUsuario / saveTemporada.getCapitulos_puntuacion().size());
+                        serie.setPuntuacionTotal(serie.getPuntuacionTotal() - puntuacionSerieOld + puntuacionSerieUsuario);
+                        serie.setPuntuacion(serie.getPuntuacionTotal() / serie.getnVotos());
+                        puntuacionSerieOld = serie.getPuntuacionTotal();
                     }
-                    serie.setPuntuacionTotal(serie.getPuntuacionTotal() - puntuacionSerieOld + puntuacionSerieUsuario);
-                    serie.setPuntuacion(serie.getPuntuacionTotal() / serie.getnVotos());
-                    puntuacionSerieOld = serie.getPuntuacionTotal();
                 }
 
                 db.collection("series").document(serie.getId_serie()).set(serie).addOnCompleteListener(new OnCompleteListener<Void>() {
