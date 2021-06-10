@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -32,7 +33,7 @@ public class RecyclerSeries extends RecyclerView.Adapter<RecyclerSeries.ViewHold
 
     @Override
     public RecyclerSeries.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = layoutInflater.inflate(R.layout.adapter_series, null);
+        View view = layoutInflater.inflate(R.layout.adapter_series_final, null);
         return new RecyclerSeries.ViewHolder(view);
     }
 
@@ -46,12 +47,18 @@ public class RecyclerSeries extends RecyclerView.Adapter<RecyclerSeries.ViewHold
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView recyclerNombreSerie, recyclerGeneroSerie;
+//         TextView recyclerNombreSerie, recyclerGeneroSerie;
+         TextView nombreSerieCard, descripcionSerieCard;
+         ImageView imagenSerieCard;
 
         public ViewHolder(View v) {
             super(v);
-            recyclerNombreSerie = v.findViewById(R.id.recyclerNombreSerie);
-            recyclerGeneroSerie = v.findViewById(R.id.recyclerGeneroSerie);
+//            recyclerNombreSerie = v.findViewById(R.id.recyclerNombreSerie);
+//            recyclerGeneroSerie = v.findViewById(R.id.recyclerGeneroSerie);
+             nombreSerieCard = v.findViewById(R.id.nombreSerieCard);
+             descripcionSerieCard = v.findViewById(R.id.descripcionSerieCard);
+             imagenSerieCard = v.findViewById(R.id.imagenSerieCard);
+
             if (clickListener != null) {
                 v.setOnClickListener(this);
             }
@@ -65,8 +72,10 @@ public class RecyclerSeries extends RecyclerView.Adapter<RecyclerSeries.ViewHold
         }
 
         public void bindData(final Serie serie) {
-            recyclerNombreSerie.setText(serie.getNombre());
-            recyclerGeneroSerie.setText(serie.getGenero());
+//            recyclerNombreSerie.setText(serie.getNombre());
+//            recyclerGeneroSerie.setText(serie.getGenero());
+             nombreSerieCard.setText(serie.getNombre());
+             descripcionSerieCard.setText(serie.getDescripcion());
         }
     }
 
