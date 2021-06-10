@@ -29,19 +29,22 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import es.iesoretania.entertainmentlounge.Clases.SaveSerieData.SaveSerie;
 import es.iesoretania.entertainmentlounge.Clases.SerieData.Serie;
 import es.iesoretania.entertainmentlounge.Clases.UserData;
 import es.iesoretania.entertainmentlounge.Clases.Usuario;
 import es.iesoretania.entertainmentlounge.R;
 
 public class ProfileFragment extends Fragment {
-    TextView tvNumSeriesGuardadas, tvProfileNombre, tvProfileEmail;
+    TextView tvProfileNombre, tvProfileEmail, tvPerfilSeriesGuardadas, tvPerfilSeriesVistas;
     ImageView imgProfileFoto;
+    Button btnPerfilExplorar, btnPerfilMisSeries, btnPerfilDescubrir;
     Button btnAddSerie;
-    FloatingActionButton fabEditarPerfil;
+    FloatingActionButton fabEditarPerfil, fabChatear;
     FirebaseAuth fAuth;
     FirebaseFirestore db;
     FirebaseStorage firebaseStorage;
+    Integer contadorSeriesGuardadas, contadorSeriesVistas;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -60,10 +63,15 @@ public class ProfileFragment extends Fragment {
 
         //region Declaración de los elementos del fragmento
         btnAddSerie = view.findViewById(R.id.btnAddSerie);
+        btnPerfilExplorar = view.findViewById(R.id.btnPerfilExplorar);
+        btnPerfilMisSeries = view.findViewById(R.id.btnPerfilMisSeries);
+        btnPerfilDescubrir = view.findViewById(R.id.btnPerfilDescubrir);
         fabEditarPerfil = view.findViewById(R.id.fabEditarPerfil);
-        tvNumSeriesGuardadas = view.findViewById(R.id.tvNumSeriesGuardadas);
+        fabChatear = view.findViewById(R.id.fabChatear);
         tvProfileNombre = view.findViewById(R.id.tvProfileNombre);
         tvProfileEmail = view.findViewById(R.id.tvProfileEmail);
+        tvPerfilSeriesGuardadas = view.findViewById(R.id.tvPerfilSeriesGuardadas);
+        tvPerfilSeriesVistas = view.findViewById(R.id.tvPerfilSeriesVistas);
         imgProfileFoto = view.findViewById(R.id.imgProfileFoto);
         fAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
@@ -73,10 +81,29 @@ public class ProfileFragment extends Fragment {
         tvProfileNombre.setText(UserData.USUARIO.getNombre_completo());
         tvProfileEmail.setText(UserData.USUARIO.getEmail());
 
+        db.collection("usuarios").document(UserData.ID_USER_DB).collection("series_guardadas").get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                contadorSeriesGuardadas = 0;
+                contadorSeriesVistas = 0;
+                for (DocumentSnapshot dn : task.getResult()) {
+                    contadorSeriesGuardadas++;
+                    if (dn.toObject(SaveSerie.class).getVistaCompleta()) {
+                        contadorSeriesVistas++;
+                    }
+                }
+                tvPerfilSeriesGuardadas.setText("Series guardadas: " + contadorSeriesGuardadas);
+                tvPerfilSeriesVistas.setText("Series vistas: " + contadorSeriesVistas);
+            }
+        });
+
         StorageReference storageReference = firebaseStorage.getReference().child(UserData.USUARIO.getFotoPerfil());
         storageReference.getDownloadUrl().addOnSuccessListener(uri -> Glide.with(getContext()).load(uri).into(imgProfileFoto));
 
         btnAddSerie.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_nav_profile_to_addSerieFragment));
+        btnPerfilExplorar.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_nav_profile_to_nav_verSeries));
+        btnPerfilMisSeries.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_nav_profile_to_nav_misSeries));
+        btnPerfilDescubrir.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_nav_profile_to_nav_recomendaciones));
         fabEditarPerfil.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_nav_profile_to_nav_modificarDatos));
+        fabChatear.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_nav_profile_to_nav_chats));
     }
 }
