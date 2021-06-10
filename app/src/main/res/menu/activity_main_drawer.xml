@@ -14,15 +14,15 @@
                     android:title="@string/menu_profile" />
                 <item
                     android:id="@+id/nav_verSeries"
-                    android:icon="@drawable/ic_date"
+                    android:icon="@drawable/ic_search"
                     android:title="@string/menu_verSeries" />
                 <item
                     android:id="@+id/nav_recomendaciones"
-                    android:icon="@drawable/ic_lock"
+                    android:icon="@drawable/ic_idea"
                     android:title="@string/menu_recomendaciones" />
                 <item
                     android:id="@+id/nav_misSeries"
-                    android:icon="@drawable/ic_lock"
+                    android:icon="@drawable/ic_save_serie"
                     android:title="@string/menu_misSeries" />
                 <item
                     android:id="@+id/nav_chats"

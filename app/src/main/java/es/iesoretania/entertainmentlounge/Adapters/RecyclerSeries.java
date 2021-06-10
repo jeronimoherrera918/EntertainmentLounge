@@ -1,13 +1,24 @@
 package es.iesoretania.entertainmentlounge.Adapters;
 
 import android.content.Context;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.List;
 
@@ -19,6 +30,8 @@ public class RecyclerSeries extends RecyclerView.Adapter<RecyclerSeries.ViewHold
     private LayoutInflater layoutInflater;
     private Context context;
     ClickListener clickListener;
+    FirebaseFirestore db;
+    FirebaseStorage firebaseStorage;
 
     public RecyclerSeries(List<Serie> listaSeries, Context context) {
         this.layoutInflater = LayoutInflater.from(context);
@@ -47,17 +60,17 @@ public class RecyclerSeries extends RecyclerView.Adapter<RecyclerSeries.ViewHold
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-//         TextView recyclerNombreSerie, recyclerGeneroSerie;
-         TextView nombreSerieCard, descripcionSerieCard;
-         ImageView imagenSerieCard;
+        TextView nombreSerieCard;
+        ImageView imagenSerieCard;
 
         public ViewHolder(View v) {
             super(v);
-//            recyclerNombreSerie = v.findViewById(R.id.recyclerNombreSerie);
-//            recyclerGeneroSerie = v.findViewById(R.id.recyclerGeneroSerie);
-             nombreSerieCard = v.findViewById(R.id.nombreSerieCard);
-             descripcionSerieCard = v.findViewById(R.id.descripcionSerieCard);
-             imagenSerieCard = v.findViewById(R.id.imagenSerieCard);
+
+            db = FirebaseFirestore.getInstance();
+            firebaseStorage = FirebaseStorage.getInstance();
+
+            nombreSerieCard = v.findViewById(R.id.nombreSerieCard);
+            imagenSerieCard = v.findViewById(R.id.imagenSerieCard);
 
             if (clickListener != null) {
                 v.setOnClickListener(this);
@@ -72,10 +85,9 @@ public class RecyclerSeries extends RecyclerView.Adapter<RecyclerSeries.ViewHold
         }
 
         public void bindData(final Serie serie) {
-//            recyclerNombreSerie.setText(serie.getNombre());
-//            recyclerGeneroSerie.setText(serie.getGenero());
-             nombreSerieCard.setText(serie.getNombre());
-             descripcionSerieCard.setText(serie.getDescripcion());
+            nombreSerieCard.setText(serie.getNombre());
+            StorageReference sr = firebaseStorage.getReference().child("series/" + serie.getId_serie() + ".jpg");
+            sr.getDownloadUrl().addOnSuccessListener(uri -> Glide.with(imagenSerieCard.getContext()).load(uri).into(imagenSerieCard));
         }
     }
 

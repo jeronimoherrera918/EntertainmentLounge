@@ -14,11 +14,29 @@
         android:layout_marginEnd="16dp"
         android:backgroundTint="#FFFFFF"
         android:clickable="true"
-        android:src="@android:drawable/ic_menu_edit"
+        android:src="@drawable/ic_editar_2"
         app:borderWidth="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:rippleColor="@color/azul_app" />
+        app:rippleColor="@color/azul_app"
+        app:tint="@color/azul_app" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabChatear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="216dp"
+        android:layout_weight="1"
+        android:backgroundTint="#FFFFFF"
+        android:clickable="true"
+        android:src="@drawable/ic_chats_profile"
+        app:borderWidth="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:rippleColor="@color/azul_app"
+        app:tint="@color/azul_app" />
 
     <LinearLayout
         android:id="@+id/linearLayout3"
@@ -53,14 +71,7 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="5dp" />
-
-        <View
-            android:id="@+id/divider4"
-            android:layout_width="match_parent"
-            android:layout_height="3dp"
-            android:background="?android:attr/listDivider"
-            android:backgroundTintMode="src_in" />
+            android:layout_height="10dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -124,7 +135,8 @@
                 android:layout_weight="1"
                 android:backgroundTint="#16618D"
                 android:text="Explorar"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                app:icon="@drawable/ic_search" />
 
             <Button
                 android:id="@+id/btnPerfilMisSeries"
@@ -133,7 +145,8 @@
                 android:layout_weight="1"
                 android:backgroundTint="#16618D"
                 android:text="Mis series"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                app:icon="@drawable/ic_save_serie" />
 
             <Button
                 android:id="@+id/btnPerfilDescubrir"
@@ -142,24 +155,8 @@
                 android:layout_weight="1"
                 android:backgroundTint="#16618D"
                 android:text="Descubrir"
-                android:textColor="@color/white" />
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="15dp"
-                android:layout_weight="1" />
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fabChatear"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:backgroundTint="#FFFFFF"
-                android:clickable="true"
-                android:src="@drawable/ic_chats_profile"
-                app:borderWidth="0dp"
-                app:rippleColor="@color/azul_app" />
+                android:textColor="@color/white"
+                app:icon="@drawable/ic_idea" />
 
             <Space
                 android:layout_width="match_parent"

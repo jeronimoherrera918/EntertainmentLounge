@@ -3,6 +3,7 @@
     android:id="@android:id/text1"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:textColor="#ff0000"
-    android:textSize="20sp">
-</TextView>
+    android:textAlignment="center"
+    android:textColor="#FFFFFF"
+    android:textSize="20sp"
+    android:textStyle="bold"></TextView>
