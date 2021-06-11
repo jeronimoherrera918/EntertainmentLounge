@@ -85,7 +85,7 @@ public class RecyclerSeries extends RecyclerView.Adapter<RecyclerSeries.ViewHold
         }
 
         public void bindData(final Serie serie) {
-            nombreSerieCard.setText(serie.getNombre());
+            nombreSerieCard.setText(serie.getNombre().toUpperCase());
             StorageReference sr = firebaseStorage.getReference().child("series/" + serie.getId_serie() + ".jpg");
             sr.getDownloadUrl().addOnSuccessListener(uri -> Glide.with(imagenSerieCard.getContext()).load(uri).into(imagenSerieCard));
         }

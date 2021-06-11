@@ -1,5 +1,6 @@
 package es.iesoretania.entertainmentlounge.Fragmentos;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -29,6 +30,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import es.iesoretania.entertainmentlounge.Actividades.PopUpComentar;
 import es.iesoretania.entertainmentlounge.Clases.SaveSerieData.SaveSerie;
 import es.iesoretania.entertainmentlounge.Clases.SerieData.Serie;
 import es.iesoretania.entertainmentlounge.Clases.UserData;
@@ -45,6 +47,8 @@ public class ProfileFragment extends Fragment {
     FirebaseFirestore db;
     FirebaseStorage firebaseStorage;
     Integer contadorSeriesGuardadas, contadorSeriesVistas;
+
+    Button btnTESTPOPUP;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -76,6 +80,16 @@ public class ProfileFragment extends Fragment {
         fAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         firebaseStorage = FirebaseStorage.getInstance();
+
+        btnTESTPOPUP = view.findViewById(R.id.btnTESTPOPUP);
+
+        btnTESTPOPUP.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), PopUpComentar.class);
+                startActivity(intent);
+            }
+        });
         //endregion
 
         tvProfileNombre.setText(UserData.USUARIO.getNombre_completo());

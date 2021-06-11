@@ -158,6 +158,13 @@
                 android:textColor="@color/white"
                 app:icon="@drawable/ic_idea" />
 
+            <Button
+                android:id="@+id/btnTESTPOPUP"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="pop" />
+
             <Space
                 android:layout_width="match_parent"
                 android:layout_height="15dp" />

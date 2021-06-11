@@ -48,7 +48,8 @@
                     android:paddingBottom="3dp"
                     android:text="FECHA"
                     android:textColor="@color/white"
-                    android:textSize="8dp" />
+                    android:textSize="8dp"
+                    android:textStyle="italic" />
             </LinearLayout>
 
         </RelativeLayout>
