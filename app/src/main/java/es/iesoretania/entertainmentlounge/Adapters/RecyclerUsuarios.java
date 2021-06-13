@@ -32,7 +32,7 @@ public class RecyclerUsuarios extends RecyclerView.Adapter<RecyclerUsuarios.View
 
     @Override
     public RecyclerUsuarios.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = layoutInflater.inflate(R.layout.adapter_usuario, null);
+        View view = layoutInflater.inflate(R.layout.adapter_usuario_final, null);
         return new RecyclerUsuarios.ViewHolder(view);
     }
 
@@ -46,12 +46,11 @@ public class RecyclerUsuarios extends RecyclerView.Adapter<RecyclerUsuarios.View
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView recyclerNombreUsuario, recyclerCorreoUsuario;
+        TextView tvUserChat;
 
         public ViewHolder(View v) {
             super(v);
-            recyclerNombreUsuario = v.findViewById(R.id.recyclerNombreUsuario);
-            recyclerCorreoUsuario = v.findViewById(R.id.recyclerCorreoUsuario);
+            tvUserChat = v.findViewById(R.id.tvUserChat);
             if (clickListener != null) {
                 v.setOnClickListener(this);
             }
@@ -65,8 +64,7 @@ public class RecyclerUsuarios extends RecyclerView.Adapter<RecyclerUsuarios.View
         }
 
         void bindData(final Usuario usuario) {
-            recyclerNombreUsuario.setText(usuario.getNickname());
-            recyclerCorreoUsuario.setText(usuario.getEmail());
+            tvUserChat.setText(usuario.getNickname());
         }
     }
 

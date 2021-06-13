@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -10,25 +10,63 @@
     android:layout_columnWeight="1"
     android:layout_gravity="fill"
     android:layout_margin="8dp"
-    app:cardCornerRadius="20dp"
-    app:cardUseCompatPadding="true"
     app:layout_anchorGravity="center"
     tools:context=".Actividades.PopUpComentar">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical|center_horizontal"
-        android:background="@color/azul_app"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:gravity="center"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            app:srcCompat="@drawable/ic_comentarios_img" />
+
+        <TextView
+            android:id="@+id/textView14"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:scaleType="fitXY"
-            app:srcCompat="@drawable/ic_sobrenosotros_2" />
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="Deja tu opinión sobre el capítulo"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/etComentarComentario"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:background="@drawable/custom_input"
+            android:backgroundTint="@color/azul_app"
+            android:ems="10"
+            android:gravity="start|top"
+            android:hint="Comentario..."
+            android:inputType="textMultiLine"
+            android:paddingStart="15dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="15dp"
+            android:paddingBottom="10dp"
+            android:textColor="@color/white"
+            android:textColorHint="@color/grey"
+            android:textSize="15dp" />
+
+        <Button
+            android:id="@+id/btnComentarPublicar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:backgroundTint="@color/azul_app"
+            android:text="Comentar" />
     </LinearLayout>
 
 
-</androidx.cardview.widget.CardView>
+</androidx.constraintlayout.widget.ConstraintLayout>

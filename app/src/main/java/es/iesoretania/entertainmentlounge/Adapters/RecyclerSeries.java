@@ -1,6 +1,7 @@
 package es.iesoretania.entertainmentlounge.Adapters;
 
 import android.content.Context;
+import android.media.Image;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,7 @@ import java.util.List;
 
 import es.iesoretania.entertainmentlounge.Clases.SerieData.Serie;
 import es.iesoretania.entertainmentlounge.R;
+import pl.droidsonroids.gif.GifImageView;
 
 public class RecyclerSeries extends RecyclerView.Adapter<RecyclerSeries.ViewHolder> {
     private List<Serie> listaSeries;
@@ -62,6 +64,7 @@ public class RecyclerSeries extends RecyclerView.Adapter<RecyclerSeries.ViewHold
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView nombreSerieCard;
         ImageView imagenSerieCard;
+        ImageView imgLoadingSerie;
 
         public ViewHolder(View v) {
             super(v);
@@ -71,6 +74,7 @@ public class RecyclerSeries extends RecyclerView.Adapter<RecyclerSeries.ViewHold
 
             nombreSerieCard = v.findViewById(R.id.nombreSerieCard);
             imagenSerieCard = v.findViewById(R.id.imagenSerieCard);
+            imgLoadingSerie = v.findViewById(R.id.imgLoadingSerie);
 
             if (clickListener != null) {
                 v.setOnClickListener(this);
@@ -87,7 +91,11 @@ public class RecyclerSeries extends RecyclerView.Adapter<RecyclerSeries.ViewHold
         public void bindData(final Serie serie) {
             nombreSerieCard.setText(serie.getNombre().toUpperCase());
             StorageReference sr = firebaseStorage.getReference().child("series/" + serie.getId_serie() + ".jpg");
-            sr.getDownloadUrl().addOnSuccessListener(uri -> Glide.with(imagenSerieCard.getContext()).load(uri).into(imagenSerieCard));
+            sr.getDownloadUrl().addOnSuccessListener(uri -> {
+                imgLoadingSerie.setVisibility(View.GONE);
+                Glide.with(imagenSerieCard.getContext()).load(uri).into(imagenSerieCard);
+                imagenSerieCard.setVisibility(View.VISIBLE);
+            });
         }
     }
 

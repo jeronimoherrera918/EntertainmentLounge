@@ -118,7 +118,7 @@
         android:id="@+id/nav_misSeries"
         android:name="es.iesoretania.entertainmentlounge.Fragmentos.Pruebas.MisSeriesFragment"
         android:label="@string/menu_misSeries"
-        tools:layout="@layout/fragment_mis_series" >
+        tools:layout="@layout/fragment_mis_series">
         <action
             android:id="@+id/action_nav_misSeries_to_nav_serie"
             app:destination="@id/nav_serie"
@@ -149,7 +149,7 @@
         android:id="@+id/nav_capitulo"
         android:name="es.iesoretania.entertainmentlounge.Fragmentos.Pruebas.CapituloFragment"
         android:label="Capitulo X de X"
-        tools:layout="@layout/fragment_capitulo" >
+        tools:layout="@layout/fragment_capitulo">
         <argument
             android:name="serie"
             app:argType="es.iesoretania.entertainmentlounge.Clases.SerieData.Serie" />
@@ -159,6 +159,13 @@
         <argument
             android:name="nTemporada"
             app:argType="integer" />
+        <action
+            android:id="@+id/action_nav_capitulo_to_comentariosFragment"
+            app:destination="@id/nav_comentarios"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out" />
     </fragment>
     <fragment
         android:id="@+id/nav_temporada"
@@ -214,4 +221,22 @@
         android:name="es.iesoretania.entertainmentlounge.Fragmentos.Pruebas.ModificarDatosFragment"
         android:label="@string/titleModificar_datos"
         tools:layout="@layout/fragment_modificar_datos" />
+    <fragment
+        android:id="@+id/nav_comentarios"
+        android:name="es.iesoretania.entertainmentlounge.Fragmentos.Pruebas.ComentariosFragment"
+        android:label="Comentarios"
+        tools:layout="@layout/fragment_comentarios" >
+        <argument
+            android:name="keySerie"
+            app:argType="string" />
+        <argument
+            android:name="nCapitulo"
+            app:argType="integer" />
+        <argument
+            android:name="nTemporada"
+            app:argType="integer" />
+        <argument
+            android:name="capVisto"
+            app:argType="integer" />
+    </fragment>
 </navigation>

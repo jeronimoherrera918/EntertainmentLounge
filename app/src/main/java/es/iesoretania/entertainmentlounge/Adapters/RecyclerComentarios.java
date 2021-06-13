@@ -6,18 +6,26 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
 
 import es.iesoretania.entertainmentlounge.Clases.SerieData.Capitulo;
 import es.iesoretania.entertainmentlounge.Clases.SerieData.Comentario;
+import es.iesoretania.entertainmentlounge.Clases.Usuario;
 import es.iesoretania.entertainmentlounge.R;
 
 public class RecyclerComentarios extends RecyclerView.Adapter<RecyclerComentarios.ViewHolder> {
     private List<Comentario> listaComentarios;
     private LayoutInflater layoutInflater;
     private Context context;
+    private FirebaseFirestore db;
 
     public RecyclerComentarios(List<Comentario> listaComentarios, Context context) {
         this.listaComentarios = listaComentarios;
@@ -47,10 +55,12 @@ public class RecyclerComentarios extends RecyclerView.Adapter<RecyclerComentario
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView recyclerComentarioEmisor, recyclerComentarioMensaje;
+
         public ViewHolder(View v) {
             super(v);
             recyclerComentarioEmisor = v.findViewById(R.id.recyclerComentarioEmisor);
             recyclerComentarioMensaje = v.findViewById(R.id.recyclerComentarioMensaje);
+            db = FirebaseFirestore.getInstance();
         }
 
         @Override
@@ -59,8 +69,13 @@ public class RecyclerComentarios extends RecyclerView.Adapter<RecyclerComentario
         }
 
         public void bindData(final Comentario comentario) {
-            recyclerComentarioEmisor.setText(comentario.getId_usuario());
-            recyclerComentarioMensaje.setText(comentario.getComentario());
+            db.collection("usuarios").document(comentario.getId_usuario()).get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    Usuario usuario = task.getResult().toObject(Usuario.class);
+                    recyclerComentarioEmisor.setText(usuario.getNickname());
+                    recyclerComentarioMensaje.setText(comentario.getComentario());
+                }
+            });
         }
     }
 }

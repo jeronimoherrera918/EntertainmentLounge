@@ -30,6 +30,7 @@ import java.io.IOException;
 import es.iesoretania.entertainmentlounge.Clases.UserData;
 import es.iesoretania.entertainmentlounge.Clases.Usuario;
 import es.iesoretania.entertainmentlounge.R;
+import pl.droidsonroids.gif.GifImageView;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -44,6 +45,7 @@ public class ModificarDatosFragment extends Fragment {
     static final int GALLERY_INTENT = 1;
     Bitmap bitmapImage;
     Uri uri;
+    GifImageView imgLoading2;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -67,6 +69,7 @@ public class ModificarDatosFragment extends Fragment {
         btnModSubirFoto = view.findViewById(R.id.btnModSubirFoto);
         db = FirebaseFirestore.getInstance();
         firebaseStorage = FirebaseStorage.getInstance();
+        imgLoading2 = view.findViewById(R.id.imgLoading2);
 
         db.collection("usuarios").document(UserData.ID_USER_DB).get().addOnCompleteListener(recogerUsuario -> {
             if (recogerUsuario.isSuccessful()) {
@@ -76,7 +79,11 @@ public class ModificarDatosFragment extends Fragment {
                 etModFecha.setText(infoUsuario.getFechaNacimiento());
 
                 StorageReference storageReference = firebaseStorage.getReference().child(infoUsuario.getFotoPerfil());
-                storageReference.getDownloadUrl().addOnSuccessListener(uri -> Glide.with(getContext()).load(uri).into(imgModFotoPerfil));
+                storageReference.getDownloadUrl().addOnSuccessListener(uri -> {
+                    imgLoading2.setVisibility(View.GONE);
+                    Glide.with(getContext()).load(uri).into(imgModFotoPerfil);
+                    imgModFotoPerfil.setVisibility(View.VISIBLE);
+                });
 
                 btnModSubirFoto.setOnClickListener(v -> {
                     Intent intent = new Intent(Intent.ACTION_PICK);

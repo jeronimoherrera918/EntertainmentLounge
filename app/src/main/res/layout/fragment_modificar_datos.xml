@@ -79,11 +79,18 @@
             android:layout_width="match_parent"
             android:layout_height="15dp" />
 
+        <pl.droidsonroids.gif.GifImageView
+            android:id="@+id/imgLoading2"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:src="@drawable/loader_img" />
+
         <ImageView
             android:id="@+id/imgModFotoPerfil"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
             android:layout_gravity="center"
+            android:visibility="gone"
             android:src="@drawable/ic_circles" />
 
         <Space
@@ -108,14 +115,16 @@
         android:layout_marginTop="462dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        android:backgroundTint="#16618D"
+        android:backgroundTint="#FFFFFF"
         android:clickable="true"
-        android:src="@drawable/ic_save_serie"
+        android:src="@drawable/ic_save_2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout6"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="1.0"
+        app:rippleColor="@color/azul_app"
+        app:tint="@color/azul_app" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,8 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +13,6 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RatingBar;
 
@@ -24,15 +22,11 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QuerySnapshot;
 
-import java.util.List;
 import java.util.Random;
 
-import es.iesoretania.entertainmentlounge.Adapters.RecyclerComentarios;
 import es.iesoretania.entertainmentlounge.Clases.SaveSerieData.SaveSerie;
 import es.iesoretania.entertainmentlounge.Clases.SaveSerieData.SaveTemporadaSerie;
-import es.iesoretania.entertainmentlounge.Clases.SerieData.Comentario;
 import es.iesoretania.entertainmentlounge.Clases.SerieData.Serie;
 import es.iesoretania.entertainmentlounge.Clases.UserData;
 import es.iesoretania.entertainmentlounge.R;
@@ -42,9 +36,7 @@ public class CapituloFragment extends Fragment {
     //region Variables
     RatingBar rbPuntuarCapitulo;
     ImageButton btnMarcarComoVistoCap;
-    RecyclerView listRecyclerComentarios;
     Button btnCapComentar;
-    EditText etCapComentario;
     FloatingActionButton fabGuardarCambiosCap;
     CapituloFragmentArgs capituloFragmentArgs;
     Serie serie;
@@ -54,7 +46,6 @@ public class CapituloFragment extends Fragment {
     Boolean sw = false;
     Double puntuacionTemporadaOld = 0.0;
     Double puntuacionSerieOld = 0.0;
-
     //endregion
 
     @Override
@@ -76,7 +67,6 @@ public class CapituloFragment extends Fragment {
         rbPuntuarCapitulo = view.findViewById(R.id.rbPuntuarCapitulo);
         btnMarcarComoVistoCap = view.findViewById(R.id.btnMarcarComoVistoCap);
         btnCapComentar = view.findViewById(R.id.btnCapComentar);
-        etCapComentario = view.findViewById(R.id.etCapComentario);
         fabGuardarCambiosCap = view.findViewById(R.id.fabGuardarCambiosCap);
         db = FirebaseFirestore.getInstance();
         rbPuntuarCapitulo.setEnabled(false);
@@ -87,6 +77,7 @@ public class CapituloFragment extends Fragment {
             capituloFragmentArgs = CapituloFragmentArgs.fromBundle(getArguments());
             serie = capituloFragmentArgs.getSerie();
             nCapitulo = capituloFragmentArgs.getPosition() + 1;
+
             nCapituloPos = capituloFragmentArgs.getPosition();
             nTemporada = capituloFragmentArgs.getNTemporada();
         }
@@ -133,51 +124,47 @@ public class CapituloFragment extends Fragment {
                                         puntuacionSerieOld = puntuacionSerieOld + (puntTempUsuario / saveTemporada.getCapitulos_puntuacion().size());
                                     }
                                 }
-
-                                activarComentarios();
                                 activarPuntuar();
                                 activarGuardarCapitulo();
                             }
-                            mostrarComentarios();
                         }
                     });
                 }
+                activarComentarios();
             }
         });
     }
 
     private void activarGuardarCapitulo() {
-        btnMarcarComoVistoCap.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!sw) {
-                    sw = true;
-                    fabGuardarCambiosCap.setEnabled(true);
-                    activarGuardarCambios();
-                }
+        btnMarcarComoVistoCap.setOnClickListener(v -> {
+            if (!sw) {
+                sw = true;
+                fabGuardarCambiosCap.setEnabled(true);
+                activarGuardarCambios();
+            }
 
-                if (saveSerie.getTemporadas().get(nTemporada).getCapitulos_vistos().get(nCapituloPos) == 1) {
-                    // PONER UNA CONFIRMACIÓN DE SI QUIERE REALMENTE MARCARLO COMO "NO VISTO" //
-                    // if(condition){...code...}else{...code...} //
-                    Animation animation = AnimationUtils.loadAnimation(v.getContext(), R.anim.fade_in);
-                    btnMarcarComoVistoCap.startAnimation(animation);
-                    saveSerie.getTemporadas().get(nTemporada).getCapitulos_vistos().set(nCapituloPos, 0);
-                    btnMarcarComoVistoCap.setImageResource(R.drawable.ic_check_false);
-                    rbPuntuarCapitulo.setRating(0f);
-                    rbPuntuarCapitulo.setEnabled(false);
-                    btnCapComentar.setEnabled(false);
-                } else {
-                    Animation animation = AnimationUtils.loadAnimation(v.getContext(), R.anim.fade_in);
-                    btnMarcarComoVistoCap.startAnimation(animation);
-                    saveSerie.getTemporadas().get(nTemporada).getCapitulos_vistos().set(nCapituloPos, 1);
-                    btnMarcarComoVistoCap.setImageResource(R.drawable.ic_check_true);
-                    rbPuntuarCapitulo.setEnabled(true);
-                    btnCapComentar.setEnabled(true);
-                }
+            if (saveSerie.getTemporadas().get(nTemporada).getCapitulos_vistos().get(nCapituloPos) == 1) {
+                // PONER UNA CONFIRMACIÓN DE SI QUIERE REALMENTE MARCARLO COMO "NO VISTO" //
+                // if(condition){...code...}else{...code...} //
+                Animation animation = AnimationUtils.loadAnimation(v.getContext(), R.anim.fade_in);
+                btnMarcarComoVistoCap.startAnimation(animation);
+                saveSerie.getTemporadas().get(nTemporada).getCapitulos_vistos().set(nCapituloPos, 0);
+                btnMarcarComoVistoCap.setImageResource(R.drawable.ic_check_false);
+                rbPuntuarCapitulo.setRating(0f);
+                rbPuntuarCapitulo.setEnabled(false);
+                btnCapComentar.setEnabled(false);
+            } else {
+                Animation animation = AnimationUtils.loadAnimation(v.getContext(), R.anim.fade_in);
+                btnMarcarComoVistoCap.startAnimation(animation);
+                saveSerie.getTemporadas().get(nTemporada).getCapitulos_vistos().set(nCapituloPos, 1);
+                btnMarcarComoVistoCap.setImageResource(R.drawable.ic_check_true);
+                rbPuntuarCapitulo.setEnabled(true);
+                btnCapComentar.setEnabled(true);
             }
         });
     }
 
+    /*
     private void mostrarComentarios() {
         List<Comentario> listaComentarios = serie.getTemporadas().get(nTemporada).getCapitulos().get(nCapituloPos).getListaComentarios();
         RecyclerComentarios recyclerComentarios = new RecyclerComentarios(listaComentarios, getContext());
@@ -186,14 +173,12 @@ public class CapituloFragment extends Fragment {
         listRecyclerComentarios.setLayoutManager(new LinearLayoutManager(listRecyclerComentarios.getContext()));
         listRecyclerComentarios.setAdapter(recyclerComentarios);
     }
+    */
 
     private void activarComentarios() {
         btnCapComentar.setOnClickListener(v -> {
-            if (!etCapComentario.getText().equals("")) {
-                Comentario comentario = new Comentario(etCapComentario.getText().toString(), UserData.ID_USER_DB, generarID());
-                serie.getTemporadas().get(nTemporada).getCapitulos().get(nCapituloPos).getListaComentarios().add(comentario);
-                db.collection("series").document(serie.getId_serie()).set(serie);
-            }
+            Navigation.findNavController(v).navigate(CapituloFragmentDirections.actionNavCapituloToComentariosFragment(serie.getId_serie(), nCapituloPos, nTemporada, saveSerie.getTemporadas().get(nTemporada).getCapitulos_vistos().get(nCapituloPos)));
+            // Navigation.findNavController(v).navigate(R.id.action_nav_capitulo_to_comentariosFragment);
         });
     }
 

@@ -3,19 +3,31 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_row="0"
+    android:layout_rowWeight="1"
+    android:layout_column="0"
+    android:layout_columnWeight="1"
+    android:layout_gravity="fill"
+    android:layout_margin="8dp"
     android:animateLayoutChanges="true"
-    app:cardUseCompatPadding="true">
+    app:cardCornerRadius="20dp"
+    app:cardUseCompatPadding="true"
+    app:layout_anchorGravity="center">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:background="@color/white"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/recyclerComentarioEmisor"
-            android:layout_width="match_parent"
+            android:layout_width="379dp"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
             android:layout_weight="1"
             android:text="NOMBRE_USUARIO_EMISOR"
             android:textSize="18dp"
@@ -25,10 +37,10 @@
             android:id="@+id/recyclerComentarioMensaje"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="10dp"
             android:layout_weight="1"
             android:justificationMode="inter_word"
             android:text="COMENTARIO"
             android:textSize="14dp" />
-
     </LinearLayout>
 </androidx.cardview.widget.CardView>

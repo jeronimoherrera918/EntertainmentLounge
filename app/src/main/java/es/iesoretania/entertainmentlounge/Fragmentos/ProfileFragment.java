@@ -36,6 +36,7 @@ import es.iesoretania.entertainmentlounge.Clases.SerieData.Serie;
 import es.iesoretania.entertainmentlounge.Clases.UserData;
 import es.iesoretania.entertainmentlounge.Clases.Usuario;
 import es.iesoretania.entertainmentlounge.R;
+import pl.droidsonroids.gif.GifImageView;
 
 public class ProfileFragment extends Fragment {
     TextView tvProfileNombre, tvProfileEmail, tvPerfilSeriesGuardadas, tvPerfilSeriesVistas;
@@ -47,8 +48,7 @@ public class ProfileFragment extends Fragment {
     FirebaseFirestore db;
     FirebaseStorage firebaseStorage;
     Integer contadorSeriesGuardadas, contadorSeriesVistas;
-
-    Button btnTESTPOPUP;
+    GifImageView imgLoading;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -80,16 +80,7 @@ public class ProfileFragment extends Fragment {
         fAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         firebaseStorage = FirebaseStorage.getInstance();
-
-        btnTESTPOPUP = view.findViewById(R.id.btnTESTPOPUP);
-
-        btnTESTPOPUP.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getContext(), PopUpComentar.class);
-                startActivity(intent);
-            }
-        });
+        imgLoading = view.findViewById(R.id.imgLoading);
         //endregion
 
         tvProfileNombre.setText(UserData.USUARIO.getNombre_completo());
@@ -111,7 +102,11 @@ public class ProfileFragment extends Fragment {
         });
 
         StorageReference storageReference = firebaseStorage.getReference().child(UserData.USUARIO.getFotoPerfil());
-        storageReference.getDownloadUrl().addOnSuccessListener(uri -> Glide.with(getContext()).load(uri).into(imgProfileFoto));
+        storageReference.getDownloadUrl().addOnSuccessListener(uri -> {
+            imgLoading.setVisibility(View.GONE);
+            Glide.with(getContext()).load(uri).into(imgProfileFoto);
+            imgProfileFoto.setVisibility(View.VISIBLE);
+        });
 
         btnAddSerie.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_nav_profile_to_addSerieFragment));
         btnPerfilExplorar.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_nav_profile_to_nav_verSeries));

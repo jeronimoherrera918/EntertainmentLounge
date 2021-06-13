@@ -20,6 +20,7 @@ import android.widget.EditText;
 
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,10 +46,11 @@ import es.iesoretania.entertainmentlounge.Clases.UserData;
 import es.iesoretania.entertainmentlounge.R;
 
 public class SerieFragment extends Fragment {
-    TextView tvSerieNombre, tvSerieGenero, tvSerieDescripcion;
+    TextView tvSerieNombre, tvSerieGenero, tvSerieDescripcion, tvSeriePlataformas;
     Button btnSerieSave;
     ImageView imgSerieCabecera;
     ListView listaTemporadas;
+    RatingBar rbPuntuacionSerie;
     String key;
     FirebaseFirestore db;
     FirebaseStorage firebaseStorage;
@@ -72,7 +74,9 @@ public class SerieFragment extends Fragment {
         tvSerieNombre = view.findViewById(R.id.tvSerieNombre);
         tvSerieGenero = view.findViewById(R.id.tvSerieGenero);
         tvSerieDescripcion = view.findViewById(R.id.tvSerieDescripcion);
+        tvSeriePlataformas = view.findViewById(R.id.tvSeriePlataformas);
         btnSerieSave = view.findViewById(R.id.btnSerieSave);
+        rbPuntuacionSerie = view.findViewById(R.id.rbPuntuacionSerie);
         imgSerieCabecera = view.findViewById(R.id.imgSerieCabecera);
         listaTemporadas = view.findViewById(R.id.listaTemporadas);
         if (getArguments() != null) {
@@ -94,8 +98,14 @@ public class SerieFragment extends Fragment {
                     for (QueryDocumentSnapshot dn : task.getResult()) {
                         serie = dn.toObject(Serie.class);
                         tvSerieNombre.setText(serie.getNombre());
-                        tvSerieGenero.setText(serie.getGenero());
+                        tvSerieGenero.setText("Género: " + serie.getGenero());
                         tvSerieDescripcion.setText(serie.getDescripcion());
+                        String textoPlataformas = "Plataformas:";
+                        for (String plat : serie.getPlataformas()) {
+                            textoPlataformas = textoPlataformas + " " + plat;
+                        }
+                        tvSeriePlataformas.setText(textoPlataformas);
+                        rbPuntuacionSerie.setRating(Float.parseFloat(serie.getPuntuacion().toString()));
                         adapterListaTemporadas();
                         setupSerie();
                     }
