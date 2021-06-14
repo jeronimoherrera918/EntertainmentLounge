@@ -2,7 +2,6 @@ package es.iesoretania.entertainmentlounge.Fragmentos;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 

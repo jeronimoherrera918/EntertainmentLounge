@@ -2,11 +2,11 @@ package es.iesoretania.entertainmentlounge.Fragmentos.Pruebas;
 
 import android.graphics.Color;
 
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
@@ -16,17 +16,13 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 
-import android.widget.EditText;
-
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -38,7 +34,6 @@ import com.google.firebase.storage.StorageReference;
 import es.iesoretania.entertainmentlounge.Adapters.TemporadasSerieAdapter;
 import es.iesoretania.entertainmentlounge.Clases.SaveSerieData.SaveSerie;
 import es.iesoretania.entertainmentlounge.Clases.SaveSerieData.SaveTemporadaSerie;
-import es.iesoretania.entertainmentlounge.Clases.SerieData.Comentario;
 
 import es.iesoretania.entertainmentlounge.Clases.SerieData.Serie;
 import es.iesoretania.entertainmentlounge.Clases.SerieData.Temporada;
@@ -98,6 +93,7 @@ public class SerieFragment extends Fragment {
                     for (QueryDocumentSnapshot dn : task.getResult()) {
                         serie = dn.toObject(Serie.class);
                         tvSerieNombre.setText(serie.getNombre());
+                        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(serie.getNombre());
                         tvSerieGenero.setText("Género: " + serie.getGenero());
                         tvSerieDescripcion.setText(serie.getDescripcion());
                         String textoPlataformas = "Plataformas:";

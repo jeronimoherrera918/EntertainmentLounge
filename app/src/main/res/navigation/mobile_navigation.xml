@@ -96,7 +96,6 @@
     <fragment
         android:id="@+id/nav_serie"
         android:name="es.iesoretania.entertainmentlounge.Fragmentos.Pruebas.SerieFragment"
-        android:label="Serie"
         tools:layout="@layout/fragment_serie">
         <argument
             android:name="key"

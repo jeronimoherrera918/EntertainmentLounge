@@ -43,7 +43,6 @@ public class RegisterFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         ((MainActivity) getActivity()).setDrawer_Locked();
-
         return inflater.inflate(R.layout.fragment_register, container, false);
     }
 
@@ -87,11 +86,8 @@ public class RegisterFragment extends Fragment {
                         if (!etEmailRegistro.getText().toString().isEmpty() && !etPasswordRegistro.getText().toString().isEmpty() && !etNicknameRegistro.getText().toString().isEmpty() && !etNombreCompletoRegistro.getText().toString().isEmpty() && !etFechaRegistro.getText().toString().isEmpty()) {
                             fAuth.createUserWithEmailAndPassword(etEmailRegistro.getText().toString(), etPasswordRegistro.getText().toString()).addOnCompleteListener(createUserPassword -> {
                                 if (createUserPassword.isSuccessful()) {
-                                    // Recuperamos el usuario que acabamos de registrar
                                     FirebaseUser newUser = fAuth.getCurrentUser();
-                                    // Le mandamos un correo de verificación
                                     newUser.sendEmailVerification().addOnSuccessListener(aVoid -> Toast.makeText(getContext(), "Correo de verificación enviado", Toast.LENGTH_SHORT).show()).addOnFailureListener(e -> Log.d("ERROR", "Ha ocurrido un error al enviar el correo de verificación" + e.getMessage()));
-                                    // Registramos los datos del usuario aunque no haya confirmado aún el correo electrónico
                                     Usuario usuario = new Usuario();
                                     usuario.setEmail(etEmailRegistro.getText().toString());
                                     usuario.setNickname(etNicknameRegistro.getText().toString());
