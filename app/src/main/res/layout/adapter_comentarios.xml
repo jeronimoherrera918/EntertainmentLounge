@@ -8,9 +8,10 @@
     android:layout_column="0"
     android:layout_columnWeight="1"
     android:layout_gravity="fill"
-    android:layout_margin="8dp"
+    android:layout_margin="5dp"
     android:animateLayoutChanges="true"
     app:cardCornerRadius="20dp"
+    app:cardElevation="5dp"
     app:cardUseCompatPadding="true"
     app:layout_anchorGravity="center">
 
@@ -30,6 +31,7 @@
             android:layout_marginRight="10dp"
             android:layout_weight="1"
             android:text="NOMBRE_USUARIO_EMISOR"
+            android:textColor="@color/azul_app"
             android:textSize="18dp"
             android:textStyle="bold" />
 
@@ -41,6 +43,7 @@
             android:layout_weight="1"
             android:justificationMode="inter_word"
             android:text="COMENTARIO"
+            android:textColor="@color/black"
             android:textSize="14dp" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>

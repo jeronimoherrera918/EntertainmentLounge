@@ -81,6 +81,8 @@ public class RegisterFragment extends Fragment {
                     if (userExists.getResult().size() > 0) {
                         Toast.makeText(getContext(), "El nickname elegido ya está registrado para otro usuario", Toast.LENGTH_SHORT).show();
                         loadingRegister.setVisibility(View.INVISIBLE);
+                    } else if (etPasswordRegistro.getText().length() >= 8) {
+                        Toast.makeText(getContext(), "La contraseña debe tener mínimo una longitud de 8 caracteres", Toast.LENGTH_SHORT).show();
                     } else {
                         if (!etEmailRegistro.getText().toString().isEmpty() && !etPasswordRegistro.getText().toString().isEmpty() && !etNicknameRegistro.getText().toString().isEmpty() && !etNombreCompletoRegistro.getText().toString().isEmpty() && !etFechaRegistro.getText().toString().isEmpty()) {
                             fAuth.createUserWithEmailAndPassword(etEmailRegistro.getText().toString(), etPasswordRegistro.getText().toString()).addOnCompleteListener(createUserPassword -> {

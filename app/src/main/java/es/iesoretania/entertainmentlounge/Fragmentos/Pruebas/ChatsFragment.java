@@ -67,7 +67,7 @@ public class ChatsFragment extends Fragment {
                     listaUsuariosKeys.add(dn.getId());
                 }
                 RecyclerUsuarios recyclerUsuarios = new RecyclerUsuarios(listaUsuarios, listRecyclerUsuarios.getContext());
-                recyclerUsuarios.setOnItemClickListener((position, v) -> Navigation.findNavController(v).navigate(ChatsFragmentDirections.actionNavChatsToNavChat(listaUsuariosKeys.get(position))));
+                recyclerUsuarios.setOnItemClickListener((position, v) -> Navigation.findNavController(v).navigate(ChatsFragmentDirections.actionNavChatsToNavChat(listaUsuariosKeys.get(position), listaUsuarios.get(position).getNickname())));
                 listRecyclerUsuarios.setHasFixedSize(true);
                 listRecyclerUsuarios.setLayoutManager(new LinearLayoutManager(listRecyclerUsuarios.getContext()));
                 listRecyclerUsuarios.setAdapter(recyclerUsuarios);

@@ -148,7 +148,7 @@
     <fragment
         android:id="@+id/nav_capitulo"
         android:name="es.iesoretania.entertainmentlounge.Fragmentos.Pruebas.CapituloFragment"
-        android:label="Capitulo X de X"
+        android:label=""
         tools:layout="@layout/fragment_capitulo">
         <argument
             android:name="serie"
@@ -170,7 +170,7 @@
     <fragment
         android:id="@+id/nav_temporada"
         android:name="es.iesoretania.entertainmentlounge.Fragmentos.Pruebas.TemporadaFragment"
-        android:label="Temporada {nTemporada} de {nombreSerie}"
+        android:label="{nombreSerie}"
         tools:layout="@layout/fragment_temporada">
         <action
             android:id="@+id/action_nav_temporada_to_nav_capitulo"
@@ -210,10 +210,13 @@
     <fragment
         android:id="@+id/nav_chat"
         android:name="es.iesoretania.entertainmentlounge.Fragmentos.Pruebas.ChatFragment"
-        android:label="Chat con X"
+        android:label="{nicknameUser}"
         tools:layout="@layout/fragment_chat">
         <argument
             android:name="keyUser"
+            app:argType="string" />
+        <argument
+            android:name="nicknameUser"
             app:argType="string" />
     </fragment>
     <fragment

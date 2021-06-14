@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
@@ -76,6 +77,8 @@ public class ComentariosFragment extends Fragment {
                         public void onClick(View v) {
                             if (capVisto == 1) {
                                 intentComentar();
+                            } else {
+                                Snackbar.make(view, "¡Debes marcar el capítulo como visto antes de poder comentar!", Snackbar.LENGTH_SHORT).setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE).show();
                             }
                         }
                     });

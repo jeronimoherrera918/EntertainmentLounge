@@ -16,14 +16,31 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/bg_auth" />
 
+    <RatingBar
+        android:id="@+id/rbPuntuacionCapitulo"
+        style="@style/Widget.AppCompat.RatingBar.Indicator"
+        android:layout_width="190dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="204dp"
+        android:background="@drawable/rounded_linear_layout_2"
+        android:isIndicator="true"
+        android:max="5"
+        android:progress="0"
+        android:progressBackgroundTint="#C5C5C5"
+        android:progressTint="#ECDA43"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <LinearLayout
         android:id="@+id/linearLayout8"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
+        android:layout_marginBottom="80dp"
         android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imgCapituloCabecera">
@@ -59,17 +76,6 @@
             android:background="@color/azul_app"
             android:backgroundTint="@color/azul_app" />
 
-        <TextView
-            android:id="@+id/textView11"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:text="Comentarios"
-            android:textAlignment="center"
-            android:textColor="@color/black"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-
         <Button
             android:id="@+id/btnCapComentar"
             android:layout_width="wrap_content"
@@ -96,16 +102,14 @@
         android:id="@+id/fabGuardarCambiosCap"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="202dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="100dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:clickable="true"
         android:enabled="false"
         android:src="@drawable/ic_save_2"
         app:backgroundTint="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout8"
         app:rippleColor="@color/azul_app"
         app:tint="@color/azul_app" />
 
