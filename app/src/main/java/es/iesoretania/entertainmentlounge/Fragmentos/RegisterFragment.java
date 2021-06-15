@@ -33,11 +33,11 @@ import es.iesoretania.entertainmentlounge.MainActivity;
 import es.iesoretania.entertainmentlounge.R;
 
 public class RegisterFragment extends Fragment {
-    Button btnRegistrarse;
-    EditText etPasswordRegistro, etEmailRegistro, etNicknameRegistro, etNombreCompletoRegistro, etFechaRegistro;
-    FirebaseAuth fAuth;
-    ProgressBar loadingRegister;
-    FirebaseFirestore firestoredb;
+    private Button btnRegistrarse;
+    private EditText etPasswordRegistro, etEmailRegistro, etNicknameRegistro, etNombreCompletoRegistro, etFechaRegistro;
+    private FirebaseAuth fAuth;
+    private ProgressBar loadingRegister;
+    private FirebaseFirestore firestoredb;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

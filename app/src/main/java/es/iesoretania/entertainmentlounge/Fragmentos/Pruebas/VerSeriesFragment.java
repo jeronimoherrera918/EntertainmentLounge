@@ -33,11 +33,11 @@ import es.iesoretania.entertainmentlounge.Clases.SerieData.Serie;
 import es.iesoretania.entertainmentlounge.R;
 
 public class VerSeriesFragment extends Fragment {
-    RecyclerView listRecyclerSeries;
-    Spinner spFiltros;
-    FirebaseFirestore db;
-    List<Serie> listaSeries;
-    List<String> listaSeriesKeys;
+    private RecyclerView listRecyclerSeries;
+    private Spinner spFiltros;
+    private FirebaseFirestore db;
+    private List<Serie> listaSeries;
+    private List<String> listaSeriesKeys;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

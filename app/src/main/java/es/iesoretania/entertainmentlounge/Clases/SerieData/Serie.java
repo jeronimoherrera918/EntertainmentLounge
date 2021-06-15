@@ -15,7 +15,7 @@ public class Serie implements Parcelable {
     private Double puntuacionTotal;
     private Integer nVotos;
     private List<String> plataformas = new ArrayList<>();
-    List<Temporada> temporadas = new ArrayList<>();
+    private List<Temporada> temporadas = new ArrayList<>();
 
     public Serie() {
     }

@@ -20,7 +20,7 @@ import es.iesoretania.entertainmentlounge.Clases.UserData;
 import es.iesoretania.entertainmentlounge.R;
 
 public class CerrarSesionFragment extends Fragment {
-    FirebaseAuth fAuth;
+    private FirebaseAuth fAuth;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

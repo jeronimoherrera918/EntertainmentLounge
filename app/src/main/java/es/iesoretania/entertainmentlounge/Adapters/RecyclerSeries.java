@@ -32,8 +32,8 @@ public class RecyclerSeries extends RecyclerView.Adapter<RecyclerSeries.ViewHold
     private LayoutInflater layoutInflater;
     private Context context;
     ClickListener clickListener;
-    FirebaseFirestore db;
-    FirebaseStorage firebaseStorage;
+    private FirebaseFirestore db;
+    private FirebaseStorage firebaseStorage;
 
     public RecyclerSeries(List<Serie> listaSeries, Context context) {
         this.layoutInflater = LayoutInflater.from(context);

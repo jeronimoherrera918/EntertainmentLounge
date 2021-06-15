@@ -40,20 +40,20 @@ import es.iesoretania.entertainmentlounge.R;
 public class CapituloFragment extends Fragment {
 
     //region Variables
-    RatingBar rbPuntuarCapitulo, rbPuntuacionCapitulo;
-    ImageButton btnMarcarComoVistoCap;
-    ImageView imgCapituloCabecera;
-    Button btnCapComentar;
-    FloatingActionButton fabGuardarCambiosCap;
-    CapituloFragmentArgs capituloFragmentArgs;
-    Serie serie;
-    Integer nCapitulo, nCapituloPos, nTemporada;
-    SaveSerie saveSerie;
-    FirebaseFirestore db;
-    FirebaseStorage firebaseStorage;
-    Boolean sw = false;
-    Double puntuacionTemporadaOld = 0.0;
-    Double puntuacionSerieOld = 0.0;
+    private RatingBar rbPuntuarCapitulo, rbPuntuacionCapitulo;
+    private ImageButton btnMarcarComoVistoCap;
+    private ImageView imgCapituloCabecera;
+    private Button btnCapComentar;
+    private FloatingActionButton fabGuardarCambiosCap;
+    private CapituloFragmentArgs capituloFragmentArgs;
+    private Serie serie;
+    private Integer nCapitulo, nCapituloPos, nTemporada;
+    private SaveSerie saveSerie;
+    private FirebaseFirestore db;
+    private FirebaseStorage firebaseStorage;
+    private Boolean sw = false;
+    private Double puntuacionTemporadaOld = 0.0;
+    private Double puntuacionSerieOld = 0.0;
     //endregion
 
     @Override

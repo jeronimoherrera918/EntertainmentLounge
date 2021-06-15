@@ -23,10 +23,10 @@ import es.iesoretania.entertainmentlounge.Clases.UserData;
 import es.iesoretania.entertainmentlounge.R;
 
 public class PopUpComentar extends AppCompatActivity {
-    EditText etComentarComentario;
-    Button btnComentarPublicar;
-    FirebaseFirestore db;
-    Serie serie;
+    private EditText etComentarComentario;
+    private Button btnComentarPublicar;
+    private FirebaseFirestore db;
+    private Serie serie;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

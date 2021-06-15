@@ -41,15 +41,15 @@ import es.iesoretania.entertainmentlounge.Clases.UserData;
 import es.iesoretania.entertainmentlounge.R;
 
 public class SerieFragment extends Fragment {
-    TextView tvSerieNombre, tvSerieGenero, tvSerieDescripcion, tvSeriePlataformas;
-    Button btnSerieSave;
-    ImageView imgSerieCabecera;
-    ListView listaTemporadas;
-    RatingBar rbPuntuacionSerie;
-    String key;
-    FirebaseFirestore db;
-    FirebaseStorage firebaseStorage;
-    Serie serie;
+    private TextView tvSerieNombre, tvSerieGenero, tvSerieDescripcion, tvSeriePlataformas;
+    private Button btnSerieSave;
+    private ImageView imgSerieCabecera;
+    private ListView listaTemporadas;
+    private RatingBar rbPuntuacionSerie;
+    private String key;
+    private FirebaseFirestore db;
+    private FirebaseStorage firebaseStorage;
+    private Serie serie;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

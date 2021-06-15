@@ -38,17 +38,17 @@ import pl.droidsonroids.gif.GifImageView;
 import static android.app.Activity.RESULT_OK;
 
 public class ModificarDatosFragment extends Fragment {
-    EditText etModFecha, etModNickname, etModNombreCompleto;
-    FloatingActionButton fabGuardarCambiosUsuario;
-    ImageView imgModFotoPerfil;
-    Button btnModSubirFoto;
-    FirebaseFirestore db;
-    FirebaseStorage firebaseStorage;
-    Usuario infoUsuario;
+    private EditText etModFecha, etModNickname, etModNombreCompleto;
+    private FloatingActionButton fabGuardarCambiosUsuario;
+    private ImageView imgModFotoPerfil;
+    private Button btnModSubirFoto;
+    private FirebaseFirestore db;
+    private FirebaseStorage firebaseStorage;
+    private Usuario infoUsuario;
     static final int GALLERY_INTENT = 1;
-    Bitmap bitmapImage;
-    Uri uri;
-    GifImageView imgLoading2;
+    private Bitmap bitmapImage;
+    private Uri uri;
+    private GifImageView imgLoading2;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

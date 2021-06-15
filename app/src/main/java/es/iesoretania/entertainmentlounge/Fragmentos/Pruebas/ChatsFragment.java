@@ -35,10 +35,10 @@ import es.iesoretania.entertainmentlounge.Clases.Usuario;
 import es.iesoretania.entertainmentlounge.R;
 
 public class ChatsFragment extends Fragment {
-    RecyclerView listRecyclerUsuarios;
-    List<Usuario> listaUsuarios;
-    List<String> listaUsuariosKeys;
-    FirebaseFirestore db;
+    private RecyclerView listRecyclerUsuarios;
+    private List<Usuario> listaUsuarios;
+    private List<String> listaUsuariosKeys;
+    private FirebaseFirestore db;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

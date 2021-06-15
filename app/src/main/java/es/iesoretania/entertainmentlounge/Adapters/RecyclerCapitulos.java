@@ -33,6 +33,7 @@ import java.util.List;
 import es.iesoretania.entertainmentlounge.Clases.SaveSerieData.SaveSerie;
 import es.iesoretania.entertainmentlounge.Clases.SaveSerieData.SaveTemporadaSerie;
 import es.iesoretania.entertainmentlounge.Clases.SerieData.Capitulo;
+import es.iesoretania.entertainmentlounge.Clases.SerieData.Serie;
 import es.iesoretania.entertainmentlounge.Clases.UserData;
 import es.iesoretania.entertainmentlounge.R;
 
@@ -42,12 +43,12 @@ public class RecyclerCapitulos extends RecyclerView.Adapter<RecyclerCapitulos.Vi
     private Context context;
     private String idSerie;
     private int nTemporada;
-    SaveSerie saveSerieGlobal;
-    DocumentSnapshot dn;
-    FloatingActionButton fabGuardarCambios;
+    private SaveSerie saveSerieGlobal;
+    private DocumentSnapshot dn;
+    private FloatingActionButton fabGuardarCambios;
     private int sw = 0;
     ClickListener clickListener;
-    FirebaseFirestore db;
+    private FirebaseFirestore db;
 
     public RecyclerCapitulos(List<Capitulo> listaCapitulos, Context context, String idSerie, int nTemporada, FloatingActionButton fabGuardarCambios) {
         this.listaCapitulos = listaCapitulos;
@@ -139,13 +140,36 @@ public class RecyclerCapitulos extends RecyclerView.Adapter<RecyclerCapitulos.Vi
             });
 
             fabGuardarCambios.setOnClickListener(v -> {
-                /*
-                    TODO: Cuando desmarcamos un episodio como visto desde aquí, hacer las mismas comprobaciones que en CapituloFragment
-                */
-                sw = 0;
-                db.collection("usuarios").document(UserData.ID_USER_DB).collection("series_guardadas").document(dn.getId()).set(saveSerieGlobal);
-                fabGuardarCambios.setEnabled(false);
-                Snackbar.make(v, "Cambios guardados correctamente", Snackbar.LENGTH_SHORT).setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE).setBackgroundTint(Color.DKGRAY).show();
+                for (int i = 0; i < saveSerieGlobal.getTemporadas().get(nTemporada).getCapitulos_vistos().size(); i++) {
+                    if (Integer.parseInt(recyclerbtnMarcarComoVisto.getTag().toString()) == i) {
+                        db.collection("series").document(saveSerieGlobal.getId_serie()).get().addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                Serie serie = task.getResult().toObject(Serie.class);
+                                if (saveSerieGlobal.getTemporadas().get(nTemporada).getCapitulos_vistos().get(Integer.parseInt(recyclerbtnMarcarComoVisto.getTag().toString())) == 0) {
+                                    if (saveSerieGlobal.getTemporadas().get(nTemporada).getCapitulos_puntuacion().get(Integer.parseInt(recyclerbtnMarcarComoVisto.getTag().toString())) != 0) {
+                                        int nVotosActuales = serie.getTemporadas().get(nTemporada).getCapitulos().get(Integer.parseInt(recyclerbtnMarcarComoVisto.getTag().toString())).getnVotos() - 1;
+                                        double puntuacionActual = serie.getTemporadas().get(nTemporada).getCapitulos().get(Integer.parseInt(recyclerbtnMarcarComoVisto.getTag().toString())).getPuntuacionTotal() - saveSerieGlobal.getTemporadas().get(nTemporada).getCapitulos_puntuacion().get(Integer.parseInt(recyclerbtnMarcarComoVisto.getTag().toString()));
+                                        serie.getTemporadas().get(nTemporada).getCapitulos().get(Integer.parseInt(recyclerbtnMarcarComoVisto.getTag().toString())).setnVotos(nVotosActuales);
+                                        if (nVotosActuales == 0) {
+                                            serie.getTemporadas().get(nTemporada).getCapitulos().get(Integer.parseInt(recyclerbtnMarcarComoVisto.getTag().toString())).setPuntuacion(0.0);
+                                            serie.getTemporadas().get(nTemporada).getCapitulos().get(Integer.parseInt(recyclerbtnMarcarComoVisto.getTag().toString())).setPuntuacionTotal(0.0);
+                                        } else {
+                                            serie.getTemporadas().get(nTemporada).getCapitulos().get(Integer.parseInt(recyclerbtnMarcarComoVisto.getTag().toString())).setPuntuacion(puntuacionActual / nVotosActuales);
+                                            serie.getTemporadas().get(nTemporada).getCapitulos().get(Integer.parseInt(recyclerbtnMarcarComoVisto.getTag().toString())).setPuntuacionTotal(puntuacionActual);
+                                        }
+
+                                    }
+                                    saveSerieGlobal.getTemporadas().get(nTemporada).getCapitulos_puntuacion().set(Integer.parseInt(recyclerbtnMarcarComoVisto.getTag().toString()), 0.0);
+                                }
+                                sw = 0;
+                                db.collection("usuarios").document(UserData.ID_USER_DB).collection("series_guardadas").document(dn.getId()).set(saveSerieGlobal);
+                                db.collection("series").document(serie.getId_serie()).set(serie);
+                                fabGuardarCambios.setEnabled(false);
+                                Snackbar.make(v, "Cambios guardados correctamente", Snackbar.LENGTH_SHORT).setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE).setBackgroundTint(Color.DKGRAY).show();
+                            }
+                        });
+                    }
+                }
             });
         }
 

@@ -46,15 +46,15 @@ import es.iesoretania.entertainmentlounge.R;
 import pl.droidsonroids.gif.GifImageView;
 
 public class AuthFragment extends Fragment {
-    Button btnEntrar;
-    EditText etEmail, etPassword;
-    TextView tvRegister;
-    ProgressBar loadingLogin;
-    CheckBox chkbxMantenerSesion;
-    FirebaseAuth fAuth;
-    FirebaseFirestore db;
-    GifImageView logoGif;
-    FirebaseStorage firebaseStorage;
+    private Button btnEntrar;
+    private EditText etEmail, etPassword;
+    private TextView tvRegister;
+    private ProgressBar loadingLogin;
+    private CheckBox chkbxMantenerSesion;
+    private FirebaseAuth fAuth;
+    private FirebaseFirestore db;
+    private GifImageView logoGif;
+    private FirebaseStorage firebaseStorage;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

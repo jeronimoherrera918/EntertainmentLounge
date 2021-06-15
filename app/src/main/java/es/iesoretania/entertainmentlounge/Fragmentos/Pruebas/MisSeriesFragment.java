@@ -35,11 +35,11 @@ import es.iesoretania.entertainmentlounge.Clases.UserData;
 import es.iesoretania.entertainmentlounge.R;
 
 public class MisSeriesFragment extends Fragment {
-    RecyclerView recyclerMisSeries;
-    Spinner spFiltrosMisSeries;
-    FirebaseFirestore db;
-    List<Serie> listaSeries;
-    List<String> listaSeriesKeys;
+    private RecyclerView recyclerMisSeries;
+    private Spinner spFiltrosMisSeries;
+    private FirebaseFirestore db;
+    private List<Serie> listaSeries;
+    private List<String> listaSeriesKeys;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

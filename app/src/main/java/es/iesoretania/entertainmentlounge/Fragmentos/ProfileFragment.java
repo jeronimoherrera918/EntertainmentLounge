@@ -28,16 +28,16 @@ import es.iesoretania.entertainmentlounge.R;
 import pl.droidsonroids.gif.GifImageView;
 
 public class ProfileFragment extends Fragment {
-    TextView tvProfileNombre, tvProfileEmail, tvPerfilSeriesGuardadas, tvPerfilSeriesVistas;
-    ImageView imgProfileFoto;
-    Button btnPerfilExplorar, btnPerfilMisSeries, btnPerfilDescubrir;
-    Button btnAddSerie;
-    FloatingActionButton fabEditarPerfil, fabChatear;
-    FirebaseAuth fAuth;
-    FirebaseFirestore db;
-    FirebaseStorage firebaseStorage;
-    Integer contadorSeriesGuardadas, contadorSeriesVistas;
-    GifImageView imgLoading;
+    private TextView tvProfileNombre, tvProfileEmail, tvPerfilSeriesGuardadas, tvPerfilSeriesVistas;
+    private ImageView imgProfileFoto;
+    private Button btnPerfilExplorar, btnPerfilMisSeries, btnPerfilDescubrir;
+    private Button btnAddSerie;
+    private FloatingActionButton fabEditarPerfil, fabChatear;
+    private FirebaseAuth fAuth;
+    private FirebaseFirestore db;
+    private FirebaseStorage firebaseStorage;
+    private Integer contadorSeriesGuardadas, contadorSeriesVistas;
+    private GifImageView imgLoading;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

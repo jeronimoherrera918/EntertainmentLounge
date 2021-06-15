@@ -16,10 +16,10 @@ import es.iesoretania.entertainmentlounge.Clases.SerieData.Temporada;
 import es.iesoretania.entertainmentlounge.R;
 
 public class TemporadasSerieAdapter extends ArrayAdapter {
-    Context ctx;
-    int layoutTemplate;
-    List<Temporada> listaTemporadas;
-    TextView tvAdapterTemporada;
+    private Context ctx;
+    private int layoutTemplate;
+    private List<Temporada> listaTemporadas;
+    private TextView tvAdapterTemporada;
 
     public TemporadasSerieAdapter(@NonNull Context context, int resource, @NonNull List objects) {
         super(context, resource, objects);

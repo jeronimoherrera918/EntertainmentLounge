@@ -34,15 +34,15 @@ import es.iesoretania.entertainmentlounge.Clases.Usuario;
 import es.iesoretania.entertainmentlounge.R;
 
 public class ChatFragment extends Fragment {
-    String nameReceptor;
-    String keyUser;
-    EditText etMensajeUsuario;
-    TextView tvEnviarMensajeA;
-    Button btnEnviarMensajeUsuario;
-    RecyclerView listRecyclerMensajes;
-    FirebaseFirestore db;
-    RecyclerChat recyclerChat;
-    Chat chatEmisor, chatReceptor;
+    private String nameReceptor;
+    private String keyUser;
+    private EditText etMensajeUsuario;
+    private TextView tvEnviarMensajeA;
+    private Button btnEnviarMensajeUsuario;
+    private RecyclerView listRecyclerMensajes;
+    private FirebaseFirestore db;
+    private RecyclerChat recyclerChat;
+    private Chat chatEmisor, chatReceptor;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

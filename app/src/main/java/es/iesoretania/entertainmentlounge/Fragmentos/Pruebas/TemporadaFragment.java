@@ -50,12 +50,7 @@ public class TemporadaFragment extends Fragment {
             TemporadaFragmentArgs temporadaFragmentArgs = TemporadaFragmentArgs.fromBundle(getArguments());
             serie = temporadaFragmentArgs.getSerie();
             recyclerCapitulos = new RecyclerCapitulos(serie.getTemporadas().get(temporadaFragmentArgs.getNTemporada()).getCapitulos(), listRecyclerCapitulos.getContext(), serie.getId_serie(), temporadaFragmentArgs.getNTemporada(), fabGuardarCambios);
-            recyclerCapitulos.setOnItemClickListener(new RecyclerCapitulos.ClickListener() {
-                @Override
-                public void onItemClick(int position, View v) {
-                    Navigation.findNavController(v).navigate(TemporadaFragmentDirections.actionNavTemporadaToNavCapitulo(serie, position, temporadaFragmentArgs.getNTemporada()));
-                }
-            });
+            recyclerCapitulos.setOnItemClickListener((position, v) -> Navigation.findNavController(v).navigate(TemporadaFragmentDirections.actionNavTemporadaToNavCapitulo(serie, position, temporadaFragmentArgs.getNTemporada())));
             listRecyclerCapitulos.setHasFixedSize(true);
             listRecyclerCapitulos.setLayoutManager(new LinearLayoutManager(listRecyclerCapitulos.getContext()));
             listRecyclerCapitulos.setAdapter(recyclerCapitulos);

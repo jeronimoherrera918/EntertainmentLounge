@@ -24,15 +24,15 @@ import es.iesoretania.entertainmentlounge.Clases.SerieData.Temporada;
 import es.iesoretania.entertainmentlounge.R;
 
 public class AddSerieFragment extends Fragment {
-    FirebaseFirestore db;
-    List<Temporada> temporadas = new ArrayList<>();
-    List<Capitulo> capitulos = new ArrayList<>();
-    List<String> plataformas = new ArrayList<>();
-    Button btnAddSerieAgregar, btnAddSerieAgregarTemporada, btnAddSerieAgregarCapitulo;
-    EditText etAddSerieNombre, etAddSerieGenero, etAddSerieDescripcion, etAddSerieNombreCapitulo;
-    Serie serie;
-    DocumentReference newRef;
-    String newKey;
+    private FirebaseFirestore db;
+    private List<Temporada> temporadas = new ArrayList<>();
+    private List<Capitulo> capitulos = new ArrayList<>();
+    private List<String> plataformas = new ArrayList<>();
+    private Button btnAddSerieAgregar, btnAddSerieAgregarTemporada, btnAddSerieAgregarCapitulo;
+    private EditText etAddSerieNombre, etAddSerieGenero, etAddSerieDescripcion, etAddSerieNombreCapitulo;
+    private Serie serie;
+    private DocumentReference newRef;
+    private String newKey;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
