@@ -142,7 +142,8 @@
                 android:backgroundTint="#16618D"
                 android:text="Explorar"
                 android:textColor="@color/white"
-                app:icon="@drawable/ic_search" />
+                app:icon="@drawable/ic_search"
+                app:iconTint="@color/white" />
 
             <Button
                 android:id="@+id/btnPerfilMisSeries"
@@ -152,7 +153,8 @@
                 android:backgroundTint="#16618D"
                 android:text="Mis series"
                 android:textColor="@color/white"
-                app:icon="@drawable/ic_save_serie" />
+                app:icon="@drawable/ic_save_serie"
+                app:iconTint="@color/white" />
 
             <Button
                 android:id="@+id/btnPerfilDescubrir"
@@ -162,7 +164,8 @@
                 android:backgroundTint="#16618D"
                 android:text="Descubrir"
                 android:textColor="@color/white"
-                app:icon="@drawable/ic_idea" />
+                app:icon="@drawable/ic_idea"
+                app:iconTint="@color/white" />
 
             <Space
                 android:layout_width="match_parent"

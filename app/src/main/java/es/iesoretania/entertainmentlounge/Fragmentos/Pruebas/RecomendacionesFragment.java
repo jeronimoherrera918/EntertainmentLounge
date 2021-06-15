@@ -10,6 +10,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.ScaleAnimation;
+import android.widget.EditText;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -27,7 +30,7 @@ import es.iesoretania.entertainmentlounge.R;
 
 public class RecomendacionesFragment extends Fragment {
     private FirebaseFirestore db;
-
+    private EditText etRecomendaciones;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -44,6 +47,7 @@ public class RecomendacionesFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         db = FirebaseFirestore.getInstance();
+        etRecomendaciones = view.findViewById(R.id.etRecomendaciones);
 
         // ESTRUCTURA DE LOS SELECT //
         db.collection("usuarios").document(UserData.ID_USER_DB).collection("series_guardadas").get().addOnCompleteListener(seriesGuardadas -> {
