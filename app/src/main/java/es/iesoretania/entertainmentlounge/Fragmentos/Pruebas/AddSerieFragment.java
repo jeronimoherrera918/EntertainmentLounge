@@ -28,8 +28,8 @@ public class AddSerieFragment extends Fragment {
     private List<Temporada> temporadas = new ArrayList<>();
     private List<Capitulo> capitulos = new ArrayList<>();
     private List<String> plataformas = new ArrayList<>();
-    private Button btnAddSerieAgregar, btnAddSerieAgregarTemporada, btnAddSerieAgregarCapitulo;
-    private EditText etAddSerieNombre, etAddSerieGenero, etAddSerieDescripcion, etAddSerieNombreCapitulo;
+    private Button btnAddSerieAgregar, btnAddSerieAgregarTemporada, btnAddSerieAgregarCapitulo, btnAddSerieAgregarPlataforma;
+    private EditText etAddSerieNombre, etAddSerieGenero, etAddSerieDescripcion, etAddSerieNombreCapitulo, etAddSeriePlataforma;
     private Serie serie;
     private DocumentReference newRef;
     private String newKey;
@@ -54,47 +54,42 @@ public class AddSerieFragment extends Fragment {
         btnAddSerieAgregar = view.findViewById(R.id.btnAddSerieAgregar);
         btnAddSerieAgregarTemporada = view.findViewById(R.id.btnAddSerieAgregarTemporada);
         btnAddSerieAgregarCapitulo = view.findViewById(R.id.btnAddSerieAgregarCapitulo);
+        btnAddSerieAgregarPlataforma = view.findViewById(R.id.btnAddSerieAgregarPlataforma);
         etAddSerieNombre = view.findViewById(R.id.etAddSerieNombre);
         etAddSerieGenero = view.findViewById(R.id.etAddSerieGenero);
         etAddSerieDescripcion = view.findViewById(R.id.etAddSerieDescripcion);
         etAddSerieNombreCapitulo = view.findViewById(R.id.etAddSerieNombreCapitulo);
+        etAddSeriePlataforma = view.findViewById(R.id.etAddSeriePlataforma);
+
         serie = new Serie();
 
-        btnAddSerieAgregarCapitulo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Capitulo capitulo = new Capitulo(etAddSerieNombreCapitulo.getText().toString(), 0.0);
-                System.out.println(capitulo.getNombre());
-                capitulos.add(capitulo);
-            }
+        btnAddSerieAgregarPlataforma.setOnClickListener(v -> plataformas.add(etAddSeriePlataforma.toString()));
+        btnAddSerieAgregarCapitulo.setOnClickListener(v -> {
+            Capitulo capitulo = new Capitulo(etAddSerieNombreCapitulo.getText().toString(), 0.0);
+            System.out.println(capitulo.getNombre());
+            capitulos.add(capitulo);
+            etAddSerieNombreCapitulo.setText("");
         });
-        btnAddSerieAgregarTemporada.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Temporada temporada = new Temporada();
-                temporada.getCapitulos().addAll(capitulos);
-                temporada.setPuntuacion(0.0);
-                temporada.setPuntuacionTotal(0.0);
-                serie.getTemporadas().add(temporada);
-                capitulos.clear();
-            }
+        btnAddSerieAgregarTemporada.setOnClickListener(v -> {
+            Temporada temporada = new Temporada();
+            temporada.getCapitulos().addAll(capitulos);
+            temporada.setPuntuacion(0.0);
+            temporada.setPuntuacionTotal(0.0);
+            serie.getTemporadas().add(temporada);
+            capitulos.clear();
         });
-        btnAddSerieAgregar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                serie.setId_serie(newKey);
-                serie.setNombre(etAddSerieNombre.getText().toString());
-                serie.setGenero(etAddSerieGenero.getText().toString());
-                serie.setDescripcion(etAddSerieDescripcion.getText().toString());
-                serie.setPuntuacion(0.0);
-                serie.setPuntuacionTotal(0.0);
-                serie.setnVotos(0);
-                plataformas.add("Netflix");
-                serie.setPlataformas(plataformas);
-                newRef.set(serie);
-                temporadas.clear();
-                getActivity().onBackPressed();
-            }
+        btnAddSerieAgregar.setOnClickListener(v -> {
+            serie.setId_serie(newKey);
+            serie.setNombre(etAddSerieNombre.getText().toString());
+            serie.setGenero(etAddSerieGenero.getText().toString());
+            serie.setDescripcion(etAddSerieDescripcion.getText().toString());
+            serie.setPuntuacion(0.0);
+            serie.setPuntuacionTotal(0.0);
+            serie.setnVotos(0);
+            serie.getPlataformas().addAll(plataformas);
+            newRef.set(serie);
+            temporadas.clear();
+            getActivity().onBackPressed();
         });
     }
 }

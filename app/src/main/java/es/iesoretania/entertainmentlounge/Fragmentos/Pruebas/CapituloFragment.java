@@ -105,50 +105,47 @@ public class CapituloFragment extends Fragment {
             imgCapituloCabecera.setAlpha(0.5f);
         });
 
-        db.collection("series").document(serie.getId_serie()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    serie = task.getResult().toObject(Serie.class);
-                    rbPuntuacionCapitulo.setRating(Float.parseFloat(serie.getTemporadas().get(nTemporada).getCapitulos().get(nCapituloPos).getPuntuacion().toString()));
-                    db.collection("usuarios").document(UserData.ID_USER_DB).collection("series_guardadas").whereEqualTo("id_serie", serie.getId_serie()).get().addOnCompleteListener(usuarioHaGuardadoSerie -> {
-                        if (usuarioHaGuardadoSerie.isSuccessful()) {
-                            if (usuarioHaGuardadoSerie.getResult().size() > 0) {
-                                saveSerie = usuarioHaGuardadoSerie.getResult().getDocuments().get(0).toObject(SaveSerie.class);
+        db.collection("series").document(serie.getId_serie()).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                serie = task.getResult().toObject(Serie.class);
+                rbPuntuacionCapitulo.setRating(Float.parseFloat(serie.getTemporadas().get(nTemporada).getCapitulos().get(nCapituloPos).getPuntuacion().toString()));
+                db.collection("usuarios").document(UserData.ID_USER_DB).collection("series_guardadas").whereEqualTo("id_serie", serie.getId_serie()).get().addOnCompleteListener(usuarioHaGuardadoSerie -> {
+                    if (usuarioHaGuardadoSerie.isSuccessful()) {
+                        if (usuarioHaGuardadoSerie.getResult().size() > 0) {
+                            saveSerie = usuarioHaGuardadoSerie.getResult().getDocuments().get(0).toObject(SaveSerie.class);
 
-                                if (saveSerie.getTemporadas().get(nTemporada).getCapitulos_vistos().get(nCapituloPos) == 1) {
-                                    float f = Float.parseFloat(String.valueOf(saveSerie.getTemporadas().get(nTemporada).getCapitulos_puntuacion().get(nCapituloPos)));
-                                    rbPuntuarCapitulo.setRating(f);
-                                    btnMarcarComoVistoCap.setImageResource(R.drawable.ic_check_true);
-                                    rbPuntuarCapitulo.setEnabled(true);
-                                } else {
-                                    rbPuntuarCapitulo.setEnabled(false);
-                                }
-
-                                if (saveSerie.getTemporadas().get(nTemporada).isVistaCompleta()) {
-                                    for (Double d : saveSerie.getTemporadas().get(nTemporada).getCapitulos_puntuacion()) {
-                                        puntuacionTemporadaOld += d;
-                                    }
-                                    puntuacionTemporadaOld = puntuacionTemporadaOld / serie.getTemporadas().get(nTemporada).getCapitulos().size();
-                                }
-
-                                if (saveSerie.getVistaCompleta()) {
-                                    for (SaveTemporadaSerie saveTemporada : saveSerie.getTemporadas()) {
-                                        double puntTempUsuario = 0.0;
-                                        for (Double punt : saveTemporada.getCapitulos_puntuacion()) {
-                                            puntTempUsuario = puntTempUsuario + punt;
-                                        }
-                                        puntuacionSerieOld = puntuacionSerieOld + (puntTempUsuario / saveTemporada.getCapitulos_puntuacion().size());
-                                    }
-                                }
-                                activarPuntuar();
-                                activarGuardarCapitulo();
+                            if (saveSerie.getTemporadas().get(nTemporada).getCapitulos_vistos().get(nCapituloPos) == 1) {
+                                float f = Float.parseFloat(String.valueOf(saveSerie.getTemporadas().get(nTemporada).getCapitulos_puntuacion().get(nCapituloPos)));
+                                rbPuntuarCapitulo.setRating(f);
+                                btnMarcarComoVistoCap.setImageResource(R.drawable.ic_check_true);
+                                rbPuntuarCapitulo.setEnabled(true);
+                            } else {
+                                rbPuntuarCapitulo.setEnabled(false);
                             }
+
+                            if (saveSerie.getTemporadas().get(nTemporada).isVistaCompleta()) {
+                                for (Double d : saveSerie.getTemporadas().get(nTemporada).getCapitulos_puntuacion()) {
+                                    puntuacionTemporadaOld += d;
+                                }
+                                puntuacionTemporadaOld = puntuacionTemporadaOld / serie.getTemporadas().get(nTemporada).getCapitulos().size();
+                            }
+
+                            if (saveSerie.getVistaCompleta()) {
+                                for (SaveTemporadaSerie saveTemporada : saveSerie.getTemporadas()) {
+                                    double puntTempUsuario = 0.0;
+                                    for (Double punt : saveTemporada.getCapitulos_puntuacion()) {
+                                        puntTempUsuario = puntTempUsuario + punt;
+                                    }
+                                    puntuacionSerieOld = puntuacionSerieOld + (puntTempUsuario / saveTemporada.getCapitulos_puntuacion().size());
+                                }
+                            }
+                            activarPuntuar();
+                            activarGuardarCapitulo();
                         }
-                    });
-                }
-                activarComentarios();
+                    }
+                });
             }
+            activarComentarios();
         });
     }
 

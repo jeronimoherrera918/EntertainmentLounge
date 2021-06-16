@@ -16,11 +16,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -36,6 +38,8 @@ import es.iesoretania.entertainmentlounge.R;
 public class VerSeriesFragment extends Fragment {
     private RecyclerView listRecyclerSeries;
     private Spinner spFiltros;
+    private EditText etBusquedaSerie;
+    private FloatingActionButton fabBusquedaSerie;
     private FirebaseFirestore db;
     private List<Serie> listaSeries;
     private List<String> listaSeriesKeys;
@@ -56,6 +60,8 @@ public class VerSeriesFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         db = FirebaseFirestore.getInstance();
         listRecyclerSeries = view.findViewById(R.id.listRecyclerSeries);
+        etBusquedaSerie = view.findViewById(R.id.etBusquedaSerie);
+        fabBusquedaSerie = view.findViewById(R.id.fabBusquedaSerie);
         spFiltros = view.findViewById(R.id.spFiltros);
         List<String> elementosSpinner = new ArrayList<>();
         elementosSpinner.add("Nombre");
@@ -72,6 +78,12 @@ public class VerSeriesFragment extends Fragment {
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
+            }
+        });
+
+        fabBusquedaSerie.setOnClickListener(v -> {
+            if (!etBusquedaSerie.getText().toString().equals("")) {
+                buscarSerie(etBusquedaSerie.getText().toString());
             }
         });
     }
@@ -98,13 +110,10 @@ public class VerSeriesFragment extends Fragment {
     }
 
     private void buscarSerie(String busq) {
-        db.collection("series").whereGreaterThanOrEqualTo("nombre", busq).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (DocumentSnapshot dn : task.getResult()) {
-                        System.out.println(dn.toObject(Serie.class).getNombre());
-                    }
+        db.collection("series").whereGreaterThanOrEqualTo("nombre", busq).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                for (DocumentSnapshot dn : task.getResult()) {
+                    System.out.println(dn.toObject(Serie.class).getNombre());
                 }
             }
         });

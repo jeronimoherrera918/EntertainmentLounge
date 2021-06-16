@@ -95,29 +95,25 @@ public class ModificarDatosFragment extends Fragment {
                 });
 
                 fabGuardarCambiosUsuario.setOnClickListener(v -> {
-                    db.collection("usuarios").whereEqualTo("nickname", etModNickname.getText()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
-                                if (task.getResult().getDocuments().size() > 0) {
-                                    Snackbar.make(v, "El nombre de usuario que has elegido ya está asociado a otro usuario. Por favor, prueba con otro", Snackbar.LENGTH_SHORT).setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE).show();
-                                } else {
-                                    infoUsuario.setNickname(etModNickname.getText().toString());
-                                    infoUsuario.setNombre_completo(etModNombreCompleto.getText().toString());
-                                    infoUsuario.setFechaNacimiento(etModFecha.getText().toString());
-                                    db.collection("usuarios").document(UserData.ID_USER_DB).set(infoUsuario).addOnCompleteListener(guardarCambios -> {
-                                        if (guardarCambios.isSuccessful()) {
-                                            Snackbar.make(v, "Cambios guardados correctamente", Snackbar.LENGTH_SHORT).show();
-                                            UserData.USUARIO = infoUsuario;
-                                            StorageReference storageReference2 = firebaseStorage.getReference().child("usuarios/" + UserData.USUARIO.getEmail() + ".jpg");
-                                            storageReference2.putFile(uri).addOnSuccessListener(taskSnapshot -> System.out.println("Foto subida correctamente"));
-                                        }
-                                    });
-                                }
+                    db.collection("usuarios").whereEqualTo("nickname", etModNickname.getText()).get().addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            if (task.getResult().getDocuments().size() > 0) {
+                                Snackbar.make(v, "El nombre de usuario que has elegido ya está asociado a otro usuario. Por favor, prueba con otro", Snackbar.LENGTH_SHORT).setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE).show();
+                            } else {
+                                infoUsuario.setNickname(etModNickname.getText().toString());
+                                infoUsuario.setNombre_completo(etModNombreCompleto.getText().toString());
+                                infoUsuario.setFechaNacimiento(etModFecha.getText().toString());
+                                db.collection("usuarios").document(UserData.ID_USER_DB).set(infoUsuario).addOnCompleteListener(guardarCambios -> {
+                                    if (guardarCambios.isSuccessful()) {
+                                        Snackbar.make(v, "Cambios guardados correctamente", Snackbar.LENGTH_SHORT).show();
+                                        UserData.USUARIO = infoUsuario;
+                                        StorageReference storageReference2 = firebaseStorage.getReference().child("usuarios/" + UserData.USUARIO.getEmail() + ".jpg");
+                                        storageReference2.putFile(uri).addOnSuccessListener(taskSnapshot -> System.out.println("Foto subida correctamente"));
+                                    }
+                                });
                             }
                         }
                     });
-
                 });
             }
         });

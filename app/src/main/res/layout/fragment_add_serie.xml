@@ -81,6 +81,32 @@
 
     <Space
         android:layout_width="match_parent"
+        android:layout_height="5dp" />
+
+    <EditText
+        android:id="@+id/etAddSeriePlataforma"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/custom_input"
+        android:backgroundTint="@color/azul_app"
+        android:drawableStart="@drawable/custom_email_icon"
+        android:drawablePadding="12dp"
+        android:ems="10"
+        android:hint="Plataforma"
+        android:inputType="textPersonName"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:textColor="@color/white"
+        android:textColorHint="@color/grey" />
+
+    <Button
+        android:id="@+id/btnAddSerieAgregarPlataforma"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Añadir plataforma" />
+
+    <Space
+        android:layout_width="match_parent"
         android:layout_height="10dp" />
 
     <View

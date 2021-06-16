@@ -90,8 +90,8 @@
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:layout_gravity="center"
-            android:visibility="gone"
-            android:src="@drawable/ic_circles" />
+            android:src="@drawable/ic_circles"
+            android:visibility="gone" />
 
         <Space
             android:layout_width="match_parent"

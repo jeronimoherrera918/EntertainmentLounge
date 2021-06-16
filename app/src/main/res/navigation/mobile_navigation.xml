@@ -130,7 +130,11 @@
         android:id="@+id/nav_recomendaciones"
         android:name="es.iesoretania.entertainmentlounge.Fragmentos.Pruebas.RecomendacionesFragment"
         android:label="@string/menu_recomendaciones"
-        tools:layout="@layout/fragment_recomendaciones" />
+        tools:layout="@layout/fragment_recomendaciones" >
+        <action
+            android:id="@+id/action_nav_recomendaciones_to_nav_serie"
+            app:destination="@id/nav_serie" />
+    </fragment>
     <fragment
         android:id="@+id/nav_cerrarSesion"
         android:name="es.iesoretania.entertainmentlounge.Fragmentos.CerrarSesionFragment"

@@ -123,15 +123,12 @@ public class SerieFragment extends Fragment {
 
     private void setupSerie() {
         adapterListaTemporadas();
-        db.collection("usuarios").document(UserData.ID_USER_DB).collection("series_guardadas").whereEqualTo("id_serie", key).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    if (task.getResult().size() > 0) {
-                        estadoBotonGuardar(false);
-                    } else {
-                        estadoBotonGuardar(true);
-                    }
+        db.collection("usuarios").document(UserData.ID_USER_DB).collection("series_guardadas").whereEqualTo("id_serie", key).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                if (task.getResult().size() > 0) {
+                    estadoBotonGuardar(false);
+                } else {
+                    estadoBotonGuardar(true);
                 }
             }
         });
