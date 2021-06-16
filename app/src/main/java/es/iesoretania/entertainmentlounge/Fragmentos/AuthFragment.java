@@ -149,7 +149,7 @@ public class AuthFragment extends Fragment {
                             UserData.USUARIO = dn.toObject(Usuario.class);
                             UserData.ID_USER_DB = dn.getId();
                             mantenerSesion();
-                            Navigation.findNavController(getView()).navigate(R.id.action_nav_login_to_profileFragment);
+                            Navigation.findNavController(getView()).navigate(AuthFragmentDirections.actionNavLoginToProfileFragment(UserData.ID_USER_DB));
                             loadingLogin.setVisibility(View.INVISIBLE);
                         }
                     }
