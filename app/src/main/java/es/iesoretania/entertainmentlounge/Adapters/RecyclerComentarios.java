@@ -6,17 +6,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
 
-import es.iesoretania.entertainmentlounge.Clases.SerieData.Capitulo;
 import es.iesoretania.entertainmentlounge.Clases.SerieData.Comentario;
 import es.iesoretania.entertainmentlounge.Clases.Usuario;
 import es.iesoretania.entertainmentlounge.R;
@@ -26,6 +21,7 @@ public class RecyclerComentarios extends RecyclerView.Adapter<RecyclerComentario
     private LayoutInflater layoutInflater;
     private Context context;
     private FirebaseFirestore db;
+    ClickListener clickListener;
 
     public RecyclerComentarios(List<Comentario> listaComentarios, Context context) {
         this.listaComentarios = listaComentarios;
@@ -61,11 +57,16 @@ public class RecyclerComentarios extends RecyclerView.Adapter<RecyclerComentario
             recyclerComentarioEmisor = v.findViewById(R.id.recyclerComentarioEmisor);
             recyclerComentarioMensaje = v.findViewById(R.id.recyclerComentarioMensaje);
             db = FirebaseFirestore.getInstance();
+            if (clickListener != null) {
+                v.setOnClickListener(this);
+            }
         }
 
         @Override
         public void onClick(View v) {
-
+            if (clickListener != null) {
+                clickListener.onItemClick(getAdapterPosition(), v);
+            }
         }
 
         public void bindData(final Comentario comentario) {
@@ -77,5 +78,13 @@ public class RecyclerComentarios extends RecyclerView.Adapter<RecyclerComentario
                 }
             });
         }
+    }
+
+    public interface ClickListener {
+        void onItemClick(int position, View v);
+    }
+
+    public void setOnItemClickListener(ClickListener clickListener) {
+        this.clickListener = clickListener;
     }
 }

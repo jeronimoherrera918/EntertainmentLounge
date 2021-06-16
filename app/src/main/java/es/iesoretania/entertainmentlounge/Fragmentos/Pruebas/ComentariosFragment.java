@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -72,14 +73,11 @@ public class ComentariosFragment extends Fragment {
                     serie = task.getResult().toObject(Serie.class);
                     mostrarComentarios();
 
-                    fabHacerComentario.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            if (capVisto == 1) {
-                                intentComentar();
-                            } else {
-                                Snackbar.make(view, "¡Debes marcar el capítulo como visto antes de poder comentar!", Snackbar.LENGTH_SHORT).setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE).show();
-                            }
+                    fabHacerComentario.setOnClickListener(v -> {
+                        if (capVisto == 1) {
+                            intentComentar();
+                        } else {
+                            Snackbar.make(view, "¡Debes marcar el capítulo como visto antes de poder comentar!", Snackbar.LENGTH_SHORT).setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE).show();
                         }
                     });
                 }
@@ -90,6 +88,12 @@ public class ComentariosFragment extends Fragment {
     private void mostrarComentarios() {
         List<Comentario> listaComentarios = serie.getTemporadas().get(nTemporada).getCapitulos().get(nCapitulo).getListaComentarios();
         RecyclerComentarios recyclerComentarios = new RecyclerComentarios(listaComentarios, getContext());
+        recyclerComentarios.setOnItemClickListener(new RecyclerComentarios.ClickListener() {
+            @Override
+            public void onItemClick(int position, View v) {
+                Navigation.findNavController(v).navigate(ComentariosFragmentDirections.actionNavComentariosToNavProfile(listaComentarios.get(position).getId_usuario()));
+            }
+        });
         listComentariosView = this.getView().findViewById(R.id.listComentariosView);
         listComentariosView.setHasFixedSize(true);
         listComentariosView.setLayoutManager(new LinearLayoutManager(listComentariosView.getContext()));

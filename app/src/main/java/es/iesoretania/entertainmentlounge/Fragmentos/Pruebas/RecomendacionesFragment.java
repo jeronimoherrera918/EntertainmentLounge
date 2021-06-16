@@ -41,6 +41,7 @@ public class RecomendacionesFragment extends Fragment {
     private GifImageView loadingRecomendaciones;
     private List<Serie> listaSeries;
     private List<SaveSerie> listaSeriesGuardadas;
+    private int contador;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -149,6 +150,11 @@ public class RecomendacionesFragment extends Fragment {
                                     break;
                                 }
                             }
+                        }
+
+                        if (listaSeriesGenero.size() != 3) {
+                            numGeneros.remove(numGeneros.indexOf(nMax));
+
                         }
                     }
                     loadingRecomendaciones.animate().translationX(loadingRecomendaciones.getWidth() + 300).setDuration(1000L);
