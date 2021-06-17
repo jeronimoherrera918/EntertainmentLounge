@@ -18,6 +18,9 @@
             android:name=".Actividades.PopUpComentar"
             android:theme="@style/Theme.EntertainmentLounge.ThemaPopup"></activity>
         <activity
+            android:name=".Actividades.PopUpAceptarAmigos"
+            android:theme="@style/Theme.EntertainmentLounge.ThemaPopup"></activity>
+        <activity
             android:name=".Actividades.SplashScreen"
             android:theme="@style/SplashScreenWindows">
             <intent-filter>

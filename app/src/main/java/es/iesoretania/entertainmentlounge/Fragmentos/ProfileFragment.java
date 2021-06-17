@@ -1,5 +1,6 @@
 package es.iesoretania.entertainmentlounge.Fragmentos;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -28,6 +29,8 @@ import com.google.firebase.storage.StorageReference;
 
 import org.jetbrains.annotations.NotNull;
 
+import es.iesoretania.entertainmentlounge.Actividades.PopUpAceptarAmigos;
+import es.iesoretania.entertainmentlounge.Actividades.PopUpComentar;
 import es.iesoretania.entertainmentlounge.Clases.SaveSerieData.SaveSerie;
 import es.iesoretania.entertainmentlounge.Clases.UserData;
 import es.iesoretania.entertainmentlounge.Clases.Usuario;
@@ -133,7 +136,8 @@ public class ProfileFragment extends Fragment {
                         fabNotificacionesPendientes.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                
+                                Intent intent = new Intent(getContext(), PopUpAceptarAmigos.class);
+                                startActivity(intent);
                             }
                         });
                     }

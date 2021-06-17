@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -57,14 +58,25 @@ public class ChatsFragment extends Fragment {
         listRecyclerUsuarios = view.findViewById(R.id.listRecyclerUsuarios);
         db = FirebaseFirestore.getInstance();
 
+        db.collection("usuarios").document(UserData.ID_USER_DB).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    Usuario usuario = task.getResult().toObject(Usuario.class);
+
+                }
+            }
+        });
         db.collection("usuarios").whereNotEqualTo("email", UserData.USUARIO.getEmail()).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 listaUsuarios = new ArrayList<>();
                 listaUsuariosKeys = new ArrayList<>();
                 for (QueryDocumentSnapshot dn : task.getResult()) {
                     Usuario usuario = dn.toObject(Usuario.class);
-                    listaUsuarios.add(usuario);
-                    listaUsuariosKeys.add(dn.getId());
+                    if (usuario.getListaAmigos().contains(UserData.ID_USER_DB)) {
+                        listaUsuarios.add(usuario);
+                        listaUsuariosKeys.add(dn.getId());
+                    }
                 }
                 RecyclerUsuarios recyclerUsuarios = new RecyclerUsuarios(listaUsuarios, listRecyclerUsuarios.getContext());
                 recyclerUsuarios.setOnItemClickListener(new RecyclerUsuarios.ClickListener() {
