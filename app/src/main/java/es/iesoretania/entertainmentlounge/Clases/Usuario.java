@@ -3,13 +3,14 @@ package es.iesoretania.entertainmentlounge.Clases;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Usuario{
+public class Usuario {
     private String email;
     private String nickname;
     private String nombre_completo;
     private String fechaNacimiento;
     private String fotoPerfil;
     private List<String> listaAmigos;
+    private List<String> amigosPendientes;
 
     public Usuario() {
 
@@ -22,6 +23,7 @@ public class Usuario{
         this.fechaNacimiento = fechaNacimiento;
         this.fotoPerfil = fotoPerfil;
         this.listaAmigos = new ArrayList<>();
+        this.amigosPendientes = new ArrayList<>();
     }
 
     public String getEmail() {
@@ -70,5 +72,13 @@ public class Usuario{
 
     public void setListaAmigos(List<String> listaAmigos) {
         this.listaAmigos = listaAmigos;
+    }
+
+    public List<String> getAmigosPendientes() {
+        return amigosPendientes;
+    }
+
+    public void setAmigosPendientes(List<String> amigosPendientes) {
+        this.amigosPendientes = amigosPendientes;
     }
 }

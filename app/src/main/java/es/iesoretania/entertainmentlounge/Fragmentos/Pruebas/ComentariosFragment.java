@@ -91,7 +91,7 @@ public class ComentariosFragment extends Fragment {
         recyclerComentarios.setOnItemClickListener(new RecyclerComentarios.ClickListener() {
             @Override
             public void onItemClick(int position, View v) {
-                Navigation.findNavController(v).navigate(ComentariosFragmentDirections.actionNavComentariosToNavProfile(listaComentarios.get(position).getId_usuario()));
+                Navigation.findNavController(v).navigate(ComentariosFragmentDirections.actionNavComentariosToNavProfile().setKeyUserComment(listaComentarios.get(position).getId_usuario()));
             }
         });
         listComentariosView = this.getView().findViewById(R.id.listComentariosView);

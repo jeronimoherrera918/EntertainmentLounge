@@ -28,6 +28,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
+
 import es.iesoretania.entertainmentlounge.Clases.Usuario;
 import es.iesoretania.entertainmentlounge.MainActivity;
 import es.iesoretania.entertainmentlounge.R;
@@ -80,7 +82,8 @@ public class RegisterFragment extends Fragment {
                     if (userExists.getResult().size() > 0) {
                         Toast.makeText(getContext(), "El nickname elegido ya está registrado para otro usuario", Toast.LENGTH_SHORT).show();
                         loadingRegister.setVisibility(View.INVISIBLE);
-                    } else if (etPasswordRegistro.getText().length() >= 8) {
+                    } else if (etPasswordRegistro.getText().length() <= 8) {
+                        loadingRegister.setVisibility(View.INVISIBLE);
                         Toast.makeText(getContext(), "La contraseña debe tener mínimo una longitud de 8 caracteres", Toast.LENGTH_SHORT).show();
                     } else {
                         if (!etEmailRegistro.getText().toString().isEmpty() && !etPasswordRegistro.getText().toString().isEmpty() && !etNicknameRegistro.getText().toString().isEmpty() && !etNombreCompletoRegistro.getText().toString().isEmpty() && !etFechaRegistro.getText().toString().isEmpty()) {
@@ -94,6 +97,8 @@ public class RegisterFragment extends Fragment {
                                     usuario.setFotoPerfil(null);
                                     usuario.setNombre_completo(etNombreCompletoRegistro.getText().toString());
                                     usuario.setFechaNacimiento(etFechaRegistro.getText().toString());
+                                    usuario.setListaAmigos(new ArrayList<>());
+                                    usuario.setAmigosPendientes(new ArrayList<>());
                                     firestoredb.collection("usuarios").add(usuario);
                                     loadingRegister.setVisibility(View.INVISIBLE);
                                 } else {

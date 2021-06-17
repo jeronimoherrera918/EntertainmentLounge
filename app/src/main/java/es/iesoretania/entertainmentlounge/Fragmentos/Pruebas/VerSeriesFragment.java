@@ -41,8 +41,8 @@ public class VerSeriesFragment extends Fragment {
     private EditText etBusquedaSerie;
     private FloatingActionButton fabBusquedaSerie;
     private FirebaseFirestore db;
-    private List<Serie> listaSeries;
-    private List<String> listaSeriesKeys;
+    private List<Serie> listaSeries = new ArrayList<>();
+    private List<String> listaSeriesKeys = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -89,20 +89,16 @@ public class VerSeriesFragment extends Fragment {
     }
 
     private void mostrarSeriesFiltro(String filtro) {
+        listaSeries.clear();
+        listaSeriesKeys.clear();
         db.collection("series").orderBy(filtro).get().addOnCompleteListener(mostrarSeries -> {
             if (mostrarSeries.isSuccessful()) {
-                listaSeries = new ArrayList<>();
-                listaSeriesKeys = new ArrayList<>();
                 for (QueryDocumentSnapshot dn : mostrarSeries.getResult()) {
                     Serie serie = dn.toObject(Serie.class);
                     listaSeries.add(serie);
                     listaSeriesKeys.add(dn.getId());
                 }
-                RecyclerSeries recyclerSeries = new RecyclerSeries(listaSeries, listRecyclerSeries.getContext());
-                recyclerSeries.setOnItemClickListener((position, v) -> Navigation.findNavController(v).navigate(VerSeriesFragmentDirections.actionNavVerSeriesToSerieFragment(listaSeriesKeys.get(position))));
-                listRecyclerSeries.setHasFixedSize(true);
-                listRecyclerSeries.setLayoutManager(new LinearLayoutManager(listRecyclerSeries.getContext()));
-                listRecyclerSeries.setAdapter(recyclerSeries);
+                setRecyclerViewSeries();
             } else {
                 Log.d("ERROR", mostrarSeries.getException().toString());
             }
@@ -110,12 +106,24 @@ public class VerSeriesFragment extends Fragment {
     }
 
     private void buscarSerie(String busq) {
-        db.collection("series").whereGreaterThanOrEqualTo("nombre", busq).get().addOnCompleteListener(task -> {
+        listaSeries.clear();
+        listaSeriesKeys.clear();
+        db.collection("series").whereGreaterThanOrEqualTo("nombre", busq.toUpperCase()).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 for (DocumentSnapshot dn : task.getResult()) {
-                    System.out.println(dn.toObject(Serie.class).getNombre());
+                    listaSeries.add(dn.toObject(Serie.class));
+                    listaSeriesKeys.add(dn.toObject(Serie.class).getId_serie());
                 }
+                setRecyclerViewSeries();
             }
         });
+    }
+
+    private void setRecyclerViewSeries() {
+        RecyclerSeries recyclerSeries = new RecyclerSeries(listaSeries, listRecyclerSeries.getContext());
+        recyclerSeries.setOnItemClickListener((position, v) -> Navigation.findNavController(v).navigate(VerSeriesFragmentDirections.actionNavVerSeriesToSerieFragment(listaSeriesKeys.get(position))));
+        listRecyclerSeries.setHasFixedSize(true);
+        listRecyclerSeries.setLayoutManager(new LinearLayoutManager(listRecyclerSeries.getContext()));
+        listRecyclerSeries.setAdapter(recyclerSeries);
     }
 }

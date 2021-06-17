@@ -80,8 +80,11 @@ public class RecyclerUsuarios extends RecyclerView.Adapter<RecyclerUsuarios.View
 
         void bindData(final Usuario usuario) {
             tvUserChat.setText(usuario.getNickname());
-            StorageReference storageReference = firebaseStorage.getReference().child(usuario.getFotoPerfil());
-            storageReference.getDownloadUrl().addOnSuccessListener(uri -> Glide.with(imgChatPerfilUser.getContext()).load(uri).into(imgChatPerfilUser));
+            if(usuario.getFotoPerfil() != null){
+                StorageReference storageReference = firebaseStorage.getReference().child(usuario.getFotoPerfil());
+                storageReference.getDownloadUrl().addOnSuccessListener(uri -> Glide.with(imgChatPerfilUser.getContext()).load(uri).into(imgChatPerfilUser));
+            }
+
         }
     }
 

@@ -18,6 +18,8 @@ import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -37,7 +39,7 @@ public class ProfileFragment extends Fragment {
     private ImageView imgProfileFoto;
     private Button btnPerfilExplorar, btnPerfilMisSeries, btnPerfilDescubrir;
     private Button btnAddSerie;
-    private FloatingActionButton fabEditarPerfil, fabChatear, fabAgregarAmigo;
+    private FloatingActionButton fabEditarPerfil, fabChatear, fabAgregarAmigo, fabNotificacionesPendientes;
     private FirebaseFirestore db;
     private FirebaseStorage firebaseStorage;
     private Integer contadorSeriesGuardadas, contadorSeriesVistas;
@@ -68,6 +70,7 @@ public class ProfileFragment extends Fragment {
         fabEditarPerfil = view.findViewById(R.id.fabEditarPerfil);
         fabChatear = view.findViewById(R.id.fabChatear);
         fabAgregarAmigo = view.findViewById(R.id.fabAgregarAmigo);
+        fabNotificacionesPendientes = view.findViewById(R.id.fabNotificacionesPendientes);
         tvProfileNombre = view.findViewById(R.id.tvProfileNombre);
         tvProfileEmail = view.findViewById(R.id.tvProfileEmail);
         tvPerfilSeriesGuardadas = view.findViewById(R.id.tvPerfilSeriesGuardadas);
@@ -81,8 +84,9 @@ public class ProfileFragment extends Fragment {
         if (getArguments() != null) {
             profileFragmentArgs = ProfileFragmentArgs.fromBundle(getArguments());
             keyUser = profileFragmentArgs.getKeyUserComment();
-        } else {
-            keyUser = UserData.ID_USER_DB;
+            if (keyUser.equals("navDrawClick")) {
+                keyUser = UserData.ID_USER_DB;
+            }
         }
 
         db.collection("usuarios").document(keyUser).get().addOnCompleteListener(task -> {
@@ -106,12 +110,15 @@ public class ProfileFragment extends Fragment {
                     }
                 });
 
-                StorageReference storageReference = firebaseStorage.getReference().child(usuario.getFotoPerfil());
-                storageReference.getDownloadUrl().addOnSuccessListener(uri -> {
-                    imgLoading.setVisibility(View.GONE);
-                    Glide.with(getContext()).load(uri).into(imgProfileFoto);
-                    imgProfileFoto.setVisibility(View.VISIBLE);
-                });
+                if (usuario.getFotoPerfil() != null) {
+                    StorageReference storageReference = firebaseStorage.getReference().child(usuario.getFotoPerfil());
+                    storageReference.getDownloadUrl().addOnSuccessListener(uri -> {
+                        imgLoading.setVisibility(View.GONE);
+                        Glide.with(getContext()).load(uri).into(imgProfileFoto);
+                        imgProfileFoto.setVisibility(View.VISIBLE);
+                    });
+                }
+
 
                 if (keyUser.equals(UserData.ID_USER_DB)) {
                     btnAddSerie.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_nav_profile_to_addSerieFragment));
@@ -120,6 +127,16 @@ public class ProfileFragment extends Fragment {
                     btnPerfilDescubrir.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_nav_profile_to_nav_recomendaciones));
                     fabEditarPerfil.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_nav_profile_to_nav_modificarDatos));
                     fabChatear.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_nav_profile_to_nav_chats));
+                    if (usuario.getAmigosPendientes().size() == 0) {
+                        Snackbar.make(view, "No tienes solicitudes pendientes", Snackbar.LENGTH_SHORT).setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE).show();
+                    } else {
+                        fabNotificacionesPendientes.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                
+                            }
+                        });
+                    }
                 } else {
                     btnAddSerie.setVisibility(View.GONE);
                     btnPerfilExplorar.setVisibility(View.GONE);
@@ -128,6 +145,37 @@ public class ProfileFragment extends Fragment {
                     fabEditarPerfil.setVisibility(View.GONE);
                     fabChatear.setVisibility(View.GONE);
                     fabAgregarAmigo.setVisibility(View.VISIBLE);
+                    fabAgregarAmigo.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            db.collection("usuarios").document(UserData.ID_USER_DB).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        Usuario user = task.getResult().toObject(Usuario.class);
+                                        if (!user.getListaAmigos().contains(keyUser)) {
+                                            if (!usuario.getAmigosPendientes().contains(UserData.ID_USER_DB)) {
+                                                usuario.getAmigosPendientes().add(UserData.ID_USER_DB);
+                                                db.collection("usuarios").document(keyUser).set(usuario).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                        if (task.isSuccessful()) {
+                                                            Snackbar.make(v, "Petición de amistad enviada", Snackbar.LENGTH_SHORT).setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE).show();
+                                                        }
+                                                    }
+                                                });
+                                            } else {
+                                                Snackbar.make(v, "Ya le has enviado una petición de amistad a este usuario", Snackbar.LENGTH_SHORT).setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE).show();
+                                            }
+                                        } else {
+                                            fabAgregarAmigo.setImageResource(R.drawable.ic_chats);
+                                            Navigation.findNavController(v).navigate(ProfileFragmentDirections.actionNavProfileToNavChat(keyUser, usuario.getNickname()));
+                                        }
+                                    }
+                                }
+                            });
+                        }
+                    });
                 }
             }
         });

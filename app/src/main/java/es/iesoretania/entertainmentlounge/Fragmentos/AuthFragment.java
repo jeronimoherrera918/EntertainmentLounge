@@ -125,6 +125,7 @@ public class AuthFragment extends Fragment {
         tvRegister.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_nav_login_to_nav_register));
 
         btnEntrar.setOnClickListener(v -> {
+            btnEntrar.setEnabled(false);
             loadingLogin.setEnabled(true);
             loadingLogin.setVisibility(View.VISIBLE);
             if (!etEmail.getText().toString().isEmpty() && !etPassword.getText().toString().isEmpty()) {
@@ -139,24 +140,23 @@ public class AuthFragment extends Fragment {
     private void entrar(String email, String password) {
         fAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(loguearse -> {
             if (loguearse.isSuccessful()) {
-                btnEntrar.setEnabled(false);
-                // if (task.getResult().getUser().isEmailVerified()) {
-                CollectionReference usuariosRef = db.collection("usuarios");
-                Query query = usuariosRef.whereEqualTo("email", loguearse.getResult().getUser().getEmail());
-                query.get().addOnCompleteListener(entrar -> {
-                    if (entrar.isSuccessful()) {
-                        for (QueryDocumentSnapshot dn : entrar.getResult()) {
-                            UserData.USUARIO = dn.toObject(Usuario.class);
-                            UserData.ID_USER_DB = dn.getId();
-                            mantenerSesion();
-                            Navigation.findNavController(getView()).navigate(AuthFragmentDirections.actionNavLoginToProfileFragment(UserData.ID_USER_DB));
-                            loadingLogin.setVisibility(View.INVISIBLE);
+                if (loguearse.getResult().getUser().isEmailVerified()) {
+                    CollectionReference usuariosRef = db.collection("usuarios");
+                    Query query = usuariosRef.whereEqualTo("email", loguearse.getResult().getUser().getEmail());
+                    query.get().addOnCompleteListener(entrar -> {
+                        if (entrar.isSuccessful()) {
+                            for (QueryDocumentSnapshot dn : entrar.getResult()) {
+                                UserData.USUARIO = dn.toObject(Usuario.class);
+                                UserData.ID_USER_DB = dn.getId();
+                                mantenerSesion();
+                                Navigation.findNavController(getView()).navigate(AuthFragmentDirections.actionNavLoginToProfileFragment().setKeyUserComment(UserData.ID_USER_DB));
+                                loadingLogin.setVisibility(View.INVISIBLE);
+                            }
                         }
-                    }
-                });
-                // } else {
-                //  Toast.makeText(getContext(), "No has verificado el correo. Veríficalo antes de poder acceder a la aplicación", Toast.LENGTH_SHORT).show();
-                // }
+                    });
+                } else {
+                    Toast.makeText(getContext(), "No has verificado el correo. Veríficalo antes de poder acceder a la aplicación", Toast.LENGTH_SHORT).show();
+                }
             } else {
                 showAlert();
             }

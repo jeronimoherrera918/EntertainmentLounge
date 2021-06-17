@@ -66,12 +66,14 @@
 
     <EditText
         android:id="@+id/etBusquedaSerie"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="50dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginBottom="16dp"
         android:background="@drawable/custom_input"
         android:backgroundTint="@color/azul_app"
-        android:drawableStart="@drawable/custom_fullname_icon"
+        android:drawableStart="@drawable/ic_search"
         android:drawablePadding="12dp"
         android:ems="10"
         android:hint="Buscar serie..."

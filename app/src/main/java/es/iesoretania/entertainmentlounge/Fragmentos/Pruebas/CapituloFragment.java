@@ -54,6 +54,7 @@ public class CapituloFragment extends Fragment {
     private Boolean sw = false;
     private Double puntuacionTemporadaOld = 0.0;
     private Double puntuacionSerieOld = 0.0;
+    private Integer capVisto = 1;
     //endregion
 
     @Override
@@ -141,6 +142,8 @@ public class CapituloFragment extends Fragment {
                             }
                             activarPuntuar();
                             activarGuardarCapitulo();
+                        } else {
+                            capVisto = 0;
                         }
                     }
                 });
@@ -178,7 +181,12 @@ public class CapituloFragment extends Fragment {
 
     private void activarComentarios() {
         btnCapComentar.setOnClickListener(v -> {
-            Navigation.findNavController(v).navigate(CapituloFragmentDirections.actionNavCapituloToComentariosFragment(serie.getId_serie(), nCapituloPos, nTemporada, saveSerie.getTemporadas().get(nTemporada).getCapitulos_vistos().get(nCapituloPos)));
+            if(capVisto == 0){
+                Navigation.findNavController(v).navigate(CapituloFragmentDirections.actionNavCapituloToComentariosFragment(serie.getId_serie(), nCapituloPos, nTemporada, capVisto));
+            } else {
+                Navigation.findNavController(v).navigate(CapituloFragmentDirections.actionNavCapituloToComentariosFragment(serie.getId_serie(), nCapituloPos, nTemporada, saveSerie.getTemporadas().get(nTemporada).getCapitulos_vistos().get(nCapituloPos)));
+
+            }
         });
     }
 
