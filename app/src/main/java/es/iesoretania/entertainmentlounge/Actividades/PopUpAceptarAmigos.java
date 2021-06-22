@@ -1,6 +1,7 @@
 package es.iesoretania.entertainmentlounge.Actividades;
 
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -56,6 +57,14 @@ public class PopUpAceptarAmigos extends AppCompatActivity {
                                                     user2.getListaAmigos().add(UserData.ID_USER_DB);
                                                     db.collection("usuarios").document(task.getResult().getId()).set(user2);
                                                     usuario.getAmigosPendientes().remove(solicitudes.get(position));
+                                                    db.collection("usuarios").document(UserData.ID_USER_DB).set(usuario).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                            if (task.isSuccessful()) {
+                                                                finish();
+                                                            }
+                                                        }
+                                                    });
                                                 }
                                             }
                                         });
@@ -67,5 +76,13 @@ public class PopUpAceptarAmigos extends AppCompatActivity {
                 }
             }
         });
+
+        DisplayMetrics ventana = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(ventana);
+
+        int ancho = ventana.widthPixels;
+        int alto = ventana.heightPixels;
+
+        getWindow().setLayout((int) (ancho * 0.85), (int) (alto * 0.5));
     }
 }

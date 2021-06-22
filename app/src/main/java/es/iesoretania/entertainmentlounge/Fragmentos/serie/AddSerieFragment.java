@@ -1,4 +1,4 @@
-package es.iesoretania.entertainmentlounge.Fragmentos.Pruebas;
+package es.iesoretania.entertainmentlounge.Fragmentos.serie;
 
 import android.os.Bundle;
 

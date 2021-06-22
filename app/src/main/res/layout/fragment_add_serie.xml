@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Fragmentos.Pruebas.AddSerieFragment">
+    tools:context=".Fragmentos.serie.AddSerieFragment">
 
     <Space
         android:layout_width="match_parent"

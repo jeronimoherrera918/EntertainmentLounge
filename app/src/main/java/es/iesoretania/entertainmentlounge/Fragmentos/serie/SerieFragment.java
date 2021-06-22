@@ -1,4 +1,4 @@
-package es.iesoretania.entertainmentlounge.Fragmentos.Pruebas;
+package es.iesoretania.entertainmentlounge.Fragmentos.serie;
 
 import android.graphics.Color;
 
@@ -38,6 +38,8 @@ import es.iesoretania.entertainmentlounge.Clases.SaveSerieData.SaveTemporadaSeri
 import es.iesoretania.entertainmentlounge.Clases.SerieData.Serie;
 import es.iesoretania.entertainmentlounge.Clases.SerieData.Temporada;
 import es.iesoretania.entertainmentlounge.Clases.UserData;
+import es.iesoretania.entertainmentlounge.Fragmentos.serie.SerieFragmentArgs;
+import es.iesoretania.entertainmentlounge.Fragmentos.serie.SerieFragmentDirections;
 import es.iesoretania.entertainmentlounge.R;
 
 public class SerieFragment extends Fragment {

@@ -1,4 +1,4 @@
-package es.iesoretania.entertainmentlounge.Fragmentos.Pruebas;
+package es.iesoretania.entertainmentlounge.Fragmentos.perfil;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -81,12 +81,14 @@ public class ModificarDatosFragment extends Fragment {
                 etModNombreCompleto.setText(infoUsuario.getNombre_completo());
                 etModFecha.setText(infoUsuario.getFechaNacimiento());
 
-                StorageReference storageReference = firebaseStorage.getReference().child(infoUsuario.getFotoPerfil());
-                storageReference.getDownloadUrl().addOnSuccessListener(uri -> {
-                    imgLoading2.setVisibility(View.GONE);
-                    Glide.with(getContext()).load(uri).into(imgModFotoPerfil);
-                    imgModFotoPerfil.setVisibility(View.VISIBLE);
-                });
+                if (infoUsuario.getFotoPerfil() != null) {
+                    StorageReference storageReference = firebaseStorage.getReference().child(infoUsuario.getFotoPerfil());
+                    storageReference.getDownloadUrl().addOnSuccessListener(uri -> {
+                        imgLoading2.setVisibility(View.GONE);
+                        Glide.with(getContext()).load(uri).into(imgModFotoPerfil);
+                        imgModFotoPerfil.setVisibility(View.VISIBLE);
+                    });
+                }
 
                 btnModSubirFoto.setOnClickListener(v -> {
                     Intent intent = new Intent(Intent.ACTION_PICK);
@@ -95,22 +97,37 @@ public class ModificarDatosFragment extends Fragment {
                 });
 
                 fabGuardarCambiosUsuario.setOnClickListener(v -> {
-                    db.collection("usuarios").whereEqualTo("nickname", etModNickname.getText()).get().addOnCompleteListener(task -> {
+                    db.collection("usuarios").whereEqualTo("nickname", etModNickname.getText().toString()).get().addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
                             if (task.getResult().getDocuments().size() > 0) {
-                                Snackbar.make(v, "El nombre de usuario que has elegido ya está asociado a otro usuario. Por favor, prueba con otro", Snackbar.LENGTH_SHORT).setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE).show();
-                            } else {
-                                infoUsuario.setNickname(etModNickname.getText().toString());
-                                infoUsuario.setNombre_completo(etModNombreCompleto.getText().toString());
-                                infoUsuario.setFechaNacimiento(etModFecha.getText().toString());
-                                db.collection("usuarios").document(UserData.ID_USER_DB).set(infoUsuario).addOnCompleteListener(guardarCambios -> {
-                                    if (guardarCambios.isSuccessful()) {
-                                        Snackbar.make(v, "Cambios guardados correctamente", Snackbar.LENGTH_SHORT).show();
-                                        UserData.USUARIO = infoUsuario;
-                                        StorageReference storageReference2 = firebaseStorage.getReference().child("usuarios/" + UserData.USUARIO.getEmail() + ".jpg");
-                                        storageReference2.putFile(uri).addOnSuccessListener(taskSnapshot -> System.out.println("Foto subida correctamente"));
+                                if (infoUsuario.getNickname().equals(etModNickname.getText().toString())) {
+                                    infoUsuario.setNombre_completo(etModNombreCompleto.getText().toString());
+                                    infoUsuario.setFechaNacimiento(etModFecha.getText().toString());
+                                    db.collection("usuarios").document(UserData.ID_USER_DB).set(infoUsuario).addOnCompleteListener(guardarCambios -> {
+                                        if (guardarCambios.isSuccessful()) {
+                                            Snackbar.make(v, "Cambios guardados correctamente", Snackbar.LENGTH_SHORT).show();
+                                            UserData.USUARIO = infoUsuario;
+                                            StorageReference storageReference2 = firebaseStorage.getReference().child("usuarios/" + UserData.USUARIO.getEmail() + ".jpg");
+                                            storageReference2.putFile(uri).addOnSuccessListener(taskSnapshot -> System.out.println("Foto subida correctamente"));
+                                        }
+                                    });
+                                } else {
+                                    if (!task.getResult().getDocuments().get(0).toObject(Usuario.class).getNickname().equals(etModNickname.getText().toString())) {
+                                        infoUsuario.setNickname(etModNickname.getText().toString());
+                                        infoUsuario.setNombre_completo(etModNombreCompleto.getText().toString());
+                                        infoUsuario.setFechaNacimiento(etModFecha.getText().toString());
+                                        db.collection("usuarios").document(UserData.ID_USER_DB).set(infoUsuario).addOnCompleteListener(guardarCambios -> {
+                                            if (guardarCambios.isSuccessful()) {
+                                                Snackbar.make(v, "Cambios guardados correctamente", Snackbar.LENGTH_SHORT).show();
+                                                UserData.USUARIO = infoUsuario;
+                                                StorageReference storageReference2 = firebaseStorage.getReference().child("usuarios/" + UserData.USUARIO.getEmail() + ".jpg");
+                                                storageReference2.putFile(uri).addOnSuccessListener(taskSnapshot -> System.out.println("Foto subida correctamente"));
+                                            }
+                                        });
+                                    } else {
+                                        Snackbar.make(v, "El nombre de usuario que has elegido ya está asociado a otro usuario. Por favor, prueba con otro", Snackbar.LENGTH_SHORT).setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE).show();
                                     }
-                                });
+                                }
                             }
                         }
                     });
@@ -128,6 +145,8 @@ public class ModificarDatosFragment extends Fragment {
                 bitmapImage = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
                 imgModFotoPerfil.setImageBitmap(bitmapImage);
                 infoUsuario.setFotoPerfil("usuarios/" + UserData.USUARIO.getEmail() + ".jpg");
+                imgModFotoPerfil.setVisibility(View.VISIBLE);
+                imgLoading2.setVisibility(View.GONE);
             } catch (IOException e) {
                 e.printStackTrace();
             }

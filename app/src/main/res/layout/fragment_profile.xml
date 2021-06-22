@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Fragmentos.ProfileFragment">
+    tools:context=".Fragmentos.perfil.ProfileFragment">
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabEditarPerfil"
@@ -127,13 +127,6 @@
                 android:textColor="@color/black"
                 android:textStyle="bold" />
 
-            <View
-                android:id="@+id/divider10"
-                android:layout_width="match_parent"
-                android:layout_height="3dp"
-                android:background="?android:attr/listDivider"
-                android:backgroundTintMode="src_in" />
-
             <TextView
                 android:id="@+id/tvPerfilSeriesGuardadas"
                 android:layout_width="match_parent"
@@ -216,24 +209,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <View
-            android:id="@+id/divider5"
-            android:layout_width="match_parent"
-            android:layout_height="3dp"
-            android:background="?android:attr/listDivider"
-            android:backgroundTintMode="src_in" />
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="10dp" />
-
         <Button
             android:id="@+id/btnAddSerie"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:backgroundTint="#16618D"
             android:text="Añadir serie"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:visibility="invisible" />
 
     </LinearLayout>
 

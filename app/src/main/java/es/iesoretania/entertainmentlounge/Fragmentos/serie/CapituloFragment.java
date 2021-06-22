@@ -1,4 +1,4 @@
-package es.iesoretania.entertainmentlounge.Fragmentos.Pruebas;
+package es.iesoretania.entertainmentlounge.Fragmentos.serie;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -35,6 +35,8 @@ import es.iesoretania.entertainmentlounge.Clases.SaveSerieData.SaveSerie;
 import es.iesoretania.entertainmentlounge.Clases.SaveSerieData.SaveTemporadaSerie;
 import es.iesoretania.entertainmentlounge.Clases.SerieData.Serie;
 import es.iesoretania.entertainmentlounge.Clases.UserData;
+import es.iesoretania.entertainmentlounge.Fragmentos.serie.CapituloFragmentArgs;
+import es.iesoretania.entertainmentlounge.Fragmentos.serie.CapituloFragmentDirections;
 import es.iesoretania.entertainmentlounge.R;
 
 public class CapituloFragment extends Fragment {
@@ -139,6 +141,7 @@ public class CapituloFragment extends Fragment {
                                     }
                                     puntuacionSerieOld = puntuacionSerieOld + (puntTempUsuario / saveTemporada.getCapitulos_puntuacion().size());
                                 }
+                                puntuacionSerieOld = puntuacionSerieOld / saveSerie.getTemporadas().size();
                             }
                             activarPuntuar();
                             activarGuardarCapitulo();
@@ -349,6 +352,7 @@ public class CapituloFragment extends Fragment {
                             }
                             puntuacionSerieUsuario = puntuacionSerieUsuario + (puntTempUsuario / saveTemporada.getCapitulos_puntuacion().size());
                         }
+                        puntuacionSerieUsuario = puntuacionSerieUsuario / serie.getTemporadas().size();
                         serie.setPuntuacionTotal(serie.getPuntuacionTotal() + puntuacionSerieUsuario);
                         serie.setPuntuacion(serie.getPuntuacionTotal() / serie.getnVotos());
                         puntuacionSerieOld = serie.getPuntuacionTotal();
@@ -362,6 +366,7 @@ public class CapituloFragment extends Fragment {
                             }
                             puntuacionSerieUsuario = puntuacionSerieUsuario + (puntTempUsuario / saveTemporada.getCapitulos_puntuacion().size());
                         }
+                        puntuacionSerieUsuario = puntuacionSerieUsuario / serie.getTemporadas().size();
                         serie.setPuntuacionTotal(serie.getPuntuacionTotal() - puntuacionSerieOld + puntuacionSerieUsuario);
                         serie.setPuntuacion(serie.getPuntuacionTotal() / serie.getnVotos());
                         puntuacionSerieOld = serie.getPuntuacionTotal();

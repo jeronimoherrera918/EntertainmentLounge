@@ -1,4 +1,4 @@
-package es.iesoretania.entertainmentlounge.Fragmentos;
+package es.iesoretania.entertainmentlounge.Fragmentos.perfil;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -34,6 +34,8 @@ import es.iesoretania.entertainmentlounge.Actividades.PopUpComentar;
 import es.iesoretania.entertainmentlounge.Clases.SaveSerieData.SaveSerie;
 import es.iesoretania.entertainmentlounge.Clases.UserData;
 import es.iesoretania.entertainmentlounge.Clases.Usuario;
+import es.iesoretania.entertainmentlounge.Fragmentos.perfil.ProfileFragmentArgs;
+import es.iesoretania.entertainmentlounge.Fragmentos.perfil.ProfileFragmentDirections;
 import es.iesoretania.entertainmentlounge.R;
 import pl.droidsonroids.gif.GifImageView;
 
@@ -129,6 +131,9 @@ public class ProfileFragment extends Fragment {
                     btnPerfilMisSeries.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_nav_profile_to_nav_misSeries));
                     btnPerfilDescubrir.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_nav_profile_to_nav_recomendaciones));
                     fabEditarPerfil.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_nav_profile_to_nav_modificarDatos));
+//                    if (usuario.getEmail().equals("jeronimo.herrera.918@estudiante.iesoretania.es")) {
+//                        btnAddSerie.setVisibility(View.VISIBLE);
+//                    }
                     fabChatear.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_nav_profile_to_nav_chats));
                     if (usuario.getAmigosPendientes().size() == 0) {
                         Snackbar.make(view, "No tienes solicitudes pendientes", Snackbar.LENGTH_SHORT).setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE).show();
@@ -149,6 +154,18 @@ public class ProfileFragment extends Fragment {
                     fabEditarPerfil.setVisibility(View.GONE);
                     fabChatear.setVisibility(View.GONE);
                     fabAgregarAmigo.setVisibility(View.VISIBLE);
+                    fabNotificacionesPendientes.setVisibility(View.GONE);
+                    db.collection("usuarios").document(UserData.ID_USER_DB).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                Usuario user = task.getResult().toObject(Usuario.class);
+                                if (user.getListaAmigos().contains(keyUser)) {
+                                    fabAgregarAmigo.setImageResource(R.drawable.ic_chats);
+                                }
+                            }
+                        }
+                    });
                     fabAgregarAmigo.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -172,8 +189,7 @@ public class ProfileFragment extends Fragment {
                                                 Snackbar.make(v, "Ya le has enviado una petición de amistad a este usuario", Snackbar.LENGTH_SHORT).setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE).show();
                                             }
                                         } else {
-                                            fabAgregarAmigo.setImageResource(R.drawable.ic_chats);
-                                            Navigation.findNavController(v).navigate(ProfileFragmentDirections.actionNavProfileToNavChat(keyUser, usuario.getNickname()));
+                                            Navigation.findNavController(view).navigate(ProfileFragmentDirections.actionNavProfileToNavChat(keyUser, usuario.getNickname()));
                                         }
                                     }
                                 }

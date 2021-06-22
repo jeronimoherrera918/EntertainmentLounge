@@ -1,4 +1,4 @@
-package es.iesoretania.entertainmentlounge.Fragmentos;
+package es.iesoretania.entertainmentlounge.Fragmentos.acceso;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -41,6 +41,7 @@ import com.google.firebase.storage.StorageReference;
 
 import es.iesoretania.entertainmentlounge.Clases.UserData;
 import es.iesoretania.entertainmentlounge.Clases.Usuario;
+import es.iesoretania.entertainmentlounge.Fragmentos.acceso.AuthFragmentDirections;
 import es.iesoretania.entertainmentlounge.MainActivity;
 import es.iesoretania.entertainmentlounge.R;
 import pl.droidsonroids.gif.GifImageView;

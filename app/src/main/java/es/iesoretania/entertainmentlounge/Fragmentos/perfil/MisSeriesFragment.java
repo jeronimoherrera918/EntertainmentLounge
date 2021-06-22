@@ -1,4 +1,4 @@
-package es.iesoretania.entertainmentlounge.Fragmentos.Pruebas;
+package es.iesoretania.entertainmentlounge.Fragmentos.perfil;
 
 import android.os.Bundle;
 
@@ -32,6 +32,7 @@ import es.iesoretania.entertainmentlounge.Adapters.RecyclerSeries;
 import es.iesoretania.entertainmentlounge.Clases.SaveSerieData.SaveSerie;
 import es.iesoretania.entertainmentlounge.Clases.SerieData.Serie;
 import es.iesoretania.entertainmentlounge.Clases.UserData;
+import es.iesoretania.entertainmentlounge.Fragmentos.perfil.MisSeriesFragmentDirections;
 import es.iesoretania.entertainmentlounge.R;
 
 public class MisSeriesFragment extends Fragment {

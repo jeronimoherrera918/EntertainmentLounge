@@ -1,4 +1,4 @@
-package es.iesoretania.entertainmentlounge.Fragmentos.Pruebas;
+package es.iesoretania.entertainmentlounge.Fragmentos.serie;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -28,6 +28,8 @@ import es.iesoretania.entertainmentlounge.Actividades.PopUpComentar;
 import es.iesoretania.entertainmentlounge.Adapters.RecyclerComentarios;
 import es.iesoretania.entertainmentlounge.Clases.SerieData.Comentario;
 import es.iesoretania.entertainmentlounge.Clases.SerieData.Serie;
+import es.iesoretania.entertainmentlounge.Fragmentos.serie.ComentariosFragmentArgs;
+import es.iesoretania.entertainmentlounge.Fragmentos.serie.ComentariosFragmentDirections;
 import es.iesoretania.entertainmentlounge.R;
 
 public class ComentariosFragment extends Fragment {

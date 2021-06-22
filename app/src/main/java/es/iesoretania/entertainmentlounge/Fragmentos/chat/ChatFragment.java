@@ -1,4 +1,4 @@
-package es.iesoretania.entertainmentlounge.Fragmentos.Pruebas;
+package es.iesoretania.entertainmentlounge.Fragmentos.chat;
 
 import android.os.Bundle;
 
@@ -31,6 +31,7 @@ import es.iesoretania.entertainmentlounge.Clases.SerieData.Chat;
 import es.iesoretania.entertainmentlounge.Clases.SerieData.Mensaje;
 import es.iesoretania.entertainmentlounge.Clases.UserData;
 import es.iesoretania.entertainmentlounge.Clases.Usuario;
+import es.iesoretania.entertainmentlounge.Fragmentos.chat.ChatFragmentArgs;
 import es.iesoretania.entertainmentlounge.R;
 
 public class ChatFragment extends Fragment {

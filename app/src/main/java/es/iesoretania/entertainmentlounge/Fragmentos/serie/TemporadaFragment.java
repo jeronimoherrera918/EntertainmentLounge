@@ -1,4 +1,4 @@
-package es.iesoretania.entertainmentlounge.Fragmentos.Pruebas;
+package es.iesoretania.entertainmentlounge.Fragmentos.serie;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -22,6 +22,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import es.iesoretania.entertainmentlounge.Adapters.RecyclerCapitulos;
 import es.iesoretania.entertainmentlounge.Clases.SerieData.Serie;
 import es.iesoretania.entertainmentlounge.Clases.UserData;
+import es.iesoretania.entertainmentlounge.Fragmentos.serie.TemporadaFragmentArgs;
+import es.iesoretania.entertainmentlounge.Fragmentos.serie.TemporadaFragmentDirections;
 import es.iesoretania.entertainmentlounge.R;
 
 public class TemporadaFragment extends Fragment {

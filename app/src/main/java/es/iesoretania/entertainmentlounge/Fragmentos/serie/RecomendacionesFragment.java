@@ -1,4 +1,4 @@
-package es.iesoretania.entertainmentlounge.Fragmentos.Pruebas;
+package es.iesoretania.entertainmentlounge.Fragmentos.serie;
 
 import android.os.Bundle;
 
@@ -30,6 +30,7 @@ import es.iesoretania.entertainmentlounge.Adapters.RecyclerSeries;
 import es.iesoretania.entertainmentlounge.Clases.SaveSerieData.SaveSerie;
 import es.iesoretania.entertainmentlounge.Clases.SerieData.Serie;
 import es.iesoretania.entertainmentlounge.Clases.UserData;
+import es.iesoretania.entertainmentlounge.Fragmentos.serie.RecomendacionesFragmentDirections;
 import es.iesoretania.entertainmentlounge.R;
 import pl.droidsonroids.gif.GifImageView;
 
@@ -102,10 +103,6 @@ public class RecomendacionesFragment extends Fragment {
             for (Serie serie : listaSeries) {
                 generos.add(serie.getGenero());
             }
-            generos.add("Bélica");
-            generos.add("Alacaca");
-            generos.add("Alacaca");
-            generos.add("Bélica");
 
             Collections.sort(generos);
 
@@ -150,11 +147,6 @@ public class RecomendacionesFragment extends Fragment {
                                     break;
                                 }
                             }
-                        }
-
-                        if (listaSeriesGenero.size() != 3) {
-                            numGeneros.remove(numGeneros.indexOf(nMax));
-
                         }
                     }
                     loadingRecomendaciones.animate().translationX(loadingRecomendaciones.getWidth() + 300).setDuration(1000L);

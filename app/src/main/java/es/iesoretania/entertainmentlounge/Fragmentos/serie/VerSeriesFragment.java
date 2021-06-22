@@ -1,4 +1,4 @@
-package es.iesoretania.entertainmentlounge.Fragmentos.Pruebas;
+package es.iesoretania.entertainmentlounge.Fragmentos.serie;
 
 import android.os.Bundle;
 
@@ -33,6 +33,7 @@ import java.util.List;
 
 import es.iesoretania.entertainmentlounge.Adapters.RecyclerSeries;
 import es.iesoretania.entertainmentlounge.Clases.SerieData.Serie;
+import es.iesoretania.entertainmentlounge.Fragmentos.serie.VerSeriesFragmentDirections;
 import es.iesoretania.entertainmentlounge.R;
 
 public class VerSeriesFragment extends Fragment {
@@ -108,7 +109,8 @@ public class VerSeriesFragment extends Fragment {
     private void buscarSerie(String busq) {
         listaSeries.clear();
         listaSeriesKeys.clear();
-        db.collection("series").whereGreaterThanOrEqualTo("nombre", busq.toUpperCase()).get().addOnCompleteListener(task -> {
+
+        db.collection("series").whereGreaterThanOrEqualTo("nombre", busq).whereLessThan("nombre", busq + 'z').get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 for (DocumentSnapshot dn : task.getResult()) {
                     listaSeries.add(dn.toObject(Serie.class));

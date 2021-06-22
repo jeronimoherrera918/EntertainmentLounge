@@ -1,4 +1,4 @@
-package es.iesoretania.entertainmentlounge.Fragmentos;
+package es.iesoretania.entertainmentlounge.Fragmentos.acceso;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
